@@ -227,5 +227,9 @@ h1,h2,h3,h4,h5 {
     margin-left: 75%;
     font-weight: 500;
 }
+.emojionearea, .emojionearea.form-control {
+    width: 75% !important;
+    margin-left: 48px !important;
+}
 
 

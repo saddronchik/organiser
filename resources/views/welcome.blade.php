@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="css\fullcalendar-custom.css" />
     <link rel="stylesheet" href="css\chat.css" />
     <link rel="stylesheet" href="css\bootstrap.min.css" />
+    <link rel="stylesheet" href="css\emojionearea.min.css" />
+    
+
 
 </head>
 
@@ -61,7 +64,7 @@
                         <form class="form-input">
                             @csrf
                             <input class="input-send" id="message" name="message" placeholder="Введите сообщение">
-                            <input id="username" type="text" name="username" value="" style="display: none;">
+                            <input id="username"type="text" name="username" value="" style="display: none;">
                             <input class="input-button" id="input-button" type="submit" value="&#10148">
                         </form>
                         <div id="messages"></div>
@@ -151,9 +154,9 @@
                                 <div class="event_Cheked">
                                     @if ($eventStatus->readed == null)
                                     <span>Не просмотренно<span>
-                                            @else
-                                            <span>Просмотренно<span>
-                                                    @endif
+                                        @else
+                                    <span>Просмотренно<span>
+                                    @endif
                                 </div>
                             </div>
                             <div>
@@ -182,6 +185,10 @@
                     if (seconds.length < 2) seconds = '0' + seconds;
                     return [year, month, day].join('-') + ' ' + [hour, minutes, seconds].join(':');
                 };
+
+
+
+
                 $(document).ready(function() {
 
                     var calendar = $('#calendar').fullCalendar({
@@ -323,6 +330,7 @@
                 let form = document.querySelector('.form-input');
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
+                    $(".emojionearea-editor").html('');
                     const formData = new FormData(this);
                     fetch('/laravel-fullcalender/public/api/messages', {
                             method: 'post',
@@ -335,9 +343,19 @@
                             return response.json()
                         })
                         .then(function(data) {})
-                    $('.input-send').val('');
+                        
+
                 });
 
+                $(document).ready(function(){
+                    $("#message").emojioneArea({
+                        autoclear:true
+                    });
+
+
+
+                });
+                
                 function srcollDown() {
                     const end = document.getElementById('end-chat');
                     end.scrollIntoView({
@@ -410,6 +428,8 @@
             <script src="{{ asset('js/watchEvents.js') }}"></script>
             <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('js/jquery-ui.js') }}"></script>
+            <script src="{{ asset('js/jquery-ui.js') }}"></script>
+            <script src="{{ asset('js/emojionearea.min.js') }}"></script>
             @include('sweetalert::alert')
 </body>
 
