@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\FullCalenderController;
-use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Document\IndexController;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -18,23 +18,32 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-    
-
 });
-    
-Route::get('/index', [App\Http\Controllers\FullCalenderController::class,'index'])->name('allEvent');
 
-Route::get('/', [App\Http\Controllers\FullCalenderController::class,'indexall'])->name('events');
+Route::get('/index', [App\Http\Controllers\FullCalenderController::class, 'index'])
+    ->name('allEvent');
 
-Route::post('/store', [App\Http\Controllers\FullCalenderController::class,'store'])->name('eventStore');
+Route::get('/', [App\Http\Controllers\FullCalenderController::class, 'indexall'])
+    ->name('events');
+
+Route::post('/store', [App\Http\Controllers\FullCalenderController::class, 'store'])
+    ->name('eventStore');
 
 Route::get('/messageWatch', [App\Http\Controllers\FullCalenderController::class,'countEvents'])->name('messageWatch');
 
 
+Route::get('/deleteEvent/{id}', [App\Http\Controllers\FullCalenderController::class, 'delete']);
 
-Route::get('/deleteEvent/{id}', [App\Http\Controllers\FullCalenderController::class,'delete']);
+Route::get('/indexStatus', [App\Http\Controllers\FullCalenderController::class, 'indexStatus'])
+    ->name('statusEvent');
 
-Route::get('/indexStatus',[App\Http\Controllers\FullCalenderController::class,'indexStatus'])->name('statusEvent');
+
+// Documents module
+
+Route::prefix('documents')->group(function () {
+    Route::get('index', [IndexController::class, 'index'])
+        ->name('document.index');
+});
 
 
 
