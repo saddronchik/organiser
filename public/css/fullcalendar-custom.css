@@ -291,5 +291,31 @@ border-radius: 10px!important;
 .event_Cheked{
     margin-left: 30%;
 }
+.fc-clear{
+    height: 20px !important;
+}
+.countEvents{
+    display: flex;
+    margin-left: 215px  !important;
+    cursor: pointer;
+}
+.eventStart{
+    background: rgb(61, 228, 61);
+    padding: 0px 20px;
+    border-top-left-radius:20px;
+    border-bottom-left-radius:20px;
+    font-weight: 600;
+    align-items: center;
+}
+.eventNotReaded{
+    background: rgb(233, 49, 36);
+    font-weight: 600;
+    border-top-right-radius:20px;
+    border-bottom-right-radius:20px;
+    padding: 0px 20px;
+    align-items: center;
+}
+
+
 
 

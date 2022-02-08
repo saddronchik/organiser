@@ -65,8 +65,6 @@ Username().then(function () {
     Messages()
 });
 
-
-
 function Messages() {
     let messageToDelite = [];
     let messageCheked = [];

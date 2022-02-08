@@ -29,7 +29,8 @@
         <div class="container">
 
             <div class="container_chat">
-                <div id="calendar"></div>
+                <div id="calendar">
+                </div>
             </div>
 
             <div class="chat">
@@ -212,7 +213,7 @@
                                 text: 'КИП',
                                 click: function(e) {
                                     e.preventDefault();
-                                    
+
                                 }
                             }
                         },
@@ -350,11 +351,8 @@
                     alert("IP сервера не задан! Повторите выполнение файла Python!")
                 }
 
-                let todatEventButton = document.querySelector('.fc-toolbar')
-                console.log(todatEventButton);
-
-
                 todayEvent()
+
                 function todayEvent() {
                     let eventItem = document.querySelectorAll(".today-event__item")
                     eventItem.forEach(function(elemitem) {
@@ -409,6 +407,7 @@
             </script>
 
             <script src="{{ asset('js/app.js') }}"></script>
+            <script src="{{ asset('js/watchEvents.js') }}"></script>
             <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('js/jquery-ui.js') }}"></script>
             @include('sweetalert::alert')

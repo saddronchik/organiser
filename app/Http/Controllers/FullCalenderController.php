@@ -79,6 +79,19 @@ class FullCalenderController extends Controller
         }
     }
 
+    public function countEvents()
+    {
+        $eventInWokrs = Event::where('status', 'В работе')
+        ->count();
+        $eventNotChecked = Event::where('status', 'В работе')
+        ->whereNull('readed')
+        ->count();
+        return response()->json([
+            "eventInWokrs" => $eventInWokrs,
+            "eventNotChecked" => $eventNotChecked,
+        ]);
+    }
+
     public function delete($id){
         Event::destroy($id);
         return redirect()->back();
