@@ -212,7 +212,7 @@
                                 text: 'КИП',
                                 click: function(e) {
                                     e.preventDefault();
-                                    
+                                    window.location.href = 'documents/index';
                                 }
                             }
                         },
