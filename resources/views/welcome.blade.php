@@ -9,7 +9,7 @@
     <script src="{{ asset('js/moment.min.js') }}"></script>
 
     <script src="{{ asset('js/todayEvent.js') }}"></script>
-
+    
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/ru.js')}}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
@@ -361,7 +361,7 @@
                 }
 
                 todayEvent()
-
+                
             </script>
 
             <script src="{{ asset('js/app.js') }}"></script>

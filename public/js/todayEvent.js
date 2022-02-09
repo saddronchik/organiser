@@ -34,8 +34,7 @@ function todayEvent() {
             $('#description').val(description);
             $('#eventId').val(id);
             $('#assigned').val(assigned);
-            let url = "{{url('/deleteEvent/')}}";
-            $('#deliteEvent').attr('href', url + '/' + id);
+            $('#deliteEvent').attr('href', '/laravel-fullcalender/public/deleteEvent' + '/' + id);
             $('.title-text').html('Обновить событие');
             $('#update').html('Обновить');
             $('#dialog').dialog({
