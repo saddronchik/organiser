@@ -2096,7 +2096,6 @@ window.echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 var token = document.getElementsByName("csrfToken").value;
 
 if (localStorage.getItem('UserName')) {
-  console.log(localStorage.getItem('UserName'));
   var username = localStorage.getItem('UserName');
   jquery__WEBPACK_IMPORTED_MODULE_1___default()("#username").attr('value', username);
   jquery__WEBPACK_IMPORTED_MODULE_1___default()(".login-block").css("display", "none");
@@ -2185,7 +2184,6 @@ function Messages() {
     }
 
     check.forEach(function (elem) {
-      // console.log(elem);
       elem.onmouseout = function (event) {
         var id_cheked = elem.querySelector('.chat-item').getAttribute('data-id');
         messageCheked.push(id_cheked);
@@ -2198,8 +2196,7 @@ function Messages() {
         (axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-CSRF-TOKEN"]) = jquery__WEBPACK_IMPORTED_MODULE_1___default()('meta[name="csrf-token"]').attr('content');
         axios__WEBPACK_IMPORTED_MODULE_2___default().post('/laravel-fullcalender/public/api/checkMessage', {
           body: filteredMessageCheked
-        }).then(function (response) {// console.log(response);
-        }).then(function () {})["catch"](function (error) {});
+        }).then(function (response) {}).then(function () {})["catch"](function (error) {});
       };
     });
     /*-----------------Сообщения к удалению во время загрузки чата-------------*/
@@ -2312,9 +2309,7 @@ function SendMessages() {
         (axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-CSRF-TOKEN"]) = jquery__WEBPACK_IMPORTED_MODULE_1___default()('meta[name="csrf-token"]').attr('content');
         axios__WEBPACK_IMPORTED_MODULE_2___default().post('/laravel-fullcalender/public/api/checkMessage', {
           body: messageCheked
-        }).then(function (response) {
-          console.log(response);
-        }).then(function () {})["catch"](function (error) {});
+        }).then(function (response) {}).then(function () {})["catch"](function (error) {});
       };
     });
     var chats = document.querySelectorAll('.messageInChat');
@@ -2384,13 +2379,7 @@ function checkMessage() {
     document.querySelector('.chats-list').innerHTML = "<button class=\"btn-down\" id=\"btn-down\" onclick=\"srcollDown()\">&#8595;</button>";
     Messages();
   });
-} // const picker = new EmojiButton();
-// const trigger = document.querySelector('#emoji-trigger');
-// picker.on('emoji', selection => {
-//   // handle the selected emoji here
-//   console.log(selection.emoji);
-// });
-// trigger.addEventListener('click', () => picker.togglePicker(trigger));
+}
 
 /***/ }),
 

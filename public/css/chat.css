@@ -226,10 +226,11 @@ h1,h2,h3,h4,h5 {
     border-radius: 20px;
     margin-left: 75%;
     font-weight: 500;
+    display: none;
 }
 .emojionearea, .emojionearea.form-control {
-    width: 75% !important;
-    margin-left: 48px !important;
+    width: 80% !important;
+    margin-left: 45px !important;
 }
 
 

@@ -8,6 +8,8 @@
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('js/moment.min.js') }}"></script>
 
+    <script src="{{ asset('js/todayEvent.js') }}"></script>
+
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/ru.js')}}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
@@ -18,7 +20,7 @@
     <link rel="stylesheet" href="css\chat.css" />
     <link rel="stylesheet" href="css\bootstrap.min.css" />
     <link rel="stylesheet" href="css\emojionearea.min.css" />
-    
+
 
 
 </head>
@@ -37,6 +39,7 @@
             </div>
 
             <div class="chat">
+                
                 <div class="not_cheked_Message">
                     <span></span>
                 </div>
@@ -64,7 +67,7 @@
                         <form class="form-input">
                             @csrf
                             <input class="input-send" id="message" name="message" placeholder="Введите сообщение">
-                            <input id="username"type="text" name="username" value="" style="display: none;">
+                            <input id="username" type="text" name="username" value="" style="display: none;">
                             <input class="input-button" id="input-button" type="submit" value="&#10148">
                         </form>
                         <div id="messages"></div>
@@ -154,9 +157,9 @@
                                 <div class="event_Cheked">
                                     @if ($eventStatus->readed == null)
                                     <span>Не просмотренно<span>
-                                        @else
-                                    <span>Просмотренно<span>
-                                    @endif
+                                            @else
+                                            <span>Просмотренно<span>
+                                                    @endif
                                 </div>
                             </div>
                             <div>
@@ -167,8 +170,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <script>
                 function convert(str) {
@@ -185,9 +186,6 @@
                     if (seconds.length < 2) seconds = '0' + seconds;
                     return [year, month, day].join('-') + ' ' + [hour, minutes, seconds].join(':');
                 };
-
-
-
 
                 $(document).ready(function() {
 
@@ -343,19 +341,12 @@
                             return response.json()
                         })
                         .then(function(data) {})
-                        
-
                 });
 
-                $(document).ready(function(){
-                    $("#message").emojioneArea({
-                        autoclear:true
-                    });
-
-
-
+                $(document).ready(function() {
+                    $("#message").emojioneArea({});
                 });
-                
+
                 function srcollDown() {
                     const end = document.getElementById('end-chat');
                     end.scrollIntoView({
@@ -370,57 +361,6 @@
                 }
 
                 todayEvent()
-
-                function todayEvent() {
-                    let eventItem = document.querySelectorAll(".today-event__item")
-                    eventItem.forEach(function(elemitem) {
-                        let title = elemitem.querySelector('.event-item__title').textContent;
-                        let startTime = elemitem.querySelector('.event-item__start_time').textContent;
-                        let endTime = elemitem.querySelector('.event-item__end_time').textContent;
-                        let description = elemitem.querySelector('.event-item__text').textContent;
-                        let id = elemitem.querySelector('.event-id').textContent;
-                        let assigned = elemitem.querySelector('.event-assigned').textContent;
-
-                        elemitem.addEventListener('click', function(e) {
-
-                            fetch('/laravel-fullcalender/public/api/checkEvent' + '/' + id, {
-                                    method: 'PUT',
-                                    body: id,
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json; charset=UTF-8',
-                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                    }
-                                })
-                                .then((response) => {
-                                    return response.json();
-                                })
-                                .then((data) => {
-                                    console.log(data);
-                                });
-
-
-                            $('#today__evet').css("display", "none")
-                            $('#start').css("display", "none");
-                            $('#end').css("display", "none");
-                            $('#title').val(title);
-                            $('#start2').val(convert(startTime));
-                            $('#end2').val(convert(endTime));
-                            $('#description').val(description);
-                            $('#eventId').val(id);
-                            $('#assigned').val(assigned);
-                            let url = "{{url('/deleteEvent/')}}";
-                            $('#deliteEvent').attr('href', url + '/' + id);
-                            $('.title-text').html('Обновить событие');
-                            $('#update').html('Обновить');
-                            $('#dialog').dialog({
-                                width: 500,
-                                height: 800,
-                                modal: true,
-                            })
-                        })
-                    })
-                }
 
             </script>
 

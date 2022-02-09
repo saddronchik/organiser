@@ -10,10 +10,10 @@ function countEvents() {
         })
         .then(data => {
             todatEvent.innerHTML =
-    `<div class = "countEvents">
-        <div class = "eventStart">${data.eventInWokrs}</div>
-        <div class = "eventNotReaded">${data.eventNotChecked}</div>
-    </div>`;
+                `<div class = "countEvents">
+                    <div class = "eventStart">${data.eventInWokrs}</div>
+                    <div class = "eventNotReaded">${data.eventNotChecked}</div>
+                </div>`;
         })
 
 }
@@ -21,7 +21,7 @@ setTimeout(countEvents, 1500);
 
 function eventsWatch() {
     let eventsWatch = document.querySelector('.countEvents')
-    eventsWatch.addEventListener('click', function(e) {
+    eventsWatch.addEventListener('click', function (e) {
         e.preventDefault();
         $('#today__evet').dialog({
             width: 650,

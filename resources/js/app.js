@@ -26,13 +26,9 @@ window.echo = new Echo({
     forceTLS: false
 });
 
-
 const token = document.getElementsByName("csrfToken").value;
 
-
-
 if (localStorage.getItem('UserName')) {
-    console.log(localStorage.getItem('UserName'));
     let username = localStorage.getItem('UserName');
     $("#username").attr('value', username);
     $(".login-block").css("display", "none");
@@ -82,7 +78,6 @@ function Messages() {
             data.forEach(element => {
                 let dateResponse = new Date(element.created_at);
                 if (element.username == username & element.readed == null) {
-
                     document.querySelector('.chats-list').innerHTML += `
                         <div class="messageInChat">
                             <div class="messageRight">
@@ -172,7 +167,6 @@ function Messages() {
             }
 
             check.forEach(function (elem) {
-                // console.log(elem);
                 elem.onmouseout = function (event) {
                     let id_cheked = elem.querySelector('.chat-item').getAttribute('data-id');
                     messageCheked.push(id_cheked)
@@ -186,7 +180,6 @@ function Messages() {
                         body: filteredMessageCheked
                     })
                         .then(function (response) {
-                            // console.log(response);
                         })
                         .then(function () {
                         })
@@ -255,7 +248,6 @@ function Messages() {
 
 SendMessages()
 function SendMessages() {
-
     echo.channel('messages').listen('NewMessage', (data) => {
         let messageCheked = [];
         let arrNotCheked = '';
@@ -362,7 +354,6 @@ function SendMessages() {
                     body: messageCheked
                 })
                     .then(function (response) {
-                        console.log(response);
                     })
                     .then(function () {
                     })
@@ -440,22 +431,3 @@ function checkMessage() {
         Messages()
     });
 }
-
-
-// const picker = new EmojiButton();
-// const trigger = document.querySelector('#emoji-trigger');
-
-// picker.on('emoji', selection => {
-//   // handle the selected emoji here
-//   console.log(selection.emoji);
-// });
-
-// trigger.addEventListener('click', () => picker.togglePicker(trigger));
-
-
-
-
-
-
-
-
