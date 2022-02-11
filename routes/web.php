@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Http\Controllers\Document\IndexController;
+use App\Http\Controllers\Assignments\IndexController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,7 +40,7 @@ Route::get('/indexStatus', [App\Http\Controllers\FullCalenderController::class, 
 
 // Documents module
 
-Route::prefix('documents')->group(function () {
+Route::prefix('assignments')->group(function () {
     Route::get('index', [IndexController::class, 'index'])
         ->name('document.index');
 });
