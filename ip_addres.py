@@ -3,6 +3,7 @@ import tkinter.messagebox as mb
 import socket
 import os
 import re
+import webbrowser
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -24,12 +25,15 @@ with open('.env', 'w') as f:
 
 my_file = open('.env', 'a')
 ip = s.getsockname()[0]
-
+webbrowser.open('http://'+ip+':8000/laravel-fullcalender/public', new=2)
 text_for_file ='IP_ADDRESS='+ip
 if my_file.write(text_for_file):
     my_file.close()
     mb.showinfo("Информация", "Ваш IP "+ip)
     os.system("php artisan websockets:serve")
+  
 else:
     mb.showerror("Ошибка", "Не удалось записать IP! Повторите попытку")
+
+
 
