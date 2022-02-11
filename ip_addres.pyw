@@ -7,7 +7,7 @@ import webbrowser
 import subprocess
 
 for line in os.popen('tasklist').readlines():
-    if line.startswith('python.exe'):
+    if line.startswith('ip_addres.exe'):
         if line.split()[1] != str(os.getpid()):
             os.system(f'taskkill /F /PID {line.split()[1]}')
             break
