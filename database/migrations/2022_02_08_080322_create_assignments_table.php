@@ -36,6 +36,9 @@ class CreateAssignmentsTable extends Migration
                 ->references('id')
                 ->on('users');
 
+            $table->foreign('executor_id')
+                ->references('id')
+                ->on('users');
 
             $table->foreign('department_id')
                 ->references('id')

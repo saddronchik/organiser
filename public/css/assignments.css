@@ -1,0 +1,285 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f5fa;
+}
+
+h1,h2,h3,h4 {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1805px;
+}
+
+.header, .top-nav, .content {
+    background-color: #f4f5fa;
+}
+
+
+.header {
+    margin-bottom: 3px;
+    background-color: #f4f5fa;
+    padding: 15px 0;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 2px 4px 0px rgba(34, 60, 80, 0.2);
+}
+
+.header-logo__title {
+    font-size: 21px;
+}
+
+.btn-import:hover {
+    font-weight: bold;
+    background:
+        linear-gradient(2deg, rgba(46,29,240,1) 0%,  49.63%, rgba(88,45,245,0.72) 100%) 0px 0px / 500px 100px repeat no-repeat; /* New Gradient */
+}
+
+.nav-item a {
+    font-weight: 600;
+    color: #a9aaad;
+}
+
+.nav-item a.active {
+    font-weight: bold;
+    color: #295eff;
+    border-bottom: 2px solid #295eff;
+}
+
+.table-wrapper {
+    width: 100%;
+    /* overflow: hidden; */
+    /* overflow-x: scroll; */
+    white-space: nowrap;
+}
+
+@media (max-width: 1789px) {
+    .table-wrapper {
+        overflow: hidden;
+        overflow-x: scroll;
+    }
+}
+
+.filters {
+    background-color: #fff;
+    padding: 15px 0;
+}
+
+.dropdown-toggle {
+    padding: 0;
+}
+
+.dropdown-toggle:focus {
+    outline: none;
+    border: none;
+}
+
+.content-main {
+    /* max-width: 1380px; */
+    max-width: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+
+}
+
+.table {
+    border-radius: 5px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.hiddenRow {
+    padding: 0 !important;
+}
+
+.table thead {
+    vertical-align: middle;
+}
+
+.content-top__filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.items-count {
+    padding-top: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+}
+
+.top__filters-col {
+    display: flex;
+    width: 33.333%;
+}
+
+.top__filters-left {
+    justify-content: flex-start;
+}
+
+.top__filters-middle {
+    justify-content: center;
+}
+
+.top__filters-right {
+    justify-content: flex-end;
+}
+
+.items-count_select {
+    font-size: 16px;
+    padding: 5px 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+}
+
+.form-search {
+    width: 100%;
+}
+
+.search-input {
+    display: none;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgb(207, 208, 209);
+    border-radius: 3px;
+    font-size: 18px;
+    outline: #0072ff;
+    transition: display 1s ease;
+}
+
+.b-show {
+    display: block;
+    animation: animate-show 1s;
+}
+
+
+.filters-actions img {
+    margin-right: 15px;
+    width: 18px;
+    cursor: pointer;
+}
+
+.filters-actions img:last-child {
+    margin-right: 0;
+}
+
+.search-icon {
+    opacity: 0.65;
+}
+
+
+
+/* необработанный столбец */
+
+.raw-column td {
+    padding: 12px 8px;
+    cursor: pointer;
+}
+
+.dead {
+    background-color: rgba(240, 138, 138, 0.200);
+    text-align: center;
+}
+
+.success {
+    background-color: #2de0865b;
+}
+
+.accordian-body {
+    text-align: left;
+}
+
+.card-header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-body span,
+.card-footer span {
+    font-weight: 700;
+}
+
+.btn-grad {
+    background-image: linear-gradient(to right, #496dd1 0%, #0072ff  51%, #00c6ff  100%)
+}
+
+.btn-grad {
+    margin: 0 0 10px 0;
+    padding: 8px 25px;
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-edit {
+    text-decoration: none;
+    color: rgb(159, 160, 161);
+    font-weight: 700;
+}
+
+
+/* animations */
+
+@keyframes animate-show {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes animate-hide {
+    0% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 0.75;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Modals */
+
+.bootstrap-select>.dropdown-toggle {
+    padding: 7px 3px;
+}

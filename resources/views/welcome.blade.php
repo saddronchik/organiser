@@ -9,7 +9,7 @@
     <script src="{{ asset('js/moment.min.js') }}"></script>
 
     <script src="{{ asset('js/todayEvent.js') }}"></script>
-    
+
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/ru.js')}}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="chat">
-                
+
                 <div class="not_cheked_Message">
                     <span></span>
                 </div>
@@ -218,7 +218,7 @@
                                 text: 'КИП',
                                 click: function(e) {
                                     e.preventDefault();
-                                    window.location.href = 'documents/index';
+                                    window.location.href = 'assignments/index';
                                 }
                             }
                         },
@@ -361,7 +361,7 @@
                 }
 
                 todayEvent()
-                
+
             </script>
 
             <script src="{{ asset('js/app.js') }}"></script>
