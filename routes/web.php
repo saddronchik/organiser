@@ -41,8 +41,8 @@ Route::get('/indexStatus', [App\Http\Controllers\FullCalenderController::class, 
 // Documents module
 
 Route::prefix('assignments')->group(function () {
-    Route::get('index', [IndexController::class, 'index'])
-        ->name('document.index');
+    Route::get('index/{perPage?}', [IndexController::class, 'index'])->where('perPage','[0-9]+')
+        ->name('assignments.index');
 });
 
 

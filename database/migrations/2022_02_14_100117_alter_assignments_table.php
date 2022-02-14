@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterStatusesTable extends Migration
+class AlterAssignmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class AlterStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::table('statuses', function (Blueprint $table) {
-            $table->string('color')
-                ->after('status')
-                ->nullable();
+        Schema::table('assignments', function (Blueprint $table) {
+            $table->bigInteger('document_number')->after('id');
         });
     }
 
@@ -27,8 +25,8 @@ class AlterStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::table('statuses', function (Blueprint $table) {
-            $table->dropColumn('color');
+        Schema::table('assignments', function (Blueprint $table) {
+            $table->dropColumn('document_number');
         });
     }
 }

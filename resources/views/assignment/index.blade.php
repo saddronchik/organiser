@@ -67,26 +67,40 @@
                             <th class="table__header pb-3" rowspan="2">Фактический срок исполнения</th>
                             <th class="table__header pb-3" rowspan="2">Статус</th>
                         </tr>
-
                         </thead>
 
-                        <tbody id="table-body" class="">
-                        <tr class="table-row raw-column dead" data-toggle="collapse" data-target="#demo1"
-                            class="accordion-toggle">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td>Просрочено</td
-                        </tr>
+                        <tbody id="table-body">
+                        @foreach($assignments as $assignment)
+                            <tr class="table-row raw-column accordion-toggle
+                                @switch($assignment->statuses->status)
+                                    @case('Просрочено')
+                                        dead
+                                        @break
+                                    @case('Выполнено')
+                                        success
+                                        @break
+                                @endswitch
+                                    "
+                                data-toggle="collapse" data-target="#{{ $assignment->id }}">
+                                <td>{{ $assignment->id }}</td>
+                                <td>{{ $assignment->department->title }}</td>
+                                <td>{{ $assignment->document_number }}</td>
+                                <td>{{ $assignment->created_at }}</td>
+                                <td>{{ $assignment->addressed->full_name }}</td>
+                                <td>{{ $assignment->executor->full_name }}</td>
+                                <td>
+                                    @foreach($assignment->users as $subexecutor)
+                                        {{  $subexecutor->full_name }}
+                                    @endforeach
+                                </td>
+                                <td>{{ $assignment->deadline }}</td>
+                                <td>{{ $assignment->real_deadline }}</td>
+                                <td>{{ $assignment->statuses->status }}</td
+                            </tr>
+
                         <tr>
                             <td colspan="10" class="hiddenRow">
-                                <div class="accordian-body collapse column_content" id="demo1">
+                                <div class="accordian-body collapse column_content" id="{{ $assignment->id }}">
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="card-header__wrapper">
@@ -96,7 +110,8 @@
                                                 <div class="card-header__actions">
                                                     <a href="#" class="btn-edit" data-toggle="modal"
                                                        data-target="#edit-assignment-modal">
-                                                        <img src="./img/edit.svg" alt="edit-btn" width="15px">
+                                                        <img src="{{ asset('img/icon/edit.svg') }}" alt="edit-btn"
+                                                             width="15px">
                                                         Изменить</a>
                                                 </div>
                                             </div>
@@ -104,182 +119,159 @@
                                         <div class="card-body">
                                             <p>
                                                 <span>Преамбула: </span> <br>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, eum.
+                                                    {{ $assignment->preamble }}
                                                 <br>
                                             </p>
                                             <p class="card-body__text">
                                                 <span>Текст резолюции:</span> <br>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-                                                repellendus quaerat
-                                                distinctio accusantium ipsam, <br> soluta voluptatem cupiditate
-                                                illum quam quia, voluptatum
-                                                reprehenderit voluptas atque sapiente, voluptate tempora aperiam
-                                                dolorem? Nostrum?
+{{--                                                {{ $assignment->text }}--}}
                                             </p>
-
                                         </div>
                                         <div class="card-footer">
                                             <p>
                                                 <span>Автор резолюции: </span>
-                                                Ivanchenko K.M
+                                                {{ $assignment->author->full_name }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
 
-                        <tr class="table-row raw-column dead" data-toggle="collapse" data-target="#demo2"
-                            class="accordion-toggle">
+{{--                        <tr class="table-row raw-column dead" data-toggle="collapse" data-target="#demo2"--}}
+{{--                            class="accordion-toggle">--}}
 
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td>Просрочено</td>
-                        </tr>
-                        <tr>
-                            <td colspan="10" class="hiddenRow">
-                                <div class="accordian-body collapse column_content" id="demo2">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Подробная информация 2
-                                        </div>
-                                        <div class="card-body">
-                                            <p>
-                                                <span>Преамбула: </span> <br>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, eum.
-                                                <br>
-                                            </p>
-                                            <p class="card-body__text">
-                                                <span>Текст резолюции:</span> <br>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-                                                repellendus quaerat
-                                                distinctio accusantium ipsam, <br> soluta voluptatem cupiditate
-                                                illum quam quia, voluptatum
-                                                reprehenderit voluptas atque sapiente, voluptate tempora aperiam
-                                                dolorem? Nostrum?
-                                            </p>
+{{--                            <td>1</td>--}}
+{{--                            <td>Подразделение номер 1</td>--}}
+{{--                            <td>1421110605668108</td>--}}
+{{--                            <td>08.08.2022</td>--}}
+{{--                            <td>Антонов Игорь Иванович</td>--}}
+{{--                            <td>Иванов Иван Иванович</td>--}}
+{{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+{{--                            <td>05.02.2022</td>--}}
+{{--                            <td>11-04-2022</td>--}}
+{{--                            <td>Просрочено</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td colspan="10" class="hiddenRow">--}}
+{{--                                <div class="accordian-body collapse column_content" id="demo2">--}}
+{{--                                    <div class="card">--}}
+{{--                                        <div class="card-header">--}}
+{{--                                            Подробная информация 2--}}
+{{--                                        </div>--}}
+{{--                                        <div class="card-body">--}}
+{{--                                            <p>--}}
+{{--                                                <span>Преамбула: </span> <br>--}}
+{{--                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, eum.--}}
+{{--                                                <br>--}}
+{{--                                            </p>--}}
+{{--                                            <p class="card-body__text">--}}
+{{--                                                <span>Текст резолюции:</span> <br>--}}
+{{--                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid--}}
+{{--                                                repellendus quaerat--}}
+{{--                                                distinctio accusantium ipsam, <br> soluta voluptatem cupiditate--}}
+{{--                                                illum quam quia, voluptatum--}}
+{{--                                                reprehenderit voluptas atque sapiente, voluptate tempora aperiam--}}
+{{--                                                dolorem? Nostrum?--}}
+{{--                                            </p>--}}
 
-                                        </div>
-                                        <div class="card-footer">
-                                            <p>
-                                                <span>Автор резолюции: </span>
-                                                Ivanchenko K.M
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+{{--                                        </div>--}}
+{{--                                        <div class="card-footer">--}}
+{{--                                            <p>--}}
+{{--                                                <span>Автор резолюции: </span>--}}
+{{--                                                Ivanchenko K.M--}}
+{{--                                            </p>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
 
-                        <tr class="table-row raw-column dead">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td>Выполнено</td>
-                        </tr>
+                        {{--                        <tr class="table-row raw-column dead">--}}
+                        {{--                            <td>1</td>--}}
+                        {{--                            <td>Подразделение номер 1</td>--}}
+                        {{--                            <td>1421110605668108</td>--}}
+                        {{--                            <td>08.08.2022</td>--}}
+                        {{--                            <td>Антонов Игорь Иванович</td>--}}
+                        {{--                            <td>Иванов Иван Иванович</td>--}}
+                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+                        {{--                            <td>05.02.2022</td>--}}
+                        {{--                            <td>11-04-2022</td>--}}
+                        {{--                            <td>Выполнено</td>--}}
+                        {{--                        </tr>--}}
 
-                        <tr class="table-row raw-column success">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td>Выполнено</td>
-                        </tr>
+                        {{--                        <tr class="table-row raw-column success">--}}
+                        {{--                            <td>1</td>--}}
+                        {{--                            <td>Подразделение номер 1</td>--}}
+                        {{--                            <td>1421110605668108</td>--}}
+                        {{--                            <td>08.08.2022</td>--}}
+                        {{--                            <td>Антонов Игорь Иванович</td>--}}
+                        {{--                            <td>Иванов Иван Иванович</td>--}}
+                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+                        {{--                            <td>05.02.2022</td>--}}
+                        {{--                            <td>11-04-2022</td>--}}
+                        {{--                            <td>Выполнено</td>--}}
+                        {{--                        </tr>--}}
 
-                        <tr class="table-row raw-column success">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td>Выполнено</td>
-                        </tr>
+                        {{--                        <tr class="table-row raw-column success">--}}
+                        {{--                            <td>1</td>--}}
+                        {{--                            <td>Подразделение номер 1</td>--}}
+                        {{--                            <td>1421110605668108</td>--}}
+                        {{--                            <td>08.08.2022</td>--}}
+                        {{--                            <td>Антонов Игорь Иванович</td>--}}
+                        {{--                            <td>Иванов Иван Иванович</td>--}}
+                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+                        {{--                            <td>05.02.2022</td>--}}
+                        {{--                            <td>11-04-2022</td>--}}
+                        {{--                            <td>Выполнено</td>--}}
+                        {{--                        </tr>--}}
 
-                        <tr class="table-row raw-column success">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td>Выполнено</td>
-                        </tr>
+                        {{--                        <tr class="table-row raw-column success">--}}
+                        {{--                            <td>1</td>--}}
+                        {{--                            <td>Подразделение номер 1</td>--}}
+                        {{--                            <td>1421110605668108</td>--}}
+                        {{--                            <td>08.08.2022</td>--}}
+                        {{--                            <td>Антонов Игорь Иванович</td>--}}
+                        {{--                            <td>Иванов Иван Иванович</td>--}}
+                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+                        {{--                            <td>05.02.2022</td>--}}
+                        {{--                            <td>11-04-2022</td>--}}
+                        {{--                            <td>Выполнено</td>--}}
+                        {{--                        </tr>--}}
 
-                        <tr class="table-row raw-column">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td></td>
-                        </tr>
+                        {{--                        <tr class="table-row raw-column">--}}
+                        {{--                            <td>1</td>--}}
+                        {{--                            <td>Подразделение номер 1</td>--}}
+                        {{--                            <td>1421110605668108</td>--}}
+                        {{--                            <td>08.08.2022</td>--}}
+                        {{--                            <td>Антонов Игорь Иванович</td>--}}
+                        {{--                            <td>Иванов Иван Иванович</td>--}}
+                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+                        {{--                            <td>05.02.2022</td>--}}
+                        {{--                            <td>11-04-2022</td>--}}
+                        {{--                            <td></td>--}}
+                        {{--                        </tr>--}}
 
-                        <tr class="table-row raw-column">
-                            <td>1</td>
-                            <td>Подразделение номер 1</td>
-                            <td>1421110605668108</td>
-                            <td>08.08.2022</td>
-                            <td>Антонов Игорь Иванович</td>
-                            <td>Иванов Иван Иванович</td>
-                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>
-                            <td>05.02.2022</td>
-                            <td>11-04-2022</td>
-                            <td></td>
-                        </tr>
+                        {{--                        <tr class="table-row raw-column">--}}
+                        {{--                            <td>1</td>--}}
+                        {{--                            <td>Подразделение номер 1</td>--}}
+                        {{--                            <td>1421110605668108</td>--}}
+                        {{--                            <td>08.08.2022</td>--}}
+                        {{--                            <td>Антонов Игорь Иванович</td>--}}
+                        {{--                            <td>Иванов Иван Иванович</td>--}}
+                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
+                        {{--                            <td>05.02.2022</td>--}}
+                        {{--                            <td>11-04-2022</td>--}}
+                        {{--                            <td></td>--}}
+                        {{--                        </tr>--}}
 
 
                         </tbody>
 
                     </table>
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination mt-3 justify-content-end">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                {{ $assignments->onEachSide(3)->links() }}
             </div>
         </div>
     </section>
@@ -289,7 +281,8 @@
     <x-modal id="executorModal"/>
     <x-modal id="departmentModal"/>
     <x-modal id="add-assignment-modal" size="modal-lg"/>
+    <x-modal id="edit-assignment-modal" size="modal-lg"></x-modal>
 
-{{--    End modals   --}}
+    {{--    End modals   --}}
 @endsection
 
