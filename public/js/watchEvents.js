@@ -1,6 +1,6 @@
 function countEvents() {
     let todatEvent = document.querySelector('.fc-clear');
-    fetch("/laravel-fullcalender/public/messageWatch", {
+    fetch("/Organiser/public/messageWatch", {
         headers: {
             'Content-type': 'application/json',
         }

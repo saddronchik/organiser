@@ -2077,7 +2077,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 var ip = document.querySelector(".ip-address").value;
 console.log(ip);
-var audioMessage = new Audio('/laravel-fullcalender/public/audio/message.mp3');
+var audioMessage = new Audio('/Organiser/public/audio/message.mp3');
 
 if (ip === "") {
   alert(1);
@@ -2133,7 +2133,7 @@ function Messages() {
   var messageToDelite = [];
   var messageCheked = [];
   var arrNotCheked = '';
-  fetch("/laravel-fullcalender/public/api/messages", {
+  fetch("/Organiser/public/api/messages", {
     headers: {
       'Content-type': 'application/json'
     }
@@ -2194,7 +2194,7 @@ function Messages() {
         }); // console.log(filteredMessageCheked);
 
         (axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-CSRF-TOKEN"]) = jquery__WEBPACK_IMPORTED_MODULE_1___default()('meta[name="csrf-token"]').attr('content');
-        axios__WEBPACK_IMPORTED_MODULE_2___default().post('/laravel-fullcalender/public/api/checkMessage', {
+        axios__WEBPACK_IMPORTED_MODULE_2___default().post('/Organiser/public/api/checkMessage', {
           body: filteredMessageCheked
         }).then(function (response) {}).then(function () {})["catch"](function (error) {});
       };
@@ -2235,7 +2235,7 @@ function Messages() {
   var delite = document.querySelector('.delite-form');
   delite.addEventListener('submit', function (e) {
     e.preventDefault();
-    axios__WEBPACK_IMPORTED_MODULE_2___default().post('/laravel-fullcalender/public/api/deliteMessage', {
+    axios__WEBPACK_IMPORTED_MODULE_2___default().post('/Organiser/public/api/deliteMessage', {
       body: messageToDelite
     }).then(function (response) {
       if (response.data.status === true) {
@@ -2307,7 +2307,7 @@ function SendMessages() {
         //  console.log(filteredMessageCheked);
 
         (axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-CSRF-TOKEN"]) = jquery__WEBPACK_IMPORTED_MODULE_1___default()('meta[name="csrf-token"]').attr('content');
-        axios__WEBPACK_IMPORTED_MODULE_2___default().post('/laravel-fullcalender/public/api/checkMessage', {
+        axios__WEBPACK_IMPORTED_MODULE_2___default().post('/Organiser/public/api/checkMessage', {
           body: messageCheked
         }).then(function (response) {}).then(function () {})["catch"](function (error) {});
       };
@@ -2347,7 +2347,7 @@ function SendMessages() {
     delite.addEventListener('submit', function (e) {
       e.preventDefault(); // console.log(JSON.stringify(messageToDelite));
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default().post('/laravel-fullcalender/public/api/deliteMessage', {
+      axios__WEBPACK_IMPORTED_MODULE_2___default().post('/Organiser/public/api/deliteMessage', {
         body: messageToDelite
       }).then(function (response) {
         if (response.data.status === true) {

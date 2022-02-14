@@ -304,9 +304,7 @@
                             $(this).css('z-index', 8);
                             $('.tooltipevent').remove();
                         },
-
                     })
-
                 });
 
                 $(".chat-header").click(function() {
@@ -330,7 +328,7 @@
                     e.preventDefault();
                     $(".emojionearea-editor").html('');
                     const formData = new FormData(this);
-                    fetch('/laravel-fullcalender/public/api/messages', {
+                    fetch('/Organiser/public/api/messages', {
                             method: 'post',
                             headers: {
                                 'Accept': 'application/json'

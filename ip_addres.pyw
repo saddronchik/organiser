@@ -31,7 +31,7 @@ with open('.env', 'w') as f:
 
 my_file = open('.env', 'a')
 ip = s.getsockname()[0]
-webbrowser.open('http://'+ip+':8000/laravel-fullcalender/public', new=2)
+webbrowser.open('http://'+ip+':8000/Organiser/public', new=2)
 text_for_file ='IP_ADDRESS='+ip
 if my_file.write(text_for_file):
     my_file.close()

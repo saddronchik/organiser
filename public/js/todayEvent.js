@@ -10,7 +10,7 @@ function todayEvent() {
 
         elemitem.addEventListener('click', function(e) {
 
-            fetch('/laravel-fullcalender/public/api/checkEvent' + '/' + id, {
+            fetch('/Organiser/public/api/checkEvent' + '/' + id, {
                     method: 'PUT',
                     body: id,
                     headers: {
@@ -34,7 +34,7 @@ function todayEvent() {
             $('#description').val(description);
             $('#eventId').val(id);
             $('#assigned').val(assigned);
-            $('#deliteEvent').attr('href', '/laravel-fullcalender/public/deleteEvent' + '/' + id);
+            $('#deliteEvent').attr('href', '/Organiser/public/deleteEvent' + '/' + id);
             $('.title-text').html('Обновить событие');
             $('#update').html('Обновить');
             $('#dialog').dialog({

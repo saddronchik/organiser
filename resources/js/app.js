@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 
 const ip = document.querySelector(".ip-address").value;
 console.log(ip);
-const audioMessage = new Audio('/laravel-fullcalender/public/audio/message.mp3');
+const audioMessage = new Audio('/Organiser/public/audio/message.mp3');
 
 if (ip === "") {
     alert(1)
@@ -65,7 +65,7 @@ function Messages() {
     let messageToDelite = [];
     let messageCheked = [];
     let arrNotCheked = '';
-    fetch("/laravel-fullcalender/public/api/messages", {
+    fetch("/Organiser/public/api/messages", {
         headers: {
             'Content-type': 'application/json',
         }
@@ -176,7 +176,7 @@ function Messages() {
                     });
                     // console.log(filteredMessageCheked);
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-                    axios.post('/laravel-fullcalender/public/api/checkMessage', {
+                    axios.post('/Organiser/public/api/checkMessage', {
                         body: filteredMessageCheked
                     })
                         .then(function (response) {
@@ -226,7 +226,7 @@ function Messages() {
     let delite = document.querySelector('.delite-form');
     delite.addEventListener('submit', function (e) {
         e.preventDefault();
-        axios.post('/laravel-fullcalender/public/api/deliteMessage', {
+        axios.post('/Organiser/public/api/deliteMessage', {
             body: messageToDelite
         })
             .then(function (response) {
@@ -350,7 +350,7 @@ function SendMessages() {
 
                 //  console.log(filteredMessageCheked);
                 axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-                axios.post('/laravel-fullcalender/public/api/checkMessage', {
+                axios.post('/Organiser/public/api/checkMessage', {
                     body: messageCheked
                 })
                     .then(function (response) {
@@ -399,7 +399,7 @@ function SendMessages() {
         delite.addEventListener('submit', function (e) {
             e.preventDefault();
             // console.log(JSON.stringify(messageToDelite));
-            axios.post('/laravel-fullcalender/public/api/deliteMessage', {
+            axios.post('/Organiser/public/api/deliteMessage', {
                 body: messageToDelite
             })
                 .then(function (response) {
