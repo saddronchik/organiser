@@ -1,6 +1,5 @@
 require('./bootstrap');
 
-
 import Echo from 'laravel-echo';
 import $ from 'jquery';
 import axios from 'axios';
