@@ -5,11 +5,20 @@ import os
 import re
 import webbrowser
 import subprocess
-for line in os.popen('tasklist').readlines():
-    if line.startswith('ip_addres.exe'):
-        if line.split()[1] != str(os.getpid()):
-            os.system(f'taskkill /F /PID {line.split()[1]}')
-            break
+import psutil
+
+process_to_kill = "ip_addres.exe"
+
+# get PID of the current process
+my_pid = os.getpid()
+
+# iterate through all running processes
+for p in psutil.process_iter():
+    # if it's process we're looking for...
+    if p.name() == process_to_kill:
+        # and if the process has a different PID than the current process, kill it
+        if not p.pid == my_pid:
+            p.terminate()
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(("8.8.8.8", 80))
