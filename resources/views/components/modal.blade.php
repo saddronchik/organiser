@@ -12,8 +12,10 @@
                         @break
                     @case('add-assignment-modal')
                         @include('assignment.includes.modals.addAssignmentModal')
+                        @break
                     @case('edit-assignment-modal')
                         @include('assignment.includes.modals.editAssignmentModal')
+                        @break
                 @endswitch
             </div>
         </div>

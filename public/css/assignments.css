@@ -112,7 +112,7 @@ h1,h2,h3,h4 {
     padding: 10px;
 }
 
-.items-count {
+.items-count_select-title {
     padding-top: 10px;
     padding-right: 10px;
     font-size: 14px;
@@ -144,11 +144,11 @@ h1,h2,h3,h4 {
 }
 
 .form-search {
+    display: none;
     width: 100%;
 }
 
 .search-input {
-    display: none;
     width: 100%;
     border: none;
     border-bottom: 1px solid rgb(207, 208, 209);
@@ -158,8 +158,9 @@ h1,h2,h3,h4 {
     transition: display 1s ease;
 }
 
+
 .b-show {
-    display: block;
+    display: flex;
     animation: animate-show 1s;
 }
 

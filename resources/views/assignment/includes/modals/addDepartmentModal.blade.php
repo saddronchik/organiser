@@ -4,18 +4,19 @@
         <img src="{{ asset('img/icon/close.svg') }}" alt="close">
     </button>
 </div>
-<div class="modal-body">
-    <form>
+<form method="post" action="{{ route('add-department') }}">
+    @csrf
+    <div class="modal-body">
         <div class="form-group">
-            <input type="text" class="form-control" id="department_title"
+            <input type="text" class="form-control" id="department_title" name="title"
                    aria-describedby="departmentHelp">
             <small id="departmentHelp" class="form-text text-muted">Введите название
                 подразделения</small>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
-    <button type="button" class="btn btn-primary">Сохранить</button>
-</div>
 
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </div>
+</form>

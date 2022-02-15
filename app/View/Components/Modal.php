@@ -8,7 +8,8 @@ class Modal extends Component
 {
 
     public $id;
-    public $size;
+    public $size = '';
+
     /**
      * Create a new component instance.
      *
