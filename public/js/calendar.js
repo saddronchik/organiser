@@ -13,7 +13,7 @@ function convert(str) {
     return [year, month, day].join('-') + ' ' + [hour, minutes, seconds].join(':');
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     var calendar = $('#calendar').fullCalendar({
         locale: 'ru',
@@ -31,7 +31,7 @@ $(document).ready(function() {
         customButtons: {
             todayEvent: {
                 text: 'Текущие',
-                click: function(e) {
+                click: function (e) {
                     e.preventDefault();
                     $('#today__evet').dialog({
                         width: 650,
@@ -42,7 +42,7 @@ $(document).ready(function() {
             },
             KIP: {
                 text: 'КИП',
-                click: function(e) {
+                click: function (e) {
                     e.preventDefault();
                     window.location.href = 'assignments/index';
                 }
@@ -72,14 +72,14 @@ $(document).ready(function() {
         },
 
         events: "/Organiser/public/index",
-        
-        eventRender: function(event, element) {
+
+        eventRender: function (event, element) {
             if (event.assigned == null) {
                 event.assigned = "отсутствует"
             }
             element.find('.fc-title').append("<br/>" + "Кому назначена: " + event.assigned);
         },
-        dayClick: function(date, event, view) {
+        dayClick: function (date, event, view) {
             var clickDate = date.format('YYYY-MM-DD HH:MM:SS');
             $('#start').val(clickDate);
             $('#deliteEvent').css("display", "none");
@@ -92,7 +92,7 @@ $(document).ready(function() {
             })
         },
 
-        eventClick: function(event) {
+        eventClick: function (event) {
             $('#start').css("display", "none");
             $('#end').css("display", "none");
             $('#title').val(event.title);
@@ -111,29 +111,29 @@ $(document).ready(function() {
             })
         },
 
-        eventMouseover: function(calEvent, jsEvent) {
+        eventMouseover: function (calEvent, jsEvent) {
             if (calEvent.description == null) {
                 calEvent.description = "Нет доп. информации!"
             }
             var tooltip = '<div class="tooltipevent">' + '<p class="ptitle">' + calEvent.title + '</p>' + '<p class="pdescript">' + calEvent.description + '</p>' + '</div>';
             $("body").append(tooltip);
-            $(this).mouseover(function(e) {
+            $(this).mouseover(function (e) {
                 $(this).css('z-index', 10000);
                 $('.tooltipevent').fadeIn('500');
                 $('.tooltipevent').fadeTo('10', 1.9);
-            }).mousemove(function(e) {
+            }).mousemove(function (e) {
                 $('.tooltipevent').css('top', e.pageY + 10);
                 $('.tooltipevent').css('left', e.pageX + 20);
             });
         },
-        eventMouseout: function(calEvent, jsEvent) {
+        eventMouseout: function (calEvent, jsEvent) {
             $(this).css('z-index', 8);
             $('.tooltipevent').remove();
         },
     })
 });
 
-$(".chat-header").click(function() {
+$(".chat-header").click(function () {
     $(".chat").animate({
         height: "55%",
         width: "28%",
@@ -141,7 +141,7 @@ $(".chat-header").click(function() {
     }, 1000)
 });
 
-$(".btn-close").click(function() {
+$(".btn-close").click(function () {
     $(".chat").animate({
         width: "28%",
         height: "40px",
@@ -150,24 +150,24 @@ $(".btn-close").click(function() {
 });
 
 let form = document.querySelector('.form-input');
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', function (e) {
     e.preventDefault();
     $(".emojionearea-editor").html('');
     const formData = new FormData(this);
     fetch('/Organiser/public/api/messages', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json'
-            },
-            body: formData
-        })
-        .then(function(response) {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+        .then(function (response) {
             return response.json()
         })
-        .then(function(data) {})
+        .then(function (data) { })
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $("#message").emojioneArea({});
 });
 

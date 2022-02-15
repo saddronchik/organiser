@@ -5,7 +5,6 @@ import os
 import re
 import webbrowser
 import subprocess
-
 for line in os.popen('tasklist').readlines():
     if line.startswith('ip_addres.exe'):
         if line.split()[1] != str(os.getpid()):
@@ -31,11 +30,12 @@ with open('.env', 'w') as f:
 
 my_file = open('.env', 'a')
 ip = s.getsockname()[0]
-webbrowser.open('http://'+ip+':8000/Organiser/public', new=2)
+
 text_for_file ='IP_ADDRESS='+ip
 if my_file.write(text_for_file):
     my_file.close()
     mb.showinfo("Информация", "Ваш IP "+ip)
+    webbrowser.open('http://'+ip+':8000/Organiser/public', new=2)
     CREATE_NO_WINDOW = 0x08000000
     subprocess.call('php artisan websockets:serve', creationflags=CREATE_NO_WINDOW)
   
