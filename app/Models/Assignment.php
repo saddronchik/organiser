@@ -14,6 +14,7 @@ class Assignment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'document_number',
         'preamble',
         'text',
         'author_id',

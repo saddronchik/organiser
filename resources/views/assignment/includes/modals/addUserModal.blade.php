@@ -4,19 +4,19 @@
         <img src="{{ asset('img/icon/close.svg') }}" alt="close">
     </button>
 </div>
-<div class="modal-body">
-    <form>
+<form method="post" action="{{ route('add-user') }}">
+    @csrf
+    <div class="modal-body">
         <div class="form-group">
-            <input type="text" class="form-control" id="fullname" name="fullname"
+            <input type="text" class="form-control" id="full_name" name="full_name"
                    aria-describedby="fullnameHelp">
             <small id="fullnameHelp" class="form-text text-muted">Введите ФИО исполнителя</small>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
-    <button type="button" class="btn btn-primary">Сохранить</button>
-</div>
-
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </div>
+</form>
 
 

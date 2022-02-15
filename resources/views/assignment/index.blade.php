@@ -8,17 +8,22 @@
 
                 <div class="content-top__filters top__filters-left">
                     <div class="top__filters-col ">
-                        <h5 class="items-count">Записей: </h5>
+
+                        <h5 class="items-count_select-title">Записей: </h5>
+                        <label for="items-count"></label>
                         <select name="items-count" id="items-count" class="items-count_select">
                             <option value="15">15</option>
-                            <option value="15">25</option>
-                            <option value="15">50</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
                         </select>
+
                     </div>
 
                     <div class="top__filters-col top__filters-middle">
-                        <form action="#" class="form-search">
+                        <form action="{{ route('search-assignment') }}" method="get" class="form-search">
+                            @csrf
                             <input type="search" class="search-input" name="search" placeholder="Введите запрос...">
+                            <button type="submit" class="btn btn-primary search-btn">Поиск</button>
                         </form>
                     </div>
 
@@ -278,10 +283,10 @@
 
     {{-- Modals --}}
 
-    <x-modal id="executorModal"/>
-    <x-modal id="departmentModal"/>
-    <x-modal id="add-assignment-modal" size="modal-lg"/>
-    <x-modal id="edit-assignment-modal" size="modal-lg"></x-modal>
+    <x-modal id="executorModal" />
+    <x-modal id="departmentModal" />
+    <x-modal id="add-assignment-modal" size="modal-lg" />
+    <x-modal id="edit-assignment-modal" size="modal-lg" ></x-modal>
 
     {{--    End modals   --}}
 @endsection
