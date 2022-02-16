@@ -1,7 +1,9 @@
 <?php
 
 
+use App\Http\Controllers\Assignments\DepartmentController;
 use App\Http\Controllers\Assignments\IndexController;
+use App\Http\Controllers\Assignments\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,6 +45,18 @@ Route::get('/indexStatus', [App\Http\Controllers\FullCalenderController::class, 
 Route::prefix('assignments')->group(function () {
     Route::get('index/{perPage?}', [IndexController::class, 'index'])->where('perPage','[0-9]+')
         ->name('assignments.index');
+    Route::get('create', [IndexController::class, 'create'])
+        ->name('create-assignment-modal');
+    Route::post('index', [IndexController::class, 'store'])
+        ->name('add-assignment');
+
+    Route::post('user/create', [UserController::class, 'store'])
+        ->name('add-user');
+    Route::post('department/create', [DepartmentController::class, 'store'])
+        ->name('add-department');
+
+    Route::get('search', [IndexController::class, 'search'])
+        ->name('search-assignment');
 });
 
 

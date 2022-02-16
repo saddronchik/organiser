@@ -3,7 +3,13 @@
 namespace App\Providers;
 
 use App\Repositories\EloquentAssignmentsQueries;
+use App\Repositories\EloquentDepartmentsQueries;
+use App\Repositories\EloquentStatusesQueries;
+use App\Repositories\EloquentUsersQueries;
 use App\Repositories\Interfaces\AssignmentQueries;
+use App\Repositories\Interfaces\DepartmentsQueries;
+use App\Repositories\Interfaces\StatusesQueries;
+use App\Repositories\Interfaces\UsersQueries;
 use Illuminate\Support\ServiceProvider;
 use function Psy\bin;
 
@@ -19,6 +25,21 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             AssignmentQueries::class,
             EloquentAssignmentsQueries::class
+        );
+
+        $this->app->bind(
+            UsersQueries::class,
+            EloquentUsersQueries::class
+        );
+
+        $this->app->bind(
+            StatusesQueries::class,
+            EloquentStatusesQueries::class
+        );
+
+        $this->app->bind(
+            DepartmentsQueries::class,
+            EloquentDepartmentsQueries::class
         );
     }
 
