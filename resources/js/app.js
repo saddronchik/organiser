@@ -40,7 +40,6 @@ function Username() {
     return new Promise(function (resolve) {
         $("#btn-log").click(function (event) {
             event.preventDefault();
-
             let loginText = $(".login-input").val();
             if (loginText.length === 0) {
                 return;
