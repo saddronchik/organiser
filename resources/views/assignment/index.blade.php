@@ -22,7 +22,7 @@
                     <div class="top__filters-col top__filters-middle">
                         <form action="{{ route('search-assignment') }}" method="get" class="form-search">
                             @csrf
-                            <input type="search" class="search-input" name="search" placeholder="Введите запрос...">
+                            <input type="search" class="search-input" name="search" placeholder="Номер документа или автор, или адресат">
                             <button type="submit" class="btn btn-primary search-btn">Поиск</button>
                         </form>
                     </div>
@@ -38,11 +38,29 @@
                                     <img src="{{ asset('img/icon/status-sort (2).svg') }}" alt="time-icon" width="18"
                                          title="Сортировать по статусу">
                                 </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Выполнено</a>
-                                    <a class="dropdown-item" href="#">Просрочено</a>
-                                    <a class="dropdown-item" href="#">Без статуса</a>
+                                <div class="dropdown-menu dropdown-menu-right" id="status-dropdown">
+                                    <a href="{{ route('assignments.index') }}" class="dropdown-item">Все</a>
+                                    @foreach($statuses as $status)
+                                        <a class="dropdown-item" href="{{ route('sort-by-status', $status->id), }}">{{ $status->status }}</a>
+                                    @endforeach
                                     <div class="dropdown-divider"></div>
+                                </div>
+                            </div>
+
+                            <div class="departments-filter">
+                                <div class="btn-group dropdown">
+                                    <button type="button" class="btn btn-outline dropdown-toggle filter-btn"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="{{ asset('img/icon/departments.svg') }}" alt="time-icon" width="18"
+                                             title="Сортировать по подразделениям">
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" id="department-dropdown">
+                                        <a href="{{ route('assignments.index') }}" class="dropdown-item">Все</a>
+                                        @foreach($departments as $department)
+                                            <a class="dropdown-item" href="{{ route('sort-by-department', $department->id) }}">{{ $department->title }}</a>
+                                        @endforeach
+                                        <div class="dropdown-divider"></div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -75,7 +93,9 @@
                         </thead>
 
                         <tbody id="table-body">
-                        @foreach($assignments as $assignment)
+
+                        @forelse($assignments as $assignment)
+
                             <tr class="table-row raw-column accordion-toggle
                                 @switch($assignment->statuses->status)
                                     @case('Просрочено')
@@ -100,7 +120,7 @@
                                 </td>
                                 <td>{{ $assignment->deadline }}</td>
                                 <td>{{ $assignment->real_deadline }}</td>
-                                <td>{{ $assignment->statuses->status }}</td
+                                <td>{{ $assignment->statuses->status }}</td>
                             </tr>
 
                         <tr>
@@ -127,10 +147,10 @@
                                                     {{ $assignment->preamble }}
                                                 <br>
                                             </p>
-                                            <p class="card-body__text">
+                                            <div class="card-body__text">
                                                 <span>Текст резолюции:</span> <br>
-{{--                                                {{ $assignment->text }}--}}
-                                            </p>
+                                                {!! $assignment->text !!}
+                                            </div>
                                         </div>
                                         <div class="card-footer">
                                             <p>
@@ -142,7 +162,14 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+
+                        @empty
+                            <div class="text-center">
+                                <h4>Ничего не найдено</h4>
+                            </div>
+
+                        @endforelse
+
 
 {{--                        <tr class="table-row raw-column dead" data-toggle="collapse" data-target="#demo2"--}}
 {{--                            class="accordion-toggle">--}}

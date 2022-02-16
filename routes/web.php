@@ -47,6 +47,7 @@ Route::prefix('assignments')->group(function () {
         ->name('assignments.index');
     Route::get('create', [IndexController::class, 'create'])
         ->name('create-assignment-modal');
+
     Route::post('index', [IndexController::class, 'store'])
         ->name('add-assignment');
 
@@ -55,8 +56,16 @@ Route::prefix('assignments')->group(function () {
     Route::post('department/create', [DepartmentController::class, 'store'])
         ->name('add-department');
 
+    // filters and sort
+
     Route::get('search', [IndexController::class, 'search'])
         ->name('search-assignment');
+    Route::get('index/sort/status/{id}', [IndexController::class,'sortByStatus'])
+        ->name('sort-by-status');
+    Route::get('index/sort/department/{id}', [IndexController::class,'sortByDepartment'])
+        ->name('sort-by-department');
+
+
 });
 
 

@@ -35,6 +35,16 @@ h1,h2,h3,h4 {
     font-size: 21px;
 }
 
+.header-logo__title {
+    text-decoration: none;
+    color: inherit;
+}
+
+.header-logo__title a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 .btn-import:hover {
     font-weight: bold;
     background:
@@ -133,6 +143,7 @@ h1,h2,h3,h4 {
 
 .top__filters-right {
     justify-content: flex-end;
+    padding-right: 29px;
 }
 
 .items-count_select {
@@ -162,6 +173,10 @@ h1,h2,h3,h4 {
 .b-show {
     display: flex;
     animation: animate-show 1s;
+}
+
+.filters-actions {
+    display: flex;
 }
 
 
@@ -289,3 +304,26 @@ h1,h2,h3,h4 {
 .bootstrap-select>.dropdown-toggle {
     padding: 7px 3px;
 }
+
+.form-group_department {
+    position: relative;
+}
+
+.newDepartment {
+    display: none;
+}
+
+.addDepartmentInput {
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: 10px;
+}
+
+.removeInput {
+    cursor: pointer;
+    margin: 10px 5px;
+}
+
+
+
