@@ -316,7 +316,12 @@ border-radius: 10px!important;
     padding: 0px 20px;
     align-items: center;
 }
+@media(max-width:1370px){
+    .container_calendar {
+        width: 70%;
+    }
 
+}
 
 
 

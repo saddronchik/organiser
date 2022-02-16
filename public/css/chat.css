@@ -70,7 +70,7 @@ h1,h2,h3,h4,h5 {
 .btn-close:focus{
     outline: none;
 }
-.container_chat{
+.container_calendar{
     display: flex;
     justify-content: space-between;
 }
@@ -232,5 +232,8 @@ h1,h2,h3,h4,h5 {
     width: 80% !important;
     margin-left: 45px !important;
 }
+
+
+
 
 

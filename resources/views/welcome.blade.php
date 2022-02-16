@@ -8,7 +8,7 @@
 
     <div class="container">
 
-        <div class="container_chat">
+        <div class="container_calendar">
             <div id="calendar"></div>
         </div>
 
