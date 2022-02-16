@@ -36,9 +36,12 @@ class IndexController extends BaseController
     public function index(Request $request, int $perPage = 15)
     {
         $assignments = $this->assignmentRepository->getWithPaginate($perPage);
+        $departments = $this->departmentRepository->getAll();
+        $statuses = $this->statusesRepository->getAll();
+
 
         return view('assignment.index',
-            compact('assignments'));
+            compact('assignments', 'statuses','departments'));
     }
 
     public function create()
@@ -57,31 +60,58 @@ class IndexController extends BaseController
 
     public function store(StoreAssignmentRequest $request)
     {
-        $assignment = Assignment::create([
-            'document_number' => $request->document_number,
-            'preamble' => $request->preambule,
-            'text' => $request->resolution,
-            'author_id' => $request->author,
-            'addressed_id' => $request->addressed,
-            'executor_id' => $request->executor,
-            'department_id' => $request->department,
-            'status_id' => $request->status,
-            'deadline' => $request->deadline,
-            'real_deadline' => $request->fact_deadline
-        ]);
+        dd($request->all());
+//        $assignment = Assignment::create([
+//            'document_number' => $request->document_number,
+//            'preamble' => $request->preambule,
+//            'text' => $request->resolution,
+//            'author_id' => $request->author,
+//            'addressed_id' => $request->addressed,
+//            'executor_id' => $request->executor,
+//            'department_id' => $request->department,
+//            'status_id' => $request->status,
+//            'deadline' => $request->deadline,
+//            'real_deadline' => $request->fact_deadline
+//        ]);
+//
+//        if ($assignment) {
+//            $users = User::find($request->subexecutors);
+//            $assignment->users()->attach($users);
+//            return redirect()->back();
+//        }
 
-        if ($assignment) {
-            $users = User::find($request->subexecutors);
-            $assignment->users()->attach($users);
-            return redirect()->back();
-        }
-
-        return redirect()
-            ->back();
+//        return redirect()
+//            ->back();
     }
 
     public function search(SearchRequest $request)
     {
-        // TODO search by params
+        $search = $request->search;
+
+        $assignments = is_numeric($search) ? $this->assignmentRepository->getByDocumentNumber($search)
+            : $this->assignmentRepository->getByUsername($search);
+
+        return view('assignment.index',
+            compact('assignments'));
+    }
+
+    public function sortByStatus($id)
+    {
+        $assignments = $this->assignmentRepository->getByStatus($id);
+        $statuses = $this->statusesRepository->getAll();
+        $departments = $this->departmentRepository->getAll();
+
+        return view('assignment.index',
+            compact('assignments','statuses','departments'));
+    }
+
+    public function sortByDepartment($id)
+    {
+        $assignments = $this->assignmentRepository->getByDepartment($id);
+        $statuses = $this->statusesRepository->getAll();
+        $departments = $this->departmentRepository->getAll();
+
+        return view('assignment.index',
+            compact('assignments', 'statuses','departments'));
     }
 }

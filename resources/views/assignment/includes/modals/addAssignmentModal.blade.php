@@ -7,10 +7,19 @@
 <form method="post" id="add-assignment" action="{{ route('add-assignment') }}">
     @csrf
     <div class="modal-body">
-        <div class="form-group">
+        <div class="form-group form-group_department">
             <select class="form-control departmentSelect" id="department-select" name="department"
                     title="Выберите подразделение" data-header="Подразделение">
             </select>
+            <img src="{{ asset('img/plus.png') }}" alt="add" class="addDepartmentInput" id="add-department-input">
+            <div class="newDepartment">
+                <small id="newDepartmentHelp" class="form-text text-muted">Новое подразделение</small>
+                <div class="input-group">
+                    <input type="text" class="form-control col-md-6 newDepartmentInput" name="new-department">
+                    <img src="{{ asset('img/remove.png') }}" class="removeInput" alt="remove-input" height="18px">
+                </div>
+
+            </div>
         </div>
         <div class="form-group">
             <small id="preambuleHelp" class="form-text text-muted">Преамбула</small>
@@ -81,16 +90,6 @@
             <div class="col">
                 <small id="statusHelp" class="form-text text-muted">Статус</small>
                 <select class="form-control statusSelect" id="status-select" name="status" title="Статус">
-{{--                    <option data-content="<span style='background-color: #eee;''>Без статуса</span>">--}}
-{{--                        Без статуса--}}
-{{--                    </option>--}}
-{{--                    <option data-content="<span style='background-color: #2de0865b'>Выполненно</span>">--}}
-{{--                        Выполненно--}}
-{{--                    </option>--}}
-{{--                    <option--}}
-{{--                        data-content="<span style='background-color: rgba(240, 138, 138, 0.200)'>Просрочено</span>">--}}
-{{--                        Просрочено--}}
-{{--                    </option>--}}
                 </select>
             </div>
         </div>

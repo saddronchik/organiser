@@ -24,7 +24,7 @@ class StoreAssignmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'department' => 'integer|required',
+//            'department' => 'integer',
             'preambule' => 'string',
             'docuemnt-number' => 'integer',
             'register-date' => 'date',
