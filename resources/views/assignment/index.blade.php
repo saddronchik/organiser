@@ -74,6 +74,7 @@
             <!-- end top filters -->
 
             <div class="content-main">
+
                 <div class="table-wrapper">
                     <table class="table table-borderless table-hover caption-top" style="border-collapse:collapse;">
 
@@ -149,7 +150,7 @@
                                             </p>
                                             <div class="card-body__text">
                                                 <span>Текст резолюции:</span> <br>
-                                                {!! $assignment->text !!}
+                                                <p>{!! $assignment->text !!} </p>
                                             </div>
                                         </div>
                                         <div class="card-footer">

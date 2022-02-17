@@ -4,9 +4,7 @@
         <div class="top-nav_items border-bottom">
             <div class="nav-wrapper d-flex justify-content-between">
                 <ul class="nav">
-                    <!-- <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Все</a>
-                </li> -->
+
                     <li class="nav-item dropdown pt-3">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Добавить
@@ -19,6 +17,8 @@
                         </div>
                     </li>
                 </ul>
+
+                @include('assignment.includes.alerts.message-alert')
 
                 <div class="top-nav_actions">
                     <button class="btn showd-sm rounded  btn-grad" id="add-assignment-btn" data-toggle="modal"

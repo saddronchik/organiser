@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Models\Assignment;
+use App\Models\Department;
 use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Interfaces\AssignmentQueries;
@@ -22,6 +23,8 @@ class IndexController extends BaseController
     private $statusesRepository;
     private $departmentRepository;
 
+    private $department;
+
     public function __construct(AssignmentQueries $assignmentRepository,
                                 UsersQueries $userRepository,
                                 StatusesQueries $statusesRepository,
@@ -31,6 +34,7 @@ class IndexController extends BaseController
         $this->userRepository = $userRepository;
         $this->statusesRepository = $statusesRepository;
         $this->departmentRepository = $departmentRepository;
+        $this->department = new DepartmentController();
     }
 
     public function index(Request $request, int $perPage = 15)
@@ -60,28 +64,34 @@ class IndexController extends BaseController
 
     public function store(StoreAssignmentRequest $request)
     {
-        dd($request->all());
-//        $assignment = Assignment::create([
-//            'document_number' => $request->document_number,
-//            'preamble' => $request->preambule,
-//            'text' => $request->resolution,
-//            'author_id' => $request->author,
-//            'addressed_id' => $request->addressed,
-//            'executor_id' => $request->executor,
-//            'department_id' => $request->department,
-//            'status_id' => $request->status,
-//            'deadline' => $request->deadline,
-//            'real_deadline' => $request->fact_deadline
-//        ]);
-//
-//        if ($assignment) {
-//            $users = User::find($request->subexecutors);
-//            $assignment->users()->attach($users);
-//            return redirect()->back();
-//        }
+        $department_id = null;
 
-//        return redirect()
-//            ->back();
+        if($request->new_department) {
+            $department_id = $this->department->storeFromModal($request->new_department);
+        }
+
+
+        $assignment = Assignment::create([
+            'document_number' => $request->document_number,
+            'preamble' => $request->preambule,
+            'text' => $request->resolution,
+            'author_id' => $request->author,
+            'addressed_id' => $request->addressed,
+            'executor_id' => $request->executor,
+            'department_id' => $request->department ?? $department_id,
+            'status_id' => $request->status,
+            'deadline' => $request->deadline,
+            'real_deadline' => $request->fact_deadline
+        ]);
+
+        if ($assignment) {
+            $users = User::find($request->subexecutors);
+            $assignment->users()->attach($users);
+            return redirect()->back();
+        }
+
+        return redirect()
+            ->back();
     }
 
     public function search(SearchRequest $request)
@@ -114,4 +124,6 @@ class IndexController extends BaseController
         return view('assignment.index',
             compact('assignments', 'statuses','departments'));
     }
+
+
 }
