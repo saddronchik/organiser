@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,10 +42,6 @@ class Assignment extends Model
         return $this->belongsTo(User::class,'addressed_id');
     }
 
-    public function assigned(): BelongsTo
-    {
-        return $this->belongsTo(User::class,'assigned_id');
-    }
 
     public function executor(): BelongsTo
     {
@@ -59,6 +56,21 @@ class Assignment extends Model
     public function statuses(): BelongsTo
     {
         return $this->belongsTo(Status::class,'status_id');
+    }
+
+    public function getCreatedAtAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y');
+    }
+
+    public function getDeadlineAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y');
+    }
+
+    public function getRealDeadlineAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y');
     }
 
 }

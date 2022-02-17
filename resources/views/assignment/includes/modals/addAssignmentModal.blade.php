@@ -62,7 +62,7 @@
         </div>
         <div class="form-group">
             <small id="departmentHelp" class="form-text text-muted">Соисполнители</small>
-            <select class="form-control subexecutors" id="subexecutors" title="Выберите соисполнителей"
+            <select class="form-control subexecutors" id="subexecutors-select" title="Выберите соисполнителей"
                     name="subexecutors[]"
                     data-size="3" data-header="Выберите соисполнителя" data-live-search="true" multiple>
 {{--                <option data-content="<span class='badge badge-primary'>Иванок И.К.</span>">Иванов И.К.--}}

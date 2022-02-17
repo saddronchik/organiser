@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('.dropdown-toggle').dropdown()
 
     let addAssignmentBtn = $('#add-assignment-btn');
-    let searchBtn = document.querySelector('.search-icon');
+    let searchBtn = $('.search-icon');
     let searchForm = document.querySelector('.form-search');
     let departmentSelect = $('.departmentSelect'),
         addressedSelect = $('.addressedSelect'),
@@ -13,9 +13,10 @@ $(document).ready(function () {
         subExecutorsSelect = $('.subexecutors'),
         statusesSelect = $('.statusSelect');
 
-    searchBtn.addEventListener('click', function (e) {
+    searchBtn.on('click', function (e) {
         searchForm.classList.toggle('b-show');
     })
+
 
 
     $.ajaxSetup({
@@ -29,7 +30,7 @@ $(document).ready(function () {
         url: 'create',
         dataType: 'json',
 
-        success:  (data) => {
+        success: (data) => {
             let departmentsOption = '',
                 usersOptions = '',
                 statusesOption = '';
@@ -66,7 +67,6 @@ $(document).ready(function () {
         }
     });
 
-
     $('#resolution').summernote({
         toolbar: [
             ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -84,21 +84,22 @@ $(document).ready(function () {
 
     addDepartmentBtn.on('click', function (event) {
         let departmentFg = $('.newDepartment');
-        departmentFg.show();
-        $(this).hide();
+        departmentFg.slideDown();
+        $(this).slideUp();
     })
 
     removeDepartmentBtn.on('click', function () {
         let departmentFg = $('.newDepartment');
-        departmentFg.hide();
-        addDepartmentBtn.show();
+        departmentFg.slideUp();
+        addDepartmentBtn.slideDown();
     })
 
     let editAssignmentBtn = $('.editAssignmentBtn');
 
     editAssignmentBtn.on('click', function () {
         let assignmentId = $(this).data('id');
-        let editAssignmentModal = $('#edit-assignment');
+        let editAssignmentModal = $('#edit-assignment'),
+            departmentsOption = '';
 
         $.ajaxSetup({
             headers: {
@@ -113,8 +114,43 @@ $(document).ready(function () {
 
             success: (data) => {
                 if (data.status) {
-                    let departmentSelect = editAssignmentModal.find('#department-select');
-                    // TODO add selected option
+                    console.log(data)
+
+                    let preamble = editAssignmentModal.find('#preambule'),
+                        resolution = editAssignmentModal.find('#resolution'),
+                        document_number = editAssignmentModal.find('#document_number'),
+                        registerData = editAssignmentModal.find('#register-date');
+
+                    editAssignmentModal.find(`#department-select option[value=${data.assignment.department_id}]`)
+                        .attr('selected','selected');
+                    editAssignmentModal.find('#department-select').attr('title', data.assignment.department.title);
+                    departmentSelect.selectpicker();
+
+                    editAssignmentModal.find(`#author-select option[value=${data.assignment.author_id}]`)
+                        .attr('selected','selected');
+
+                    editAssignmentModal.find(`#addressed-select option[value=${data.assignment.addressed_id}]`)
+                        .attr('selected','selected');
+
+                    editAssignmentModal.find(`#executor-select option[value=${data.assignment.executor_id}]`)
+                        .attr('selected','selected');
+
+                    data.subexecutors.forEach((item) =>{
+                        editAssignmentModal.find(`#subexecutors-select option[value=${item.id}]`)
+                            .attr('selected','selected');
+                    })
+
+
+                    preamble.val(data.assignment.preamble);
+                    resolution.html(data.assignment.text);
+                    document_number.val(data.assignment.document_number);
+                    registerData.val(data.assignment.created_at);
+
+                    resolution.summernote();
+
+
+
+
                 }
             },
 
