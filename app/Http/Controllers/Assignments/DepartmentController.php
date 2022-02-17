@@ -17,4 +17,13 @@ class DepartmentController extends Controller
             return redirect()->back();
         }
     }
+
+    public function storeFromModal(string $title): int
+    {
+        $department = Department::create([
+            'title' => $title
+        ]);
+
+        return $department->id;
+    }
 }

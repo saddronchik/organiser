@@ -15,7 +15,7 @@
             <div class="newDepartment">
                 <small id="newDepartmentHelp" class="form-text text-muted">Новое подразделение</small>
                 <div class="input-group">
-                    <input type="text" class="form-control col-md-6 newDepartmentInput" name="new-department">
+                    <input type="text" class="form-control col-md-6 newDepartmentInput" name="new_department">
                     <img src="{{ asset('img/remove.png') }}" class="removeInput" alt="remove-input" height="18px">
                 </div>
 
