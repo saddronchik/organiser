@@ -105,6 +105,7 @@ class IndexController extends BaseController
             "status" => true,
             "assignment" => $assignment,
             "statuses" => $statuses,
+            "subexecutors" => $assignment->users,
             "users" => $users,
             "departments" => $departments
         ])->setStatusCode(200);

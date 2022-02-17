@@ -24,11 +24,11 @@
         <div class="form-row">
             <div class="col">
                 <small id="documentNumberHelp" class="form-text text-muted">Номер документа</small>
-                <input type="number" class="form-control" name="document_number">
+                <input type="number" class="form-control" id="document_number" name="document_number">
             </div>
             <div class="col">
                 <small id="registerDateHelp" class="form-text text-muted">Дата регистрации</small>
-                <input type="date" class="form-control" name="register-date">
+                <input type="date" class="form-control" name="register-date" id="register-date">
             </div>
         </div>
         <div class="form-row">
@@ -53,9 +53,9 @@
         </div>
         <div class="form-group">
             <small id="departmentHelp" class="form-text text-muted">Соисполнители</small>
-            <select class="form-control subexecutors" id="subexecutors" title="Выберите соисполнителей"
+            <select class="form-control subexecutors show-tick" id="subexecutors-select" title="Выберите соисполнителей"
                     name="subexecutors[]"
-                    data-size="3" data-header="Выберите соисполнителя" data-live-search="true" multiple>
+                    data-size="5" data-header="Выберите соисполнителя" data-live-search="true" multiple>
             </select>
         </div>
         <div class="form-row">

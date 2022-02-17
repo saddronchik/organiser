@@ -23,7 +23,13 @@ class EloquentAssignmentsQueries implements AssignmentQueries
 
     public function getById(int $id)
     {
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with([
+            'users',
+            'department',
+            'author',
+            'statuses',
+            'addressed',
+            'executor'])
                 ->where('assignments.id',[$id])
             ->first();
 

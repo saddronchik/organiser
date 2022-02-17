@@ -19,7 +19,6 @@ class CreateAssignmentsTable extends Migration
             $table->text('text')->nullable();
             $table->integer('author_id')->unsigned();
             $table->integer('addressed_id')->unsigned();
-            $table->integer('assigned_id')->unsigned();
             $table->integer('executor_id')->unsigned();
             $table->integer('department_id')->unsigned();
             $table->integer('status_id')->unsigned();
@@ -29,10 +28,6 @@ class CreateAssignmentsTable extends Migration
                 ->on('users');
 
             $table->foreign('addressed_id')
-                ->references('id')
-                ->on('users');
-
-            $table->foreign('assigned_id')
                 ->references('id')
                 ->on('users');
 
