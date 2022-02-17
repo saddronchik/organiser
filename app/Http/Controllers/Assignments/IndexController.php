@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Assignments;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Models\Assignment;
-use App\Models\Department;
-use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Interfaces\AssignmentQueries;
 use App\Repositories\Interfaces\DepartmentsQueries;
@@ -37,7 +34,7 @@ class IndexController extends BaseController
         $this->department = new DepartmentController();
     }
 
-    public function index(Request $request, int $perPage = 15)
+    public function index(int $perPage = 15)
     {
         $assignments = $this->assignmentRepository->getWithPaginate($perPage);
         $departments = $this->departmentRepository->getAll();
@@ -87,10 +84,31 @@ class IndexController extends BaseController
         if ($assignment) {
             $users = User::find($request->subexecutors);
             $assignment->users()->attach($users);
-            return redirect()->back()->with('success','Поручение успешно создано!');
+            return redirect()
+                ->back()
+                ->with('success','Поручение успешно создано.');
         }
+
         return redirect()
-            ->back()->with('error');
+            ->back()
+            ->with('error');
+    }
+
+    public function edit(int $id)
+    {
+        $assignment = $this->assignmentRepository->getById($id);
+        $statuses = $this->statusesRepository->getAll();
+        $users = $this->userRepository->getAll();
+        $departments = $this->departmentRepository->getAll();
+
+        return response()->json([
+            "status" => true,
+            "assignment" => $assignment,
+            "statuses" => $statuses,
+            "users" => $users,
+            "departments" => $departments
+        ])->setStatusCode(200);
+
     }
 
     public function search(SearchRequest $request)
@@ -100,8 +118,11 @@ class IndexController extends BaseController
         $assignments = is_numeric($search) ? $this->assignmentRepository->getByDocumentNumber($search)
             : $this->assignmentRepository->getByUsername($search);
 
+        $statuses = $this->statusesRepository->getAll();
+        $departments = $this->departmentRepository->getAll();
+
         return view('assignment.index',
-            compact('assignments'));
+            compact('assignments','statuses','departments'));
     }
 
     public function sortByStatus($id)

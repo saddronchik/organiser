@@ -19,7 +19,6 @@ class Assignment extends Model
         'text',
         'author_id',
         'addressed_id',
-        'assigned_id',
         'executor_id',
         'department_id',
         'status_id',

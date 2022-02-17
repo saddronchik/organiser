@@ -29,7 +29,7 @@ $(document).ready(function () {
         url: 'create',
         dataType: 'json',
 
-        success: function (data) {
+        success:  (data) => {
             let departmentsOption = '',
                 usersOptions = '',
                 statusesOption = '';
@@ -61,7 +61,7 @@ $(document).ready(function () {
                 statusesSelect.selectpicker();
             }
         },
-        error: function (err) {
+        error: (err) => {
             console.log(err)
         }
     });
@@ -94,26 +94,35 @@ $(document).ready(function () {
         addDepartmentBtn.show();
     })
 
-// let statusDropdownChildElems = $('#status-dropdown').children('.dropdown-item');
-//
-//     for (let i=0; i < statusDropdownChildElems.length; i++) {
-//         statusDropdownChildElems[i].addEventListener('click', function () {
-//             let status = $(this).text();
-//
-//             $.ajaxSetup({
-//                 headers: {
-//                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-//                 }
-//             });
-//
-//             $.ajax({
-//                 type: 'GET',
-//                 url: 'index/sort/' + status,
-//                 dataType: 'html'
-//             })
-//
-//         })
-//     }
+    let editAssignmentBtn = $('.editAssignmentBtn');
+
+    editAssignmentBtn.on('click', function () {
+        let assignmentId = $(this).data('id');
+        let editAssignmentModal = $('#edit-assignment');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: 'get',
+            url: 'edit/' + assignmentId,
+            dataType: 'json',
+
+            success: (data) => {
+                if (data.status) {
+                    let departmentSelect = editAssignmentModal.find('#department-select');
+                    // TODO add selected option
+                }
+            },
+
+            error: (err) => {
+                console.log(err);
+            }
+        })
+    })
 
 
 })
