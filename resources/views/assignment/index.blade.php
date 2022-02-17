@@ -148,7 +148,7 @@
                                                     {{ $assignment->preamble }}
                                                 <br>
                                             </p>
-                                            <div class="card-body__text">
+                                            <div class="card-body__text text-wrap">
                                                 <span>Текст резолюции:</span> <br>
                                                 <p>{!! $assignment->text !!} </p>
                                             </div>

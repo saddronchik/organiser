@@ -87,11 +87,10 @@ class IndexController extends BaseController
         if ($assignment) {
             $users = User::find($request->subexecutors);
             $assignment->users()->attach($users);
-            return redirect()->back();
+            return redirect()->back()->with('success','Поручение успешно создано!');
         }
-
         return redirect()
-            ->back();
+            ->back()->with('error');
     }
 
     public function search(SearchRequest $request)
