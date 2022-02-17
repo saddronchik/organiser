@@ -16,6 +16,13 @@ class StoreUserRequest extends FormRequest
         return true;
     }
 
+    public function messages()
+    {
+        return [
+            'full_name.required' => 'Заполните имя исполнителя!'
+        ];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +31,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'full_name' => 'required'
         ];
     }
 }

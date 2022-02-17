@@ -16,6 +16,13 @@ class StoreDepartmentRequest extends FormRequest
         return true;
     }
 
+    public function messages()
+    {
+        return [
+            'title.required' => 'Заполните название подразделения'
+        ];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +31,7 @@ class StoreDepartmentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required'
         ];
     }
 }

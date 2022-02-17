@@ -134,7 +134,8 @@
                                                     <h5>Подробная информация</h5>
                                                 </div>
                                                 <div class="card-header__actions">
-                                                    <a href="#" class="btn-edit" data-toggle="modal"
+                                                    <a href="#" class="btn-edit editAssignmentBtn" data-toggle="modal" id="edit-assignment-btn"
+                                                       data-id="{{ $assignment->id }}"
                                                        data-target="#edit-assignment-modal">
                                                         <img src="{{ asset('img/icon/edit.svg') }}" alt="edit-btn"
                                                              width="15px">

@@ -50,7 +50,7 @@ class StoreAssignmentRequest extends FormRequest
             'deadline.date' => __('Дата выполнения должна быть датой!'),
             'fact-deadline.date' => __('Фактическая дата выполнения должна быть датой!'),
             'status.integer' => __('Статус должен быть установлен!'),
-            'status.min' => __('Длинна статуса минимум 1!'),
+            'status.min' => __('Длина статуса минимум 1!'),
         ];
     }
 }

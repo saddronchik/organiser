@@ -14,7 +14,13 @@ class UserController extends Controller
         $user = User::create($request->all());
 
         if ($user) {
-            return redirect()->back();
+            return redirect()
+                ->back()
+                ->with('success', 'Пользователь добавлен успешно.');
         }
+
+        return redirect()
+            ->back()
+            ->with('error');
     }
 }

@@ -14,8 +14,14 @@ class DepartmentController extends Controller
         $department = Department::create($request->all());
 
         if ($department) {
-            return redirect()->back();
+            return redirect()
+                ->back()
+                ->with('success', 'Подразделение добавлено успешно.');
         }
+
+        return redirect()
+            ->back()
+            ->with('error');
     }
 
     public function storeFromModal(string $title): int

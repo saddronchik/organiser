@@ -1,25 +1,21 @@
 @if($errors->any())
-    <div class="row justify-content-center">
-        <div class="col-md-11">
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul style="list-style-type: none">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
 
 @if(session('success'))
-    <div class="row justify-content-center">
-        <div class="col-md-11">
-            <div class="alert alert-success" role="alert">
-                <p class="alert-heading">{{ session()->get('success') }}</p>
-                <p>{{ session()->get('msg') }}</p>
-                <hr>
-            </div>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session()->get('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
