@@ -56,7 +56,7 @@
                         <div class="title">
                             <div class="title-event"><label class="title-text">Добавить событие</label></div>
                             <div style="color: white;"></div>
-                            <div class="button-close"><a href="" type="button" aria-label="Close" class="btn-close" style="color: black;">&times;</a>
+                            <div class="button-close"><a href="" type="button" aria-label="Close" class="btn-close">&times;</a>
                             </div>
                         </div>
                         <div>

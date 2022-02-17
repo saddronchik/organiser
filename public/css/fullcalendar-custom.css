@@ -230,7 +230,15 @@ border-radius: 10px!important;
      float: right;
      cursor: pointer; 
  }
-
+.button-close a{
+    color: #000;
+    margin-top: -9px;
+    font-size: 30px;
+}
+.button-close a:hover{
+    color: rgb(100, 93, 93);
+    text-decoration: inherit;
+}
 
 /*--------------------Modal----------------------*/
 .button-close_events{

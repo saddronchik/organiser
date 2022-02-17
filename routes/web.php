@@ -31,7 +31,8 @@ Route::get('/', [App\Http\Controllers\FullCalenderController::class, 'indexall']
 Route::post('/store', [App\Http\Controllers\FullCalenderController::class, 'store'])
     ->name('eventStore');
 
-Route::get('/messageWatch', [App\Http\Controllers\FullCalenderController::class,'countEvents'])->name('messageWatch');
+Route::get('/messageWatch', [App\Http\Controllers\FullCalenderController::class,'countEvents'])
+    ->name('messageWatch');
 
 
 Route::get('/deleteEvent/{id}', [App\Http\Controllers\FullCalenderController::class, 'delete']);
