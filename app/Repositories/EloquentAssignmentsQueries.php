@@ -7,10 +7,21 @@ namespace App\Repositories;
 use App\Models\Assignment;
 use App\Models\User;
 use App\Repositories\Interfaces\AssignmentQueries;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentAssignmentsQueries implements AssignmentQueries
 {
+
+    public function getByColumns($columns): Collection
+    {
+        $result = Assignment::with(['users', 'statuses'])
+            ->select($columns)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $result;
+    }
 
     public function getWithPaginate(int $perPage): LengthAwarePaginator
     {
@@ -71,11 +82,20 @@ class EloquentAssignmentsQueries implements AssignmentQueries
         return $result;
     }
 
-    public function getByDepartment(int $id): LengthAwarePaginator
+    public function getByDepartmentWithPaginate(int $id): LengthAwarePaginator
     {
         $result = Assignment::with(['users', 'statuses'])
             ->where('department_id',[$id])
             ->paginate(15);
+
+        return $result;
+    }
+
+    public function getByDepartment(int $id)
+    {
+        $result = Assignment::with(['users', 'statuses'])
+            ->where('department_id',[$id])
+            ->get();
 
         return $result;
     }

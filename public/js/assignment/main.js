@@ -6,6 +6,7 @@ $(document).ready(function () {
     let addAssignmentBtn = $('#add-assignment-btn');
     let searchBtn = $('.search-icon');
     let searchForm = document.querySelector('.form-search');
+    const exportBtn = $('.exportBtn');
     let departmentSelect = $('.departmentSelect'),
         addressedSelect = $('.addressedSelect'),
         authorSelect = $('.authorSelect'),
@@ -18,7 +19,6 @@ $(document).ready(function () {
     })
 
 
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: 'GET',
-        url: 'create',
+        url: '/organaizer/public/assignments/create',
         dataType: 'json',
 
         success: (data) => {
@@ -104,7 +104,7 @@ $(document).ready(function () {
         const spinner = $('.spinner-wrapper');
 
         spinner.removeClass('b-hide');
-        editAssignmentModal.css('opacity','0');
+        editAssignmentModal.css('opacity', '0');
 
         editAssignmentModal.attr('action', `update/${assignmentId}`)
 
@@ -116,7 +116,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'get',
-            url: 'edit/' + assignmentId,
+            url: '/organaizer/public/assignments/edit/' + assignmentId,
             dataType: 'json',
 
             success: (data) => {
@@ -131,30 +131,28 @@ $(document).ready(function () {
                         factDeadlineData = editAssignmentModal.find('#fact-deadline');
 
                     editAssignmentModal.find(`#department-select option[value=${data.assignment.department_id}]`)
-                        .attr('selected','selected');
+                        .attr('selected', 'selected');
                     editAssignmentModal.find('#department-select').attr('title', data.assignment.department.title);
                     departmentSelect.selectpicker();
 
                     editAssignmentModal.find(`#author-select option[value=${data.assignment.author_id}]`)
-                        .attr('selected','selected');
+                        .attr('selected', 'selected');
 
                     editAssignmentModal.find(`#addressed-select option[value=${data.assignment.addressed_id}]`)
-                        .attr('selected','selected');
+                        .attr('selected', 'selected');
 
                     editAssignmentModal.find(`#executor-select option[value=${data.assignment.executor_id}]`)
-                        .attr('selected','selected');
+                        .attr('selected', 'selected');
 
 
-                    data.subexecutors.forEach((item) =>{
+                    data.subexecutors.forEach((item) => {
                         editAssignmentModal.find(`#subexecutors-select option[value=${item.id}]`)
-                            .attr('selected','selected');
+                            .attr('selected', 'selected');
                     });
 
-                    console.log(data.assignment.statuses.id)
 
                     editAssignmentModal.find(`#status-select option[value=${data.assignment.statuses.id}]`)
-                        .attr('selected','selected');
-
+                        .attr('selected', 'selected');
 
 
                     preamble.val(data.assignment.preamble);
@@ -165,14 +163,10 @@ $(document).ready(function () {
                     deadlineData.val(data.assignment.deadline.split(".").reverse().join("-"));
                     factDeadlineData.val(data.assignment.real_deadline.split(".").reverse().join("-"));
 
-
-
                     resolution.summernote();
 
-
                     spinner.addClass('b-hide');
-                    editAssignmentModal.css('opacity','1');
-
+                    editAssignmentModal.css('opacity', '1');
 
                 }
             },
