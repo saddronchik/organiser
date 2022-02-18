@@ -4,12 +4,19 @@
         <img src="{{ asset('img/icon/close.svg') }}" alt="Close">
     </button>
 </div>
-<form method="post" id="edit-assignment" action="{{ route('add-assignment') }}">
+<div class="d-flex justify-content-center mt-5 spinner-wrapper b-hide" >
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<form method="post" id="edit-assignment" action="">
     @csrf
+    @method('put')
+
     <div class="modal-body">
         <div class="form-group form-group_department">
             <select class="form-control departmentSelect" id="department-select" name="department"
-                    title="Выберите подразделение" data-header="Подразделение">
+                    data-size="6" title="Выберите подразделение" data-header="Подразделение">
             </select>
         </div>
         <div class="form-group">
@@ -61,12 +68,12 @@
         <div class="form-row">
             <div class="col">
                 <small id="deadlineHelp" class="form-text text-muted">Срок исполнения</small>
-                <input type="date" class="form-control" name="deadline">
+                <input type="date" class="form-control" id="deadline" name="deadline">
             </div>
             <div class="col">
                 <small id="factdeadlineHelp" class="form-text text-muted">Фактический срок
                     исполнения</small>
-                <input type="date" class="form-control" name="fact_deadline">
+                <input type="date" class="form-control" id="fact-deadline" name="fact_deadline">
             </div>
             <div class="col">
                 <small id="statusHelp" class="form-text text-muted">Статус</small>

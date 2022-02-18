@@ -53,6 +53,8 @@ Route::prefix('assignments')->group(function () {
 
     Route::post('index', [IndexController::class, 'store'])
         ->name('add-assignment');
+    Route::put('update/{id}', [IndexController::class, 'update'])
+        ->name('update-assignment');
 
     Route::post('user/create', [UserController::class, 'store'])
         ->name('add-user');
