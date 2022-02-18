@@ -111,7 +111,7 @@
         </div>
 
         <div class="today__evet" id="today__evet" style="display: none;">
-            <div class="button-close_events"><a href="" type="button" aria-label="Close" class="btn-close" style="color: black;">&times;</a></div>
+            <div class="button-close_events"><a href="" type="button" aria-label="Close" class="btn-close">&times;</a></div>
             <div class="list-group">
                 <div class="body__today_event">
                     @foreach ( $eventsStatus as $eventStatus )

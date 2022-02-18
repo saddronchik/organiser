@@ -251,6 +251,15 @@ border-radius: 10px!important;
     background-color: transparent;
     z-index: 99999;
 }
+.button-close_events a {
+    color: #000;
+    margin-top: -9px;
+    font-size: 30px;
+}
+.button-close_events a:hover{
+    color: rgb(100, 93, 93);
+    text-decoration: inherit;
+}
 .today-event__item{
     display: flex;
     flex-direction: column;
