@@ -8,15 +8,9 @@
 
                 <div class="content-top__filters top__filters-left">
                     <div class="top__filters-col ">
-
-                        <h5 class="items-count_select-title">Записей: </h5>
-                        <label for="items-count"></label>
-                        <select name="items-count" id="items-count" class="items-count_select">
-                            <option value="15">15</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                        </select>
-
+                        <a href="{{ route('assignments.index') }}" title="Сбросить фильтры">
+                            <img src="{{ asset('img/icon/reset.svg') }}" alt="Сбросить фильтры">
+                        </a>
                     </div>
 
                     <div class="top__filters-col top__filters-middle">
@@ -64,7 +58,10 @@
                                 </div>
                             </div>
 
-                            <img src="{{ asset('img/icon/download.svg') }}" class="export-icon" alt="export to xls"
+                            <img src="{{ asset('img/icon/download.svg') }}" class="exportBtn"
+                                 data-toggle="modal"
+                                 data-target="#export-assignment-modal"
+                                 alt="export to xls"
                                  width="18px"
                                  title="Создать отчет">
                         </div>
@@ -316,6 +313,7 @@
     <x-modal id="departmentModal" />
     <x-modal id="add-assignment-modal" size="modal-lg" />
     <x-modal id="edit-assignment-modal" size="modal-lg" ></x-modal>
+    <x-modal id="export-assignment-modal"></x-modal>
 
     {{--    End modals   --}}
 @endsection

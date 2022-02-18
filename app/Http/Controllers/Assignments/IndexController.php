@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Assignments;
 
+use App\Exports\AssignmentExport;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Models\Assignment;
@@ -12,6 +13,8 @@ use App\Repositories\Interfaces\StatusesQueries;
 use App\Repositories\Interfaces\UsersQueries;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class IndexController extends BaseController
 {
@@ -166,12 +169,18 @@ class IndexController extends BaseController
 
     public function sortByDepartment($id)
     {
-        $assignments = $this->assignmentRepository->getByDepartment($id);
+        $assignments = $this->assignmentRepository->getByDepartmentWithPaginate($id);
         $statuses = $this->statusesRepository->getAll();
         $departments = $this->departmentRepository->getAll();
 
         return view('assignment.index',
             compact('assignments', 'statuses','departments'));
+    }
+
+    public function export(Request $request): BinaryFileResponse
+    {
+        $departmentId = $request->input('department');
+        return Excel::download(new AssignmentExport($this->assignmentRepository, $departmentId), 'assignments.xlsx');
     }
 
 

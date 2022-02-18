@@ -16,6 +16,9 @@
                     @case('edit-assignment-modal')
                         @include('assignment.includes.modals.editAssignmentModal')
                         @break
+                    @case('export-assignment-modal')
+                        @include('assignment.includes.modals.exportModal')
+                        @break
                 @endswitch
             </div>
         </div>

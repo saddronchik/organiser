@@ -71,6 +71,11 @@ Route::prefix('assignments')->group(function () {
     Route::get('index/sort/department/{id}', [IndexController::class,'sortByDepartment'])
         ->name('sort-by-department');
 
+    // Export
+
+    Route::get('export-assignment', [IndexController::class, 'export'])
+        ->name('export-assignment');
+
 
 });
 
