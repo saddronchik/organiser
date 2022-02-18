@@ -101,6 +101,13 @@ $(document).ready(function () {
         let editAssignmentModal = $('#edit-assignment'),
             departmentsOption = '';
 
+        const spinner = $('.spinner-wrapper');
+
+        spinner.removeClass('b-hide');
+        editAssignmentModal.css('opacity','0');
+
+        editAssignmentModal.attr('action', `update/${assignmentId}`)
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -119,7 +126,9 @@ $(document).ready(function () {
                     let preamble = editAssignmentModal.find('#preambule'),
                         resolution = editAssignmentModal.find('#resolution'),
                         document_number = editAssignmentModal.find('#document_number'),
-                        registerData = editAssignmentModal.find('#register-date');
+                        registerData = editAssignmentModal.find('#register-date'),
+                        deadlineData = editAssignmentModal.find('#deadline'),
+                        factDeadlineData = editAssignmentModal.find('#fact-deadline');
 
                     editAssignmentModal.find(`#department-select option[value=${data.assignment.department_id}]`)
                         .attr('selected','selected');
@@ -135,20 +144,34 @@ $(document).ready(function () {
                     editAssignmentModal.find(`#executor-select option[value=${data.assignment.executor_id}]`)
                         .attr('selected','selected');
 
+
                     data.subexecutors.forEach((item) =>{
                         editAssignmentModal.find(`#subexecutors-select option[value=${item.id}]`)
                             .attr('selected','selected');
-                    })
+                    });
+
+                    console.log(data.assignment.statuses.id)
+
+                    editAssignmentModal.find(`#status-select option[value=${data.assignment.statuses.id}]`)
+                        .attr('selected','selected');
+
 
 
                     preamble.val(data.assignment.preamble);
                     resolution.html(data.assignment.text);
                     document_number.val(data.assignment.document_number);
-                    registerData.val(data.assignment.created_at);
+
+                    registerData.val(data.assignment.created_at.split(".").reverse().join("-"));
+                    deadlineData.val(data.assignment.deadline.split(".").reverse().join("-"));
+                    factDeadlineData.val(data.assignment.real_deadline.split(".").reverse().join("-"));
+
+
 
                     resolution.summernote();
 
 
+                    spinner.addClass('b-hide');
+                    editAssignmentModal.css('opacity','1');
 
 
                 }

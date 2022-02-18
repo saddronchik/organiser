@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\AssignmentQueries;
 use App\Repositories\Interfaces\DepartmentsQueries;
 use App\Repositories\Interfaces\StatusesQueries;
 use App\Repositories\Interfaces\UsersQueries;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class IndexController extends BaseController
@@ -110,6 +111,33 @@ class IndexController extends BaseController
             "departments" => $departments
         ])->setStatusCode(200);
 
+    }
+
+    public function update($id, Request $request): RedirectResponse
+    {
+        $assignment = Assignment::where('id',[$id])
+            ->update([
+                'document_number' => $request->document_number,
+                'preamble' => $request->preambule,
+                'text' => $request->resolution,
+                'author_id' => $request->author,
+                'addressed_id' => $request->addressed,
+                'executor_id' => $request->executor,
+                'department_id' => $request->department,
+                'status_id' => $request->status,
+                'deadline' => $request->deadline,
+                'real_deadline' => $request->fact_deadline
+            ]);
+
+        if ($assignment) {
+            return redirect()
+                ->back()
+                ->with('success', 'Запись обновленаю');
+        }
+
+        return redirect()
+            ->back()
+            ->with('error');
     }
 
     public function search(SearchRequest $request)
