@@ -42,7 +42,6 @@ class Assignment extends Model
         return $this->belongsTo(User::class,'addressed_id');
     }
 
-
     public function executor(): BelongsTo
     {
         return $this->belongsTo(User::class,'executor_id');

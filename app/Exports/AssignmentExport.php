@@ -37,13 +37,14 @@ class AssignmentExport implements FromCollection, WithHeadings, WithMapping, Wit
         return [
             '№ п/п',
             'Номер документа',
-            'Адресовано',
             'Регистрация',
+            'Адресовано',
             'Преамбула',
             'Текст резолюции',
             'Автор резолюции',
-            'Адресовано',
-            'Исполнитель',
+            'Главный исполнитель',
+            'Соисполнители',
+            'Подразделение',
             'Статус',
             'Срок исполнения',
             'Фактический срок исполнения'
@@ -59,15 +60,22 @@ class AssignmentExport implements FromCollection, WithHeadings, WithMapping, Wit
 
     public function map($row): array
     {
+        $subexecutors = '';
+
+        foreach ($row->users as $user) {
+            $subexecutors .= $user->full_name .' ,';
+        }
+
         return [
             $row->id,
             $row->document_number,
             $row->created_at,
-            $row->preamble,
-            $row->text,
-            $row->author->full_name,
             $row->addressed->full_name,
+            $row->preamble,
+            strip_tags($row->text),
+            $row->author->full_name,
             $row->executor->full_name,
+            $subexecutors,
             $row->department->title,
             $row->statuses->status,
             $row->deadline,
