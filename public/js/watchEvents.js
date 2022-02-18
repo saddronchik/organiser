@@ -1,6 +1,6 @@
 function countEvents() {
     let todatEvent = document.querySelector('.fc-clear');
-    fetch("/Organiser/public/messageWatch", {
+    fetch("/organaizer/public/messageWatch", {
         headers: {
             'Content-type': 'application/json',
         }

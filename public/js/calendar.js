@@ -71,7 +71,7 @@ $(document).ready(function () {
             now: "Текущие",
         },
 
-        events: "/Organiser/public/index",
+        events: "/organaizer/public/index",
 
         eventRender: function (event, element) {
             if (event.assigned == null) {
@@ -101,7 +101,7 @@ $(document).ready(function () {
             $('#description').val(event.description);
             $('#eventId').val(event.id);
             $('#assigned').val(event.assigned);
-            $('#deliteEvent').attr('href', '/Organiser/public/deleteEvent' + '/' + event.id);
+            $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
             $('.title-text').html('Обновить событие');
             $('#update').html('Обновить');
             $('#dialog').dialog({
@@ -154,7 +154,7 @@ form.addEventListener('submit', function (e) {
     e.preventDefault();
     $(".emojionearea-editor").html('');
     const formData = new FormData(this);
-    fetch('/Organiser/public/api/messages', {
+    fetch('/organaizer/public/api/messages', {
         method: 'post',
         headers: {
             'Accept': 'application/json'
