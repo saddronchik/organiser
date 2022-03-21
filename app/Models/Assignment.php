@@ -67,9 +67,12 @@ class Assignment extends Model
         return Carbon::parse($value)->format('d.m.Y');
     }
 
-    public function getRealDeadlineAttribute($value): string
+    public function getRealDeadlineAttribute($value): mixed
     {
-        return Carbon::parse($value)->format('d.m.Y');
+        if (is_null($value)) {
+            return null;
+        }
+        return Carbon::parse($value )->format('d.m.Y');
     }
 
 }
