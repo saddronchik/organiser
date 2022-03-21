@@ -152,6 +152,19 @@ $(".emojionearea").emojioneArea({
     standalone: true
 });
 
+$(document).ready(function () {
+    $("#message").emojioneArea({
+        inline: true,
+        events: {
+            keyup: function (editor, event) {
+                if (event.which == 13){
+                    let formMes = document.querySelector('.form-input');
+                    document.querySelector('.input-button').click();
+                }
+            }
+        }
+    });
+});
 
 function send(){
 let form = document.querySelector('.form-input');
@@ -174,19 +187,7 @@ form.addEventListener('submit', function (e) {
 }
 send();
 
-$(document).ready(function () {
-    $("#message").emojioneArea({
-        inline: true,
-        events: {
-            keyup: function (editor, event) {
-                if (event.which == 13){
-                    let formMes = document.querySelector('.form-input');
-                    document.querySelector('.input-button').click();
-                }
-            }
-        }
-    });
-});
+
 
 
 function srcollDown() {
