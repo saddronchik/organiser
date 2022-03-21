@@ -17,7 +17,7 @@ function countEvents() {
         })
 
 }
-setTimeout(countEvents, 1500);
+setTimeout(countEvents, 1700);
 
 function eventsWatch() {
     let eventsWatch = document.querySelector('.countEvents')
@@ -30,4 +30,4 @@ function eventsWatch() {
         })
     })
 }
-setTimeout(eventsWatch, 1700);
+setTimeout(eventsWatch, 1800);

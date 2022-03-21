@@ -172,11 +172,7 @@ $(document).ready(function () {
 });
 
 function srcollDown() {
-    const end = document.getElementById('end-chat');
-    end.scrollIntoView({
-        block: "center",
-        behavior: "smooth"
-    });
+    document.querySelector('.chats-list').scrollTop = document.querySelector('.chats-list').scrollHeight
 }
 
 const ip = document.querySelector(".ip-address").value;
