@@ -28,9 +28,9 @@ class StoreAssignmentRequest extends FormRequest
             'preambule' => 'string',
             'docuemnt-number' => 'integer',
             'register-date' => 'date',
-            'author' => 'integer|min:1',
-            'addressed' => 'integer|min:1',
-            'executor' => 'integer|min:1',
+//            'author' => 'integer|min:1',
+//            'addressed' => 'integer|min:1',
+//            'executor' => 'integer|min:1',
             'deadline' => 'date',
             'fact-deadline' => 'date',
             'status' => 'integer|min:1'

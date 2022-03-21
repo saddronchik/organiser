@@ -314,11 +314,18 @@ h1,h2,h3,h4 {
     padding: 7px 3px;
 }
 
-.form-group_department {
+.form-group_department,
+.form-group_executor,
+.form-group_subexecutors {
     position: relative;
 }
 
-.newDepartment {
+.newDepartment,
+.newAuthor,
+.newAddressed,
+.newExecutor,
+.newSubexecutors
+{
     display: none;
 }
 
@@ -327,6 +334,20 @@ h1,h2,h3,h4 {
     position: absolute;
     right: -10px;
     top: 10px;
+}
+
+.addExecutorInput {
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: 25px;
+}
+
+.addSubexecutorInput {
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: 25px;
 }
 
 .removeInput {

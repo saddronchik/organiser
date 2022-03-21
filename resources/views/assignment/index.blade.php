@@ -117,7 +117,7 @@
                                     @endforeach
                                 </td>
                                 <td>{{ $assignment->deadline }}</td>
-                                <td>{{ $assignment->real_deadline }}</td>
+                                <td>{{ $assignment->real_deadline ?? null }}</td>
                                 <td>{{ $assignment->statuses->status }}</td>
                             </tr>
 

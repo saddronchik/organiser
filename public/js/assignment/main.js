@@ -80,7 +80,15 @@ $(document).ready(function () {
     });
 
     let addDepartmentBtn = $('#add-department-input'),
-        removeDepartmentBtn = $('.removeInput');
+        removeDepartmentBtn = $('.removeInput'),
+        addAuthorBtn = $('#add-author-input'),
+        removeAuthorBtn = $('.remove-author-input'),
+        addAddressedBtn = $('#add-addressed-input'),
+        removeAddressedBtn = $('.remove-addressed-input'),
+        addExecutorBtn = $('#add-executor-input'),
+        removeExecutorBtn = $('.remove-executor-input'),
+        addSubExecutorsBtn = $('#add-subexecutor-input'),
+        removeSubexecutorsBtn = $('.remove-subexecutor-input');
 
     addDepartmentBtn.on('click', function (event) {
         let departmentFg = $('.newDepartment');
@@ -93,6 +101,62 @@ $(document).ready(function () {
         departmentFg.slideUp();
         addDepartmentBtn.slideDown();
     })
+
+    addAuthorBtn.on('click', function () {
+        $(this).hide();
+        $('#author-select').toggleClass('d-none');
+        $('.remove-author-input').show();
+        $('.newAuthor').toggleClass('d-flex');
+    })
+
+    removeAuthorBtn.on('click', function (){
+        $(this).hide();
+        $('#author-select').toggleClass('d-none');
+        $('.newAuthor').toggleClass('d-flex');
+        addAuthorBtn.show();
+    })
+
+    addAddressedBtn.on('click', function () {
+        $(this).hide();
+        $('#addressed-select').toggleClass('d-none');
+        $('.remove-addressed-input').show();
+        $('.newAddressed').toggleClass('d-flex');
+    })
+
+    removeAddressedBtn.on('click', function (){
+        $(this).hide();
+        $('#addressed-select').toggleClass('d-none');
+        $('.newAddressed').toggleClass('d-flex');
+        addAddressedBtn.show();
+    })
+
+    addExecutorBtn.on('click', function (event) {
+        let executorFg = $('.newExecutor');
+        executorFg.slideDown();
+        $(this).slideUp();
+    })
+
+    removeExecutorBtn.on('click', function () {
+        let executorFg = $('.newExecutor');
+        executorFg.slideUp();
+        addExecutorBtn.slideDown();
+    })
+
+    // addSubExecutorsBtn.on('click', function (event) {
+    //     let subexecutorFg = $('.newSubexecutors');
+    //     subexecutorFg.slideDown();
+    //     $(this).slideUp();
+    // })
+    //
+    // removeSubexecutorsBtn.on('click', function () {
+    //     let subexecutorFg = $('.newSubexecutors');
+    //     subexecutorFg.slideUp();
+    //     addSubExecutorsBtn.slideDown();
+    // })
+
+
+
+
 
     let editAssignmentBtn = $('.editAssignmentBtn');
 
@@ -159,9 +223,18 @@ $(document).ready(function () {
                     resolution.html(data.assignment.text);
                     document_number.val(data.assignment.document_number);
 
-                    registerData.val(data.assignment.created_at.split(".").reverse().join("-"));
-                    deadlineData.val(data.assignment.deadline.split(".").reverse().join("-"));
-                    factDeadlineData.val(data.assignment.real_deadline.split(".").reverse().join("-"));
+                    if (data.assignment.created_at) {
+                        registerData.val(data.assignment.created_at.split(".").reverse().join("-"));
+                    }
+
+                    if (data.assignment.deadline) {
+                        deadlineData.val(data.assignment.deadline.split(".").reverse().join("-"));
+                    }
+
+                    if (data.assignment.real_deadline) {
+                        factDeadlineData.val(data.assignment.real_deadline.split(".").reverse().join("-"));
+                    }
+
 
                     resolution.summernote();
 
