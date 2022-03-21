@@ -6,7 +6,7 @@ namespace App\Repositories\Interfaces;
 
 interface AssignmentQueries
 {
-    public function getByColumns($columns);
+    public function getByColumns(array $columns);
     public function getWithPaginate(int $perPage);
     public function getById(int $id);
     public function getByDocumentNumber(int $documentNumber);

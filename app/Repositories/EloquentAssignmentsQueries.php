@@ -13,7 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class EloquentAssignmentsQueries implements AssignmentQueries
 {
 
-    public function getByColumns($columns): Collection
+    public function getByColumns(array $columns): Collection
     {
         $result = Assignment::with(['users', 'statuses'])
             ->select($columns)
