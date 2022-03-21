@@ -17,7 +17,7 @@ function countEvents() {
         })
 
 }
-setTimeout(countEvents, 1700);
+setTimeout(countEvents, 1600);
 
 function eventsWatch() {
     let eventsWatch = document.querySelector('.countEvents')

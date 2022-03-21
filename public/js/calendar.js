@@ -148,7 +148,12 @@ $(".btn-close").click(function () {
     }, 1000)
     event.stopPropagation();
 });
+$(".emojionearea").emojioneArea({
+    standalone: true
+});
 
+
+function send(){
 let form = document.querySelector('.form-input');
 form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -166,10 +171,23 @@ form.addEventListener('submit', function (e) {
         })
         .then(function (data) { })
 });
+}
+send();
 
 $(document).ready(function () {
-    $("#message").emojioneArea({});
+    $("#message").emojioneArea({
+        inline: true,
+        events: {
+            keyup: function (editor, event) {
+                if (event.which == 13){
+                    let formMes = document.querySelector('.form-input');
+                    document.querySelector('.input-button').click();
+                }
+            }
+        }
+    });
 });
+
 
 function srcollDown() {
     document.querySelector('.chats-list').scrollTop = document.querySelector('.chats-list').scrollHeight
