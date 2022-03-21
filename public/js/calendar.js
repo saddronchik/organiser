@@ -152,19 +152,7 @@ $(".emojionearea").emojioneArea({
     standalone: true
 });
 
-$(document).ready(function () {
-    $("#message").emojioneArea({
-        inline: true,
-        events: {
-            keyup: function (editor, event) {
-                if (event.which == 13){
-                    let formMes = document.querySelector('.form-input');
-                    document.querySelector('.input-button').click();
-                }
-            }
-        }
-    });
-});
+
 
 function send(){
 let form = document.querySelector('.form-input');
@@ -187,7 +175,36 @@ form.addEventListener('submit', function (e) {
 }
 send();
 
+$(document).ready(function () {
+    $("#message").emojioneArea({
+        inline: true,
+        events: {
+            keyup: function (editor, event) {
+                if (event.which == 13){
+                    let message = this.getText();
+                    let userName = document.querySelector('#username').value;
+                       
+                    const formData = new FormData();
+                    formData.append("username",userName)
+                    formData.append("message",message)
+                    $(".emojionearea-editor").html('');
 
+                    fetch('/organaizer/public/api/messages', {
+                        method: 'post',
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    })
+                        .then(function (response) {
+                            return response.json()
+                        })
+                        .then(function (data) { })
+                }
+            }
+        }
+    });
+});
 
 
 function srcollDown() {
