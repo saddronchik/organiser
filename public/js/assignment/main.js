@@ -32,8 +32,8 @@ $(document).ready(function () {
 
         success: (data) => {
             let departmentsOption = '',
-                usersOptions = '',
-                statusesOption = '';
+                usersOptions = '<option value=""></option>',
+                statusesOption = '<option value=""></option>';
 
 
             if (data.status) {
@@ -46,20 +46,23 @@ $(document).ready(function () {
                 data.users.forEach(function (item) {
                     usersOptions += `<option value="${item.id}">${item.full_name}</option>`;
                 })
-                authorSelect.html(usersOptions);
-                addressedSelect.html(usersOptions);
-                executorSelect.html(usersOptions);
-                subExecutorsSelect.html(usersOptions);
 
+                authorSelect.html(usersOptions);
+                authorSelect.selectpicker();
+                addressedSelect.html(usersOptions);
+                addressedSelect.selectpicker();
+                executorSelect.html(usersOptions);
+                executorSelect.selectpicker();
+                subExecutorsSelect.html(usersOptions);
                 executorSelect.selectpicker();
                 subExecutorsSelect.selectpicker();
 
+
                 data.statuses.forEach(function (item) {
-                    statusesOption += `<option data-content='<span style="background-color: ${item.color};">${item.status}</span>'
-                                    value="${item.id}">${item.status}</option>`;
+                    statusesOption += `<option
+                                    value="${item}">${item}</option>`;
                 })
                 statusesSelect.html(statusesOption);
-                statusesSelect.selectpicker();
             }
         },
         error: (err) => {
@@ -86,9 +89,7 @@ $(document).ready(function () {
         addAddressedBtn = $('#add-addressed-input'),
         removeAddressedBtn = $('.remove-addressed-input'),
         addExecutorBtn = $('#add-executor-input'),
-        removeExecutorBtn = $('.remove-executor-input'),
-        addSubExecutorsBtn = $('#add-subexecutor-input'),
-        removeSubexecutorsBtn = $('.remove-subexecutor-input');
+        removeExecutorBtn = $('.remove-executor-input');
 
     addDepartmentBtn.on('click', function (event) {
         let departmentFg = $('.newDepartment');
@@ -111,7 +112,7 @@ $(document).ready(function () {
 
     removeAuthorBtn.on('click', function (){
         $(this).hide();
-        $('#author-select').toggleClass('d-none');
+        $('.author-select').toggleClass('d-none');
         $('.newAuthor').toggleClass('d-flex');
         addAuthorBtn.show();
     })
@@ -141,18 +142,6 @@ $(document).ready(function () {
         executorFg.slideUp();
         addExecutorBtn.slideDown();
     })
-
-    // addSubExecutorsBtn.on('click', function (event) {
-    //     let subexecutorFg = $('.newSubexecutors');
-    //     subexecutorFg.slideDown();
-    //     $(this).slideUp();
-    // })
-    //
-    // removeSubexecutorsBtn.on('click', function () {
-    //     let subexecutorFg = $('.newSubexecutors');
-    //     subexecutorFg.slideUp();
-    //     addSubExecutorsBtn.slideDown();
-    // })
 
 
 
@@ -185,7 +174,7 @@ $(document).ready(function () {
 
             success: (data) => {
                 if (data.status) {
-                    console.log(data)
+                    console.log(data.assignment)
 
                     let preamble = editAssignmentModal.find('#preambule'),
                         resolution = editAssignmentModal.find('#resolution'),
@@ -215,7 +204,7 @@ $(document).ready(function () {
                     });
 
 
-                    editAssignmentModal.find(`#status-select option[value=${data.assignment.statuses.id}]`)
+                    editAssignmentModal.find(`#status-select option[value='${data.assignment.status}']`)
                         .attr('selected', 'selected');
 
 

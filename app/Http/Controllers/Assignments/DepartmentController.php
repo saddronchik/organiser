@@ -24,12 +24,12 @@ class DepartmentController extends Controller
             ->with('error');
     }
 
-    public function storeFromModal(string $title): int
+    public function storeFromModal(string $title): Department
     {
         $department = Department::create([
             'title' => $title
         ]);
 
-        return $department->id;
+        return $department;
     }
 }

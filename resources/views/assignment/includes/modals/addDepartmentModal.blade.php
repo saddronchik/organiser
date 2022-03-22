@@ -9,7 +9,7 @@
     <div class="modal-body">
         <div class="form-group">
             <input type="text" class="form-control" id="department_title" name="title"
-                   aria-describedby="departmentHelp">
+                   aria-describedby="departmentHelp" value="{{ old('title') }}">
             <small id="departmentHelp" class="form-text text-muted">Введите название
                 подразделения</small>
         </div>

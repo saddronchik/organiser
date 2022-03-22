@@ -21,12 +21,12 @@
         </div>
         <div class="form-group">
             <small id="preambuleHelp" class="form-text text-muted">Преамбула</small>
-            <textarea class="form-control" id="preambule" name="preambule" rows="3"></textarea>
+            <textarea class="form-control" id="preambule" name="preambule" rows="3">{{ old('preambule') }}</textarea>
         </div>
         <div class="form-group">
             <small id="resolutionHelp" class="form-text text-muted">Текст резолюции</small>
             <textarea class="form-control" id="resolution" name="resolution"
-                      rows="5"></textarea>
+                      rows="5">{{ old('resolution') }}</textarea>
         </div>
         <div class="form-row">
             <div class="col">

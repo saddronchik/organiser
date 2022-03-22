@@ -9,7 +9,7 @@
     <div class="modal-body">
         <div class="form-group">
             <input type="text" class="form-control" id="full_name" name="full_name"
-                   aria-describedby="fullnameHelp">
+                   aria-describedby="fullnameHelp" value="{{ old('title') }}">
             <small id="fullnameHelp" class="form-text text-muted">Введите ФИО исполнителя</small>
         </div>
     </div>

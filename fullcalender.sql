@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 21 2022 г., 16:45
--- Версия сервера: 10.4.20-MariaDB
--- Версия PHP: 8.0.9
+-- Время создания: Мар 22 2022 г., 12:58
+-- Версия сервера: 10.4.18-MariaDB
+-- Версия PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,17 +31,17 @@ USE `fullcalender`;
 
 CREATE TABLE `assignments` (
   `id` int(10) UNSIGNED NOT NULL,
-  `document_number` bigint(20) NOT NULL,
+  `document_number` bigint(20) DEFAULT NULL,
   `preamble` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_id` int(10) UNSIGNED NOT NULL,
-  `addressed_id` int(10) UNSIGNED NOT NULL,
-  `assigned_id` int(10) UNSIGNED DEFAULT NULL,
-  `executor_id` int(10) UNSIGNED NOT NULL,
-  `department_id` int(10) UNSIGNED NOT NULL,
-  `status_id` int(10) UNSIGNED DEFAULT NULL,
-  `deadline` date DEFAULT NULL,
-  `real_deadline` date DEFAULT NULL,
+  `author_id` int(10) UNSIGNED DEFAULT NULL,
+  `addressed_id` int(10) UNSIGNED DEFAULT NULL,
+  `executor_id` int(10) UNSIGNED DEFAULT NULL,
+  `department_id` int(10) UNSIGNED DEFAULT NULL,
+  `status` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deadline` datetime DEFAULT NULL,
+  `real_deadline` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -55,9 +55,7 @@ CREATE TABLE `assignments` (
 CREATE TABLE `assignment_user` (
   `id` int(10) UNSIGNED NOT NULL,
   `assignment_id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `user_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -68,9 +66,7 @@ CREATE TABLE `assignment_user` (
 
 CREATE TABLE `departments` (
   `id` int(10) UNSIGNED NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -126,18 +122,15 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(8, '2021_11_10_133507_create_events_tabel', 1),
-(74, '0000_00_00_000000_create_websockets_statistics_entries_table', 2),
-(75, '2019_12_14_000001_create_personal_access_tokens_table', 2),
-(76, '2021_11_11_150043_create_events_table', 2),
-(77, '2021_12_06_140840_create_messages', 2),
-(78, '2022_02_08_080011_create_statuses_table', 2),
-(79, '2022_02_08_080046_create_departments_table', 2),
-(80, '2022_02_08_080200_create_users_table', 2),
-(81, '2022_02_08_080322_create_assignments_table', 2),
-(82, '2022_02_08_092700_create_assignment_user_table', 3),
-(83, '2022_02_11_092953_alter_statuses_table', 4),
-(84, '2022_02_14_100117_alter_assignments_table', 5);
+(1, '0000_00_00_000000_create_websockets_statistics_entries_table', 1),
+(2, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(3, '2021_11_11_150043_create_events_table', 1),
+(4, '2021_12_06_140840_create_messages', 1),
+(5, '2022_02_08_080046_create_departments_table', 1),
+(6, '2022_02_08_080200_create_users_table', 1),
+(7, '2022_02_08_080322_create_assignments_table', 1),
+(8, '2022_02_08_092700_create_assignment_user_table', 1),
+(9, '2022_02_14_100117_alter_assignments_table', 1);
 
 -- --------------------------------------------------------
 
@@ -160,37 +153,12 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `statuses`
---
-
-CREATE TABLE `statuses` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `status` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `statuses`
---
-
-INSERT INTO `statuses` (`id`, `status`, `color`, `created_at`, `updated_at`) VALUES
-(1, 'Выполнено', '#2de0865b', '2022-02-11 09:31:18', NULL),
-(2, 'Просрочено', 'rgba(240, 138, 138, 0.200)', '2022-02-11 09:31:18', NULL),
-(3, 'Без статуса', NULL, '2022-02-14 13:13:20', NULL);
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `users`
 --
 
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
-  `full_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `full_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -220,10 +188,8 @@ ALTER TABLE `assignments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `assignments_author_id_foreign` (`author_id`),
   ADD KEY `assignments_addressed_id_foreign` (`addressed_id`),
-  ADD KEY `assignments_assigned_id_foreign` (`assigned_id`),
-  ADD KEY `assignments_department_id_foreign` (`department_id`),
-  ADD KEY `assignments_status_id_foreign` (`status_id`),
-  ADD KEY `executor_id` (`executor_id`);
+  ADD KEY `assignments_executor_id_foreign` (`executor_id`),
+  ADD KEY `assignments_department_id_foreign` (`department_id`);
 
 --
 -- Индексы таблицы `assignment_user`
@@ -264,12 +230,6 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
-
---
--- Индексы таблицы `statuses`
---
-ALTER TABLE `statuses`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `users`
@@ -321,19 +281,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `statuses`
---
-ALTER TABLE `statuses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
@@ -356,11 +310,9 @@ ALTER TABLE `websockets_statistics_entries`
 --
 ALTER TABLE `assignments`
   ADD CONSTRAINT `assignments_addressed_id_foreign` FOREIGN KEY (`addressed_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `assignments_assigned_id_foreign` FOREIGN KEY (`assigned_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `assignments_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `assignments_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
-  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`executor_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `assignments_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`);
+  ADD CONSTRAINT `assignments_executor_id_foreign` FOREIGN KEY (`executor_id`) REFERENCES `users` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `assignment_user`

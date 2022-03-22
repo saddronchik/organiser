@@ -35,7 +35,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" id="status-dropdown">
                                     <a href="{{ route('assignments.index') }}" class="dropdown-item">Все</a>
                                     @foreach($statuses as $status)
-                                        <a class="dropdown-item" href="{{ route('sort-by-status', $status->id), }}">{{ $status->status }}</a>
+                                        <a class="dropdown-item" href="{{ route('sort-by-status', $status), }}">{{ $status }}</a>
                                     @endforeach
                                     <div class="dropdown-divider"></div>
                                 </div>
@@ -95,7 +95,7 @@
                         @forelse($assignments as $assignment)
 
                             <tr class="table-row raw-column accordion-toggle
-                                @switch($assignment->statuses->status)
+                                @switch($assignment->status)
                                     @case('Просрочено')
                                         dead
                                         @break
@@ -106,19 +106,19 @@
                                     "
                                 data-toggle="collapse" data-target="#{{ $assignment->id }}">
                                 <td>{{ $assignment->id }}</td>
-                                <td>{{ $assignment->department->title }}</td>
-                                <td>{{ $assignment->document_number }}</td>
+                                <td>{{ $assignment->department->title ?? ''}}</td>
+                                <td>{{ $assignment->document_number ?? ''}}</td>
                                 <td>{{ $assignment->created_at }}</td>
-                                <td>{{ $assignment->addressed->full_name }}</td>
-                                <td>{{ $assignment->executor->full_name }}</td>
+                                <td>{{ $assignment->addressed->full_name ?? ''}}</td>
+                                <td>{{ $assignment->executor->full_name ?? ''}}</td>
                                 <td>
                                     @foreach($assignment->users as $subexecutor)
                                         {{  $subexecutor->full_name }}
                                     @endforeach
                                 </td>
-                                <td>{{ $assignment->deadline }}</td>
+                                <td>{{ $assignment->deadline ?? '' }}</td>
                                 <td>{{ $assignment->real_deadline ?? null }}</td>
-                                <td>{{ $assignment->statuses->status }}</td>
+                                <td>{{ $assignment->status }}</td>
                             </tr>
 
                         <tr>
@@ -154,7 +154,7 @@
                                         <div class="card-footer">
                                             <p>
                                                 <span>Автор резолюции: </span>
-                                                {{ $assignment->author->full_name }}
+                                                {{ $assignment->author->full_name ?? ''}}
                                             </p>
                                         </div>
                                     </div>
@@ -168,135 +168,6 @@
                             </div>
 
                         @endforelse
-
-
-{{--                        <tr class="table-row raw-column dead" data-toggle="collapse" data-target="#demo2"--}}
-{{--                            class="accordion-toggle">--}}
-
-{{--                            <td>1</td>--}}
-{{--                            <td>Подразделение номер 1</td>--}}
-{{--                            <td>1421110605668108</td>--}}
-{{--                            <td>08.08.2022</td>--}}
-{{--                            <td>Антонов Игорь Иванович</td>--}}
-{{--                            <td>Иванов Иван Иванович</td>--}}
-{{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-{{--                            <td>05.02.2022</td>--}}
-{{--                            <td>11-04-2022</td>--}}
-{{--                            <td>Просрочено</td>--}}
-{{--                        </tr>--}}
-{{--                        <tr>--}}
-{{--                            <td colspan="10" class="hiddenRow">--}}
-{{--                                <div class="accordian-body collapse column_content" id="demo2">--}}
-{{--                                    <div class="card">--}}
-{{--                                        <div class="card-header">--}}
-{{--                                            Подробная информация 2--}}
-{{--                                        </div>--}}
-{{--                                        <div class="card-body">--}}
-{{--                                            <p>--}}
-{{--                                                <span>Преамбула: </span> <br>--}}
-{{--                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, eum.--}}
-{{--                                                <br>--}}
-{{--                                            </p>--}}
-{{--                                            <p class="card-body__text">--}}
-{{--                                                <span>Текст резолюции:</span> <br>--}}
-{{--                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid--}}
-{{--                                                repellendus quaerat--}}
-{{--                                                distinctio accusantium ipsam, <br> soluta voluptatem cupiditate--}}
-{{--                                                illum quam quia, voluptatum--}}
-{{--                                                reprehenderit voluptas atque sapiente, voluptate tempora aperiam--}}
-{{--                                                dolorem? Nostrum?--}}
-{{--                                            </p>--}}
-
-{{--                                        </div>--}}
-{{--                                        <div class="card-footer">--}}
-{{--                                            <p>--}}
-{{--                                                <span>Автор резолюции: </span>--}}
-{{--                                                Ivanchenko K.M--}}
-{{--                                            </p>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
-
-                        {{--                        <tr class="table-row raw-column dead">--}}
-                        {{--                            <td>1</td>--}}
-                        {{--                            <td>Подразделение номер 1</td>--}}
-                        {{--                            <td>1421110605668108</td>--}}
-                        {{--                            <td>08.08.2022</td>--}}
-                        {{--                            <td>Антонов Игорь Иванович</td>--}}
-                        {{--                            <td>Иванов Иван Иванович</td>--}}
-                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-                        {{--                            <td>05.02.2022</td>--}}
-                        {{--                            <td>11-04-2022</td>--}}
-                        {{--                            <td>Выполнено</td>--}}
-                        {{--                        </tr>--}}
-
-                        {{--                        <tr class="table-row raw-column success">--}}
-                        {{--                            <td>1</td>--}}
-                        {{--                            <td>Подразделение номер 1</td>--}}
-                        {{--                            <td>1421110605668108</td>--}}
-                        {{--                            <td>08.08.2022</td>--}}
-                        {{--                            <td>Антонов Игорь Иванович</td>--}}
-                        {{--                            <td>Иванов Иван Иванович</td>--}}
-                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-                        {{--                            <td>05.02.2022</td>--}}
-                        {{--                            <td>11-04-2022</td>--}}
-                        {{--                            <td>Выполнено</td>--}}
-                        {{--                        </tr>--}}
-
-                        {{--                        <tr class="table-row raw-column success">--}}
-                        {{--                            <td>1</td>--}}
-                        {{--                            <td>Подразделение номер 1</td>--}}
-                        {{--                            <td>1421110605668108</td>--}}
-                        {{--                            <td>08.08.2022</td>--}}
-                        {{--                            <td>Антонов Игорь Иванович</td>--}}
-                        {{--                            <td>Иванов Иван Иванович</td>--}}
-                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-                        {{--                            <td>05.02.2022</td>--}}
-                        {{--                            <td>11-04-2022</td>--}}
-                        {{--                            <td>Выполнено</td>--}}
-                        {{--                        </tr>--}}
-
-                        {{--                        <tr class="table-row raw-column success">--}}
-                        {{--                            <td>1</td>--}}
-                        {{--                            <td>Подразделение номер 1</td>--}}
-                        {{--                            <td>1421110605668108</td>--}}
-                        {{--                            <td>08.08.2022</td>--}}
-                        {{--                            <td>Антонов Игорь Иванович</td>--}}
-                        {{--                            <td>Иванов Иван Иванович</td>--}}
-                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-                        {{--                            <td>05.02.2022</td>--}}
-                        {{--                            <td>11-04-2022</td>--}}
-                        {{--                            <td>Выполнено</td>--}}
-                        {{--                        </tr>--}}
-
-                        {{--                        <tr class="table-row raw-column">--}}
-                        {{--                            <td>1</td>--}}
-                        {{--                            <td>Подразделение номер 1</td>--}}
-                        {{--                            <td>1421110605668108</td>--}}
-                        {{--                            <td>08.08.2022</td>--}}
-                        {{--                            <td>Антонов Игорь Иванович</td>--}}
-                        {{--                            <td>Иванов Иван Иванович</td>--}}
-                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-                        {{--                            <td>05.02.2022</td>--}}
-                        {{--                            <td>11-04-2022</td>--}}
-                        {{--                            <td></td>--}}
-                        {{--                        </tr>--}}
-
-                        {{--                        <tr class="table-row raw-column">--}}
-                        {{--                            <td>1</td>--}}
-                        {{--                            <td>Подразделение номер 1</td>--}}
-                        {{--                            <td>1421110605668108</td>--}}
-                        {{--                            <td>08.08.2022</td>--}}
-                        {{--                            <td>Антонов Игорь Иванович</td>--}}
-                        {{--                            <td>Иванов Иван Иванович</td>--}}
-                        {{--                            <td>Чуркин П.М., Летов В.С., Мацок Л.М.</td>--}}
-                        {{--                            <td>05.02.2022</td>--}}
-                        {{--                            <td>11-04-2022</td>--}}
-                        {{--                            <td></td>--}}
-                        {{--                        </tr>--}}
-
 
                         </tbody>
 
