@@ -14,7 +14,7 @@ class AlterAssignmentsTable extends Migration
     public function up()
     {
         Schema::table('assignments', function (Blueprint $table) {
-            $table->bigInteger('document_number')->after('id');
+            $table->bigInteger('document_number')->after('id')->nullable();
         });
     }
 

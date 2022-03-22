@@ -316,6 +316,8 @@ h1,h2,h3,h4 {
 
 .form-group_department,
 .form-group_executor,
+.form-group_author,
+.form-group_addressed,
 .form-group_subexecutors {
     position: relative;
 }
@@ -334,6 +336,18 @@ h1,h2,h3,h4 {
     position: absolute;
     right: -10px;
     top: 10px;
+}
+
+.addAuthorInput {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+.addAddressedInput {
+    cursor: pointer;
+    position: absolute;
+    right: -3px;
 }
 
 .addExecutorInput {

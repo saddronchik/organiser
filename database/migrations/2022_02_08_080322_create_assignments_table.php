@@ -17,11 +17,12 @@ class CreateAssignmentsTable extends Migration
             $table->increments('id');
             $table->string('preamble')->nullable();
             $table->text('text')->nullable();
-            $table->integer('author_id')->unsigned();
-            $table->integer('addressed_id')->unsigned();
-            $table->integer('executor_id')->unsigned();
-            $table->integer('department_id')->unsigned();
-            $table->integer('status_id')->unsigned();
+            $table->integer('author_id')->unsigned()->nullable();
+            $table->integer('addressed_id')->unsigned()->nullable();
+            $table->integer('executor_id')->unsigned()->nullable();
+            $table->integer('department_id')->unsigned()->nullable();
+            $table->string('status',16);
+            $table->string('status_color')->nullable();
 
             $table->foreign('author_id')
                 ->references('id')
@@ -40,10 +41,6 @@ class CreateAssignmentsTable extends Migration
                 ->on('departments');
 
 
-            $table->foreign('status_id')
-                ->references('id')
-                ->on('statuses');
-
             $table->dateTime('deadline')->nullable();
             $table->dateTime('real_deadline')->nullable();
 
@@ -59,6 +56,6 @@ class CreateAssignmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('assignments');
     }
 }

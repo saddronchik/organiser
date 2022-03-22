@@ -15,7 +15,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
 
     public function getByColumns(array $columns): Collection
     {
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with(['users'])
             ->select($columns)
             ->orderBy('id', 'desc')
             ->get();
@@ -25,7 +25,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
 
     public function getWithPaginate(int $perPage): LengthAwarePaginator
     {
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with(['users'])
             ->orderBy('id', 'desc')
             ->paginate($perPage);
 
@@ -38,7 +38,6 @@ class EloquentAssignmentsQueries implements AssignmentQueries
             'users',
             'department',
             'author',
-            'statuses',
             'addressed',
             'executor'])
                 ->where('assignments.id',[$id])
@@ -50,7 +49,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
 
     public function getByDocumentNumber(int $documentNumber): LengthAwarePaginator
     {
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with(['users'])
             ->where('document_number',[$documentNumber])
             ->orderBy('id', 'desc')
             ->paginate(15);
@@ -64,7 +63,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
             ->where('full_name', 'LIKE', "%{$username}%")
             ->value('id');
 
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with(['users'])
             ->where('author_id',[$userId])
             ->orWhere('addressed_id', [$userId])
             ->orderBy('id', 'desc')
@@ -73,10 +72,10 @@ class EloquentAssignmentsQueries implements AssignmentQueries
         return $result;
     }
 
-    public function getByStatus(int $id): LengthAwarePaginator
+    public function getByStatus(string $status): LengthAwarePaginator
     {
-        $result = Assignment::with(['users', 'statuses'])
-            ->where('status_id',[$id])
+        $result = Assignment::with(['users'])
+            ->where('status',[$status])
             ->paginate(15);
 
         return $result;
@@ -84,7 +83,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
 
     public function getByDepartmentWithPaginate(int $id): LengthAwarePaginator
     {
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with(['users'])
             ->where('department_id',[$id])
             ->paginate(15);
 
@@ -93,7 +92,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
 
     public function getByDepartment(int $id)
     {
-        $result = Assignment::with(['users', 'statuses'])
+        $result = Assignment::with(['users'])
             ->where('department_id',[$id])
             ->get();
 
