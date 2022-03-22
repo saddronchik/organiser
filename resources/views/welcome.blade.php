@@ -103,6 +103,10 @@
                         <label>Кому назначена</label>
                         <input id="assigned" class="form-control" name="assigned"> </input>
                     </div>
+                    <div class="form-check pl-0" id="repeatedEvent">
+                        <input type="checkbox" class="form-controlt" id="repeated" name="repeated" value="1">
+                        <label class="form-check-label">Повторять событие</label>
+                    </div>
                     <input type="hidden" id="eventId" name="event_id">
                     <div class="form-group">
                         <button type="submit" class="btn btn-success" id="update">Добавить событие</button>
@@ -131,10 +135,10 @@
                             <div class="event-item__end_time">{{$eventStatus->end}}</div>
                             <div class="event_Cheked">
                                 @if ($eventStatus->readed == null)
-                                    <span>Не просмотренно<span>
-                                @else
-                                    <span>Просмотренно<span>
-                                @endif
+                                <span>Не просмотренно<span>
+                                        @else
+                                        <span>Просмотренно<span>
+                                                @endif
                             </div>
                         </div>
                         <div>
@@ -146,4 +150,4 @@
             </div>
         </div>
 
-@endsection
+        @endsection

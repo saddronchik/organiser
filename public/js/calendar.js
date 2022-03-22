@@ -9,14 +9,9 @@ function convert(str) {
     let minutes = '' + d.getUTCMinutes();
     if (hour.length < 2) hour = '0' + hour;
     if (minutes.length < 2) minutes = '0' + minutes;
-    
+
     return [year, month, day].join('-') + ' ' + [hour, minutes].join(':');
 };
-
-Date.prototype.addHours = function(h) {    
-    this.setTime(this.getTime() + (h*60*60*1000)); 
-    return this;   
- }
 
 $(document).ready(function () {
 
@@ -89,7 +84,7 @@ $(document).ready(function () {
             var clickDateEnd = date.format('YYYY-MM-DD 23:59');
 
             $('#start').val(clickDate);
-            $('#end').val(clickDateEnd );
+            $('#end').val(clickDateEnd);
             $('#deliteEvent').css("display", "none");
             $('#start2').css("display", "none");
             $('#end2').css("display", "none");
@@ -99,11 +94,12 @@ $(document).ready(function () {
                 modal: true,
             })
         },
-        
+
 
         eventClick: function (event) {
             $('#start').css("display", "none");
             $('#end').css("display", "none");
+            $('#repeatedEvent').css("display", "none");
             $('#title').val(event.title);
             $('#start2').val(convert(event.start));
             $('#end2').val(convert(event.end));
@@ -164,24 +160,24 @@ $(".emojionearea").emojioneArea({
 
 
 
-function send(){
-let form = document.querySelector('.form-input');
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    $(".emojionearea-editor").html('');
-    const formData = new FormData(this);
-    fetch('/organaizer/public/api/messages', {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json'
-        },
-        body: formData
-    })
-        .then(function (response) {
-            return response.json()
+function send() {
+    let form = document.querySelector('.form-input');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        $(".emojionearea-editor").html('');
+        const formData = new FormData(this);
+        fetch('/organaizer/public/api/messages', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: formData
         })
-        .then(function (data) { })
-});
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (data) { })
+    });
 }
 send();
 
@@ -190,13 +186,13 @@ $(document).ready(function () {
         inline: true,
         events: {
             keyup: function (editor, event) {
-                if (event.which == 13){
+                if (event.which == 13) {
                     let message = this.getText();
                     let userName = document.querySelector('#username').value;
-                    
+
                     const formData = new FormData();
-                    formData.append("username",userName)
-                    formData.append("message",message)
+                    formData.append("username", userName)
+                    formData.append("message", message)
                     $(".emojionearea-editor").html('');
 
                     fetch('/organaizer/public/api/messages', {
