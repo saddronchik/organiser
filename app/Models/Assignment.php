@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Assignment extends Model
 {
     use HasFactory;
+
+    public const STATUS_IN_PROGRESS = 'В работе';
+    public const STATUS__EXPIRED = 'Просрочено';
+    public const STATUS_DONE = 'Выполнено';
+    public const STATUS_NULL = 'Без статуса';
 
     protected $fillable = [
         'document_number',
@@ -22,7 +25,8 @@ class Assignment extends Model
         'addressed_id',
         'executor_id',
         'department_id',
-        'status_id',
+        'status',
+        'status_color',
         'deadline',
         'real_deadline'
     ];
@@ -52,18 +56,18 @@ class Assignment extends Model
         return $this->belongsTo(Department::class);
     }
 
-    public function statuses(): BelongsTo
-    {
-        return $this->belongsTo(Status::class,'status_id');
-    }
 
     public function getCreatedAtAttribute($value): string
     {
         return Carbon::parse($value)->format('d.m.Y');
     }
 
-    public function getDeadlineAttribute($value): string
+    public function getDeadlineAttribute($value): mixed
     {
+        if (is_null($value)) {
+            return null;
+        }
+
         return Carbon::parse($value)->format('d.m.Y');
     }
 
@@ -75,4 +79,13 @@ class Assignment extends Model
         return Carbon::parse($value )->format('d.m.Y');
     }
 
+    public static function getStatuses(): array
+    {
+        return [
+            self::STATUS__EXPIRED,
+            self::STATUS_DONE,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_NULL
+        ];
+    }
 }

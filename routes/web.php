@@ -66,7 +66,7 @@ Route::prefix('assignments')->group(function () {
 
     Route::get('search', [IndexController::class, 'search'])
         ->name('search-assignment');
-    Route::get('index/sort/status/{id}', [IndexController::class,'sortByStatus'])
+    Route::get('index/sort/status/{status}', [IndexController::class,'sortByStatus'])
         ->name('sort-by-status');
     Route::get('index/sort/department/{id}', [IndexController::class,'sortByDepartment'])
         ->name('sort-by-department');

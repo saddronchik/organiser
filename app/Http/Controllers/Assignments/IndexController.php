@@ -9,7 +9,6 @@ use App\Models\Assignment;
 use App\Models\User;
 use App\Repositories\Interfaces\AssignmentQueries;
 use App\Repositories\Interfaces\DepartmentsQueries;
-use App\Repositories\Interfaces\StatusesQueries;
 use App\Repositories\Interfaces\UsersQueries;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -22,19 +21,16 @@ class IndexController extends BaseController
 
     private $assignmentRepository;
     private $userRepository;
-    private $statusesRepository;
     private $departmentRepository;
 
     private $department;
 
     public function __construct(AssignmentQueries $assignmentRepository,
                                 UsersQueries $userRepository,
-                                StatusesQueries $statusesRepository,
                                 DepartmentsQueries $departmentRepository)
     {
         $this->assignmentRepository = $assignmentRepository;
         $this->userRepository = $userRepository;
-        $this->statusesRepository = $statusesRepository;
         $this->departmentRepository = $departmentRepository;
         $this->department = new DepartmentController();
     }
@@ -43,11 +39,11 @@ class IndexController extends BaseController
     {
         $assignments = $this->assignmentRepository->getWithPaginate($perPage);
         $departments = $this->departmentRepository->getAll();
-        $statuses = $this->statusesRepository->getAll();
+        $statuses = Assignment::getStatuses();
 
         foreach ($assignments as $assignment) {
             if ($assignment->deadline < Carbon::now()->format('d.m.Y')) {
-                $assignment->status_id = 2;
+                $assignment->status = Assignment::STATUS__EXPIRED;
                 $assignment->save();
             }
         }
@@ -55,12 +51,12 @@ class IndexController extends BaseController
         $assignments = $this->assignmentRepository->getWithPaginate($perPage);
 
         return view('assignment.index',
-            compact('assignments', 'statuses','departments'));
+            compact('assignments','departments','statuses'));
     }
 
     public function create()
     {
-        $statuses = $this->statusesRepository->getAll();
+        $statuses = Assignment::getStatuses();
         $users = $this->userRepository->getAll();
         $departments = $this->departmentRepository->getAll();
 
@@ -74,28 +70,35 @@ class IndexController extends BaseController
 
     public function store(StoreAssignmentRequest $request)
     {
-        $department_id = null;
-        $new_author = null;
-        $new_addressed = null;
-        $new_executor = null;
+        $department = null;
+        $author = null;
+        $addressed = null;
+        $executor = null;
+        $status = Assignment::STATUS_IN_PROGRESS;
+
 
         if ($request->new_department) {
-            $department_id = $this->department->storeFromModal($request->new_department);
+            $department = $this->department->storeFromModal($request->new_department);
+            $department = $department->id;
         }
 
         if ($request['new_author']) {
-            $new_author = User::create([
+            $author = User::create([
                 'full_name' => $request['new_author']
             ]);
+
+            $author = $author->id;
         }
 
         if ($request['new_addressed']) {
             $existAddressed = User::where('full_name', [$request['new_addressed']])->first();
 
             if (!$existAddressed) {
-                $new_addressed = User::create([
+                $addressed = User::create([
                     'full_name' => $request['new_addressed']
                 ]);
+
+                $addressed = $addressed->id;
             }
         }
 
@@ -103,9 +106,11 @@ class IndexController extends BaseController
             $existExecutor = User::where('full_name', [$request['new_executor']])->first();
 
             if (!$existExecutor) {
-                $new_executor = User::create([
+                $executor = User::create([
                     'full_name' => $request['new_executor']
                 ]);
+
+                $executor = $executor->id;
             }
         }
 
@@ -113,11 +118,11 @@ class IndexController extends BaseController
             'document_number' => $request->document_number,
             'preamble' => $request->preambule,
             'text' => $request->resolution,
-            'author_id' => $request->author ?? $new_author->id,
-            'addressed_id' => $request->addressed ?? $new_addressed->id,
-            'executor_id' => $request->executor ?? $new_executor->id,
-            'department_id' => $request->department ?? $department_id,
-            'status_id' => $request->status,
+            'author_id' => $author,
+            'addressed_id' => $addressed,
+            'executor_id' => $executor,
+            'department_id' => $department ?? $request->department,
+            'status' => $request->status ?? $status,
             'deadline' => $request->deadline,
             'real_deadline' => $request->fact_deadline
         ]);
@@ -133,13 +138,14 @@ class IndexController extends BaseController
 
         return redirect()
             ->back()
+            ->withInput($request->input())
             ->with('error');
     }
 
     public function edit(int $id)
     {
         $assignment = $this->assignmentRepository->getById($id);
-        $statuses = $this->statusesRepository->getAll();
+        $statuses = Assignment::getStatuses();
         $users = $this->userRepository->getAll();
         $departments = $this->departmentRepository->getAll();
 
@@ -154,7 +160,7 @@ class IndexController extends BaseController
 
     }
 
-    public function update($id, Request $request): RedirectResponse
+    public function update($id, Request $request)
     {
         $assignment = Assignment::where('id', [$id])
             ->update([
@@ -165,7 +171,7 @@ class IndexController extends BaseController
                 'addressed_id' => $request->addressed,
                 'executor_id' => $request->executor,
                 'department_id' => $request->department,
-                'status_id' => $request->status,
+                'status' => $request->status,
                 'deadline' => $request->deadline,
                 'real_deadline' => $request->fact_deadline
             ]);
@@ -178,6 +184,7 @@ class IndexController extends BaseController
 
         return redirect()
             ->back()
+            ->withInput($request->input())
             ->with('error');
     }
 
@@ -188,7 +195,7 @@ class IndexController extends BaseController
         $assignments = is_numeric($search) ? $this->assignmentRepository->getByDocumentNumber($search)
             : $this->assignmentRepository->getByUsername($search);
 
-        $statuses = $this->statusesRepository->getAll();
+        $statuses = Assignment::getStatuses();
         $departments = $this->departmentRepository->getAll();
 
         return view('assignment.index',
@@ -198,7 +205,7 @@ class IndexController extends BaseController
     public function sortByStatus($id)
     {
         $assignments = $this->assignmentRepository->getByStatus($id);
-        $statuses = $this->statusesRepository->getAll();
+        $statuses = Assignment::getStatuses();
         $departments = $this->departmentRepository->getAll();
 
         return view('assignment.index',
@@ -208,7 +215,7 @@ class IndexController extends BaseController
     public function sortByDepartment($id)
     {
         $assignments = $this->assignmentRepository->getByDepartmentWithPaginate($id);
-        $statuses = $this->statusesRepository->getAll();
+        $statuses = Assignment::getStatuses();
         $departments = $this->departmentRepository->getAll();
 
         return view('assignment.index',

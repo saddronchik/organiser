@@ -68,18 +68,18 @@ class AssignmentExport implements FromCollection, WithHeadings, WithMapping, Wit
 
         return [
             $row->id,
-            $row->document_number,
+            $row->document_number ?? '',
             $row->created_at,
-            $row->addressed->full_name,
-            $row->preamble,
-            strip_tags($row->text),
-            $row->author->full_name,
-            $row->executor->full_name,
+            $row->addressed->full_name ?? '',
+            $row->preamble ?? '',
+            strip_tags($row->text) ?? '',
+            $row->author->full_name ?? '',
+            $row->executor->full_name ?? '',
             $subexecutors,
             $row->department->title,
-            $row->statuses->status,
-            $row->deadline,
-            $row->real_deadline
+            $row->status,
+            $row->deadline ?? '',
+            $row->real_deadline ?? ''
         ];
     }
 }
