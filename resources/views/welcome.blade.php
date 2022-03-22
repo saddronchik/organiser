@@ -68,13 +68,13 @@
                     </div>
                     <div class="form-group">
                         <label>Начало события</label>
-                        <input type="text" id="start" class="form-control" name="start" placeholder="Дата и время начала">
-                        <input type="text" id="start2" class="form-control" name="start2 " placeholder="Дата и время начала">
+                        <input type="datetime-local" id="start" class="form-control" name="start" placeholder="Дата и время начала">
+                        <input type="datetime-local" id="start2" class="form-control" name="start2 " placeholder="Дата и время начала">
                     </div>
                     <div class="form-group">
                         <label>Конец события</label>
-                        <input type="text" id="end" class="form-control" name="end" placeholder="Дата и время конца">
-                        <input type="text" id="end2" class="form-control" name="end2" placeholder="Дата и время конца">
+                        <input type="datetime-local" id="end" class="form-control" name="end" placeholder="Дата и время конца">
+                        <input type="datetime-local" id="end2" class="form-control" name="end2" placeholder="Дата и время конца">
                     </div>
                     <div class="form-group">
                         <label>Выберите цвет</label>

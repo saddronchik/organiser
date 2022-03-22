@@ -80,11 +80,13 @@ $(document).ready(function () {
             element.find('.fc-title').append("<br/>" + "Кому назначена: " + event.assigned);
         },
         dayClick: function (date, event, view) {
-            var clickDate = date.format('YYYY-MM-DD 00:00');
-            var clickDateEnd = date.format('YYYY-MM-DD 23:59');
+            
+            var clickDate = new Date(date).toISOString();
 
-            $('#start').val(clickDate);
-            $('#end').val(clickDateEnd);
+            var clickDateEnd = new Date(date + 23*3754*1000).toISOString();
+
+            $('#start').val(clickDate.substring(0,clickDate.length-8));
+            $('#end').val(clickDateEnd.substring(0,clickDateEnd.length-8));
             $('#deliteEvent').css("display", "none");
             $('#start2').css("display", "none");
             $('#end2').css("display", "none");
@@ -97,12 +99,16 @@ $(document).ready(function () {
 
 
         eventClick: function (event) {
+
+            var clickDate = new Date(event.start._d).toISOString();
+            var clickDateEnd = new Date(event.end + 23*3754*1000).toISOString();
+
             $('#start').css("display", "none");
             $('#end').css("display", "none");
             $('#repeatedEvent').css("display", "none");
             $('#title').val(event.title);
-            $('#start2').val(convert(event.start));
-            $('#end2').val(convert(event.end));
+            $('#start2').val(clickDate.substring(0,clickDate.length-8));
+            $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
             $('#description').val(event.description);
             $('#eventId').val(event.id);
             $('#assigned').val(event.assigned);

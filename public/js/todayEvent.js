@@ -7,7 +7,7 @@ function todayEvent() {
         let description = elemitem.querySelector('.event-item__text').textContent;
         let id = elemitem.querySelector('.event-id').textContent;
         let assigned = elemitem.querySelector('.event-assigned').textContent;
-
+        
         elemitem.addEventListener('click', function(e) {
 
             fetch('/organaizer/public/api/checkEvent' + '/' + id, {
@@ -25,12 +25,23 @@ function todayEvent() {
                 .then((data) => {
                     console.log(data);
                 });
+                
+         var DateStart = new Date(startTime);
+         let newStartDate = DateStart.setHours(DateStart.getHours()+3);
+         var clickDate = new Date(newStartDate).toISOString();
+
+         var DateEnd = new Date(endTime);
+         let newEndDate = DateEnd.setHours(DateEnd.getHours()+3);
+         var clickDateEnd = new Date(newEndDate).toISOString();
+
+
             $('#today__evet').css("display", "none")
             $('#start').css("display", "none");
             $('#end').css("display", "none");
+            $('#repeatedEvent').css("display", "none");
             $('#title').val(title);
-            $('#start2').val(convert(startTime));
-            $('#end2').val(convert(endTime));
+            $('#start2').val(clickDate.substring(0,clickDate.length-8));
+            $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
             $('#description').val(description);
             $('#eventId').val(id);
             $('#assigned').val(assigned);

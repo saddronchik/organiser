@@ -35,6 +35,7 @@ class FullCalenderController extends Controller
 
     public function store(Request $request)
     {
+        // dd(Carbon::parse($request->end)->addHour(23)->addMinutes(59)->toDateTimeString());
         try {
 
             $validator = Validator::make($request->all(), [

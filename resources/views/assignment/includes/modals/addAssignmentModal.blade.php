@@ -63,7 +63,7 @@
                 </select>
                 <div class="newAddressed">
                     <input type="text" class="form-control newAddressedInput" name="new_addressed"
-                           placeholder="Например: Иванов Иван Иванович"
+                           placeholder=""
                            value="{{ old('new_addressed') }}">
                     <img src="{{ asset('img/remove.png') }}" class="removeInput remove-addressed-input"
                          alt="remove-addressed-input" height="18px">
