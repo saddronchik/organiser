@@ -73,12 +73,14 @@
                     </div>
                     <div class="form-group">
                         <label>Конец события</label>
-                        <input type="datetime-local" id="end" class="form-control" name="end" placeholder="Дата и время конца">
+                        <input type="text" id="end" class="form-control" name="end" placeholder="Дата и время конца">
                         <input type="text" id="end2" class="form-control" name="end2" placeholder="Дата и время конца">
                     </div>
                     <div class="form-group">
                         <label>Выберите цвет</label>
                         <select class="custom-select" id="color" name="color" required>
+                            <option value="#12a33b" style="background-color:#12a33b; color:white">Зеленый</option>
+                            <option value="#db1438" style="background-color:#db1438; color:white">Красный</option>
                             <option value="#5f01ba" style="background-color:#5f01ba; color:white">Фиолетовый</option>
                             <option value="#ee589f" style="background-color:#ee589f; color:white">Розовый</option>
                             <option value="#14b4e6" style="background-color:#14b4e6; color:white">Голубой</option>
@@ -115,7 +117,7 @@
             <div class="list-group">
                 <div class="body__today_event">
                     @foreach ( $eventsStatus as $eventStatus )
-                    <div class="today-event__item" style="background:{{$eventStatus->color}};">
+                    <div class="today-event__item" style="background:{{$eventStatus->color}}">
                         <div class="event__header">
                             <h3 class="event-item__title">{{$eventStatus->title}}</h3>
                             <div class="event-id">{{$eventStatus->id}}</div>

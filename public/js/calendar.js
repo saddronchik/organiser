@@ -7,11 +7,16 @@ function convert(str) {
     if (day.length < 2) day = '0' + day;
     let hour = '' + d.getUTCHours();
     let minutes = '' + d.getUTCMinutes();
-    let seconds = '' + d.getUTCSeconds();
     if (hour.length < 2) hour = '0' + hour;
-    if (seconds.length < 2) seconds = '0' + seconds;
-    return [year, month, day].join('-') + ' ' + [hour, minutes, seconds].join(':');
+    if (minutes.length < 2) minutes = '0' + minutes;
+    
+    return [year, month, day].join('-') + ' ' + [hour, minutes].join(':');
 };
+
+Date.prototype.addHours = function(h) {    
+    this.setTime(this.getTime() + (h*60*60*1000)); 
+    return this;   
+ }
 
 $(document).ready(function () {
 
@@ -80,8 +85,11 @@ $(document).ready(function () {
             element.find('.fc-title').append("<br/>" + "Кому назначена: " + event.assigned);
         },
         dayClick: function (date, event, view) {
-            var clickDate = date.format('YYYY-MM-DD HH:MM:SS');
+            var clickDate = date.format('YYYY-MM-DD 00:00');
+            var clickDateEnd = date.format('YYYY-MM-DD 23:59');
+
             $('#start').val(clickDate);
+            $('#end').val(clickDateEnd );
             $('#deliteEvent').css("display", "none");
             $('#start2').css("display", "none");
             $('#end2').css("display", "none");
@@ -91,6 +99,7 @@ $(document).ready(function () {
                 modal: true,
             })
         },
+        
 
         eventClick: function (event) {
             $('#start').css("display", "none");
@@ -132,6 +141,7 @@ $(document).ready(function () {
         },
     })
 });
+
 
 $(".chat-header").click(function () {
     $(".chat").animate({
@@ -183,7 +193,7 @@ $(document).ready(function () {
                 if (event.which == 13){
                     let message = this.getText();
                     let userName = document.querySelector('#username').value;
-                       
+                    
                     const formData = new FormData();
                     formData.append("username",userName)
                     formData.append("message",message)
