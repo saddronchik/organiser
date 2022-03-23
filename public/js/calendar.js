@@ -85,6 +85,8 @@ $(document).ready(function () {
             $('#start').val(clickDate.substring(0,clickDate.length-8));
             $('#end').val(clickDateEnd.substring(0,clickDateEnd.length-8));
             $('#deliteEvent').css("display", "none");
+            $('body').css("overflow", "visible");
+            $('body').css("background", "black");
             $('#start2').css("display", "none");
             $('#end2').css("display", "none");
             $('#dialog').dialog({
@@ -103,7 +105,8 @@ $(document).ready(function () {
             $('#start').css("display", "none");
             $('#end').css("display", "none");
             $('#repeatedEvent').css("display", "none");
-
+            $('body').css("overflow", "visible");
+            $('body').css("background", "black");
             $('#status').val(event.status);
             $('#status').append(event.status);
             $('#color').val(event.color);

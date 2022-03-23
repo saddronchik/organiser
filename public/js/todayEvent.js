@@ -34,7 +34,8 @@ function todayEvent() {
          let newEndDate = DateEnd.setHours(DateEnd.getHours()+3);
          var clickDateEnd = new Date(newEndDate).toISOString();
 
-
+         $('body').css("overflow", "visible");
+         $('body').css("background", "black");
             $('#today__evet').css("display", "none")
             $('#start').css("display", "none");
             $('#end').css("display", "none");
