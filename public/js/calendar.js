@@ -74,10 +74,7 @@ $(document).ready(function () {
         events: "/organaizer/public/index",
 
         eventRender: function (event, element) {
-            if (event.assigned == null) {
-                event.assigned = "отсутствует"
-            }
-            element.find('.fc-title').append("<br/>" + "Кому назначена: " + event.assigned);
+        //для вывода доп. информации к задаче
         },
         dayClick: function (date, event, view) {
             
@@ -99,13 +96,18 @@ $(document).ready(function () {
 
 
         eventClick: function (event) {
-
+            
             var clickDate = new Date(event.start._d).toISOString();
             var clickDateEnd = new Date(event.end).toISOString();
 
             $('#start').css("display", "none");
             $('#end').css("display", "none");
             $('#repeatedEvent').css("display", "none");
+
+            $('#status').val(event.status);
+            $('#status').append(event.status);
+            $('#color').val(event.color);
+            $('#color').append(event.color);
             $('#title').val(event.title);
             $('#start2').val(clickDate.substring(0,clickDate.length-8));
             $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));

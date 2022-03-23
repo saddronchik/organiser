@@ -83,7 +83,6 @@
                             <option value="#db1438" style="background-color:#db1438; color:white">Красный</option>
                             <option value="#5f01ba" style="background-color:#5f01ba; color:white">Фиолетовый</option>
                             <option value="#ee589f" style="background-color:#ee589f; color:white">Розовый</option>
-                            <option value="#14b4e6" style="background-color:#14b4e6; color:white">Голубой</option>
                             <option value="#ddb40a" style="background-color:#ddb40a; color:white">Желтый</option>
                             <option value="#f0783c" style="background-color:#f0783c; color:white">Оранжевый</option>
                         </select>
@@ -91,8 +90,9 @@
                     <div class="form-group">
                         <label>Статус задачи</label>
                         <select class="custom-select" id="status" name="status" required>
-                            <option value="В работе" style="background-color:green; color:white">В работе</option>
-                            <option value="Закрыта" style="background-color:red; color:white">Закрыта</option>
+                            <option value=" " style="background-color:grey; color:white"></option>
+                            <option value="В работе" style="color:green">В работе</option>
+                            <option value="Закрыта" style="color:red">Закрыта</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -124,7 +124,7 @@
                     <div class="today-event__item" style="background:{{$eventStatus->color}}">
                         <div class="event__header">
                             <h3 class="event-item__title">{{$eventStatus->title}}</h3>
-                            <div class="event-id">{{$eventStatus->id}}</div>
+                            <div class="event-id" style="display:none">{{$eventStatus->id}}</div>
                         </div>
                         <div class="event-item__text">{{$eventStatus->description}}</div>
                         <div class="event-assigned" style="margin-bottom:-17px;">{{$eventStatus->assigned}}</div>
