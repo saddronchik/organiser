@@ -43,7 +43,7 @@ ip = s.getsockname()[0]
 text_for_file ='IP_ADDRESS='+ip
 if my_file.write(text_for_file):
     my_file.close()
-    mb.showinfo("Информация", "Ваш IP "+ip)
+    mb.showinfo("Добро пожаловать!", "Для работы с приложением нажмите ОК")
     webbrowser.open('http://'+ip+':8000/organaizer/public', new=2)
     CREATE_NO_WINDOW = 0x08000000
     subprocess.call('php artisan websockets:serve', creationflags=CREATE_NO_WINDOW)

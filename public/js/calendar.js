@@ -101,7 +101,7 @@ $(document).ready(function () {
         eventClick: function (event) {
 
             var clickDate = new Date(event.start._d).toISOString();
-            var clickDateEnd = new Date(event.end + 23*3754*1000).toISOString();
+            var clickDateEnd = new Date(event.end).toISOString();
 
             $('#start').css("display", "none");
             $('#end').css("display", "none");
