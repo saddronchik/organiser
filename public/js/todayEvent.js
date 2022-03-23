@@ -8,6 +8,7 @@ function todayEvent() {
         let id = elemitem.querySelector('.event-id').textContent;
         let assigned = elemitem.querySelector('.event-assigned').textContent;
         let color = elemitem.querySelector('.today-event__color').textContent;
+        let status = elemitem.querySelector('.today-event__status').textContent;
         
         elemitem.addEventListener('click', function(e) {
 
@@ -47,6 +48,8 @@ function todayEvent() {
             $('#description').val(description);
             $('#color').val(color);
             $('#color').append(color);
+            $('#status').val(status);
+            $('#status').append(status);
             $('#eventId').val(id);
             $('#assigned').val(assigned);
             $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + id);

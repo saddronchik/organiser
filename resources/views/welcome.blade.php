@@ -123,6 +123,7 @@
                     @foreach ( $eventsStatus as $eventStatus )
                     <div class="today-event__item" style="background:{{$eventStatus->color}}">
                         <div class="today-event__color" style="display:none">{{$eventStatus->color}}</div>
+                        <div class="today-event__status" style="display:none">{{$eventStatus->status}}</div>
                         <div class="event__header">
                             <h3 class="event-item__title">{{$eventStatus->title}}</h3>
                             <div class="event-id" style="display:none">{{$eventStatus->id}}</div>
