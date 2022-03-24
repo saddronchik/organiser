@@ -193,8 +193,12 @@ function send() {
 send();
 
 $(document).ready(function () {
+    emojione.imagePathPNG = 'img/png/32/';
     $("#message").emojioneArea({
         inline: true,
+        search: false,
+        useInternalCDN: false,
+        shortcuts:true,
         events: {
             keyup: function (editor, event) {
                 if (event.which == 13) {

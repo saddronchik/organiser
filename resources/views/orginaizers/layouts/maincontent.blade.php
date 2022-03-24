@@ -25,7 +25,8 @@
     <script src="{{ asset('js/watchEvents.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
-    <script src="{{ asset('js/jquery-ui.js') }}"></script>
+    <script src="{{ asset('js/jquery.textcomplete.js') }}"></script>
+    <script src="{{ asset('js/emojione.min.js') }}"></script>
     <script src="{{ asset('js/emojionearea.min.js') }}"></script>
     <script src="{{ asset('js/calendar.js') }}"></script>
 
