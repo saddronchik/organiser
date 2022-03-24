@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 22 2022 г., 12:58
+-- Время создания: Мар 24 2022 г., 01:16
 -- Версия сервера: 10.4.18-MariaDB
 -- Версия PHP: 8.0.3
 
@@ -31,7 +31,7 @@ USE `fullcalender`;
 
 CREATE TABLE `assignments` (
   `id` int(10) UNSIGNED NOT NULL,
-  `document_number` bigint(20) DEFAULT NULL,
+  `document_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preamble` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author_id` int(10) UNSIGNED DEFAULT NULL,
@@ -40,6 +40,7 @@ CREATE TABLE `assignments` (
   `department_id` int(10) UNSIGNED DEFAULT NULL,
   `status` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `register_date` date DEFAULT NULL,
   `deadline` datetime DEFAULT NULL,
   `real_deadline` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -186,10 +187,10 @@ CREATE TABLE `websockets_statistics_entries` (
 --
 ALTER TABLE `assignments`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `assignments_author_id_foreign` (`author_id`),
   ADD KEY `assignments_addressed_id_foreign` (`addressed_id`),
-  ADD KEY `assignments_executor_id_foreign` (`executor_id`),
-  ADD KEY `assignments_department_id_foreign` (`department_id`);
+  ADD KEY `assignments_author_id_foreign` (`author_id`),
+  ADD KEY `assignments_department_id_foreign` (`department_id`),
+  ADD KEY `assignments_executor_id_foreign` (`executor_id`);
 
 --
 -- Индексы таблицы `assignment_user`
@@ -309,17 +310,17 @@ ALTER TABLE `websockets_statistics_entries`
 -- Ограничения внешнего ключа таблицы `assignments`
 --
 ALTER TABLE `assignments`
-  ADD CONSTRAINT `assignments_addressed_id_foreign` FOREIGN KEY (`addressed_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `assignments_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `assignments_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
-  ADD CONSTRAINT `assignments_executor_id_foreign` FOREIGN KEY (`executor_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `assignments_addressed_id_foreign` FOREIGN KEY (`addressed_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assignments_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assignments_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assignments_executor_id_foreign` FOREIGN KEY (`executor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `assignment_user`
 --
 ALTER TABLE `assignment_user`
-  ADD CONSTRAINT `assignment_user_assignment_id_foreign` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`id`),
-  ADD CONSTRAINT `assignment_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `assignment_user_assignment_id_foreign` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assignment_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

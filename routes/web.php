@@ -46,26 +46,20 @@ Route::get('/indexStatus', [App\Http\Controllers\FullCalenderController::class, 
 Route::prefix('assignments')->group(function () {
     Route::get('index/{perPage?}', [IndexController::class, 'index'])->where('perPage','[0-9]+')
         ->name('assignments.index');
-    Route::get('create', [IndexController::class, 'create'])
-        ->name('create-assignment-modal');
-    Route::get('edit/{id}', [IndexController::class, 'edit'])
-        ->name('edit-assignment-modal');
+    Route::get('create', [IndexController::class, 'create'])->name('create-assignment-modal');
+    Route::get('edit/{id}', [IndexController::class, 'edit'])->name('edit-assignment-modal');
 
-    Route::post('index', [IndexController::class, 'store'])
-        ->name('add-assignment');
-    Route::put('update/{id}', [IndexController::class, 'update'])
-        ->name('update-assignment');
+    Route::post('index', [IndexController::class, 'store'])->name('add-assignment');
+    Route::put('update/{id}', [IndexController::class, 'update'])->name('update-assignment');
+    Route::delete('delete/{id}', [IndexController::class, 'destroy'])->name('assignment.destroy');
 
-    Route::post('user/create', [UserController::class, 'store'])
-        ->name('add-user');
-    Route::post('department/create', [DepartmentController::class, 'store'])
-        ->name('add-department');
+    Route::post('user/create', [UserController::class, 'store'])->name('add-user');
+    Route::post('department/create', [DepartmentController::class, 'store'])->name('add-department');
 
 
     // filters and sort
 
-    Route::get('search', [IndexController::class, 'search'])
-        ->name('search-assignment');
+//    Route::get('search', [IndexController::class, 'search'])->name('search-assignment');
     Route::get('index/sort/status/{status}', [IndexController::class,'sortByStatus'])
         ->name('sort-by-status');
     Route::get('index/sort/department/{id}', [IndexController::class,'sortByDepartment'])

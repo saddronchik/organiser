@@ -8,6 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Class Assignment
+ * @package App\Models
+ * @property string $document_number;
+ * @property string $preamble;
+ * @property string $text;
+ * @property int $author_id;
+ * @property int $addressed_id;
+ * @property int $executor_id;
+ * @property int $department_id;
+ * @property string $status;
+ * @property $deadline;
+ * @property $real_deadline;
+ */
+
 class Assignment extends Model
 {
     use HasFactory;
@@ -27,6 +42,7 @@ class Assignment extends Model
         'department_id',
         'status',
         'status_color',
+        'register_date',
         'deadline',
         'real_deadline'
     ];
@@ -57,25 +73,23 @@ class Assignment extends Model
     }
 
 
-    public function getCreatedAtAttribute($value): string
+    public function getRegisterDateAttribute($value): mixed
     {
+        if (is_null($value)) return null;
         return Carbon::parse($value)->format('d.m.Y');
     }
 
     public function getDeadlineAttribute($value): mixed
     {
-        if (is_null($value)) {
-            return null;
-        }
+        if (is_null($value)) return null;
 
         return Carbon::parse($value)->format('d.m.Y');
     }
 
     public function getRealDeadlineAttribute($value): mixed
     {
-        if (is_null($value)) {
-            return null;
-        }
+        if (is_null($value)) return null;
+
         return Carbon::parse($value )->format('d.m.Y');
     }
 
@@ -87,5 +101,25 @@ class Assignment extends Model
             self::STATUS_IN_PROGRESS,
             self::STATUS_NULL
         ];
+    }
+
+    public function isProgress(): bool
+    {
+        return $this->status === self::STATUS_IN_PROGRESS;
+    }
+
+    public function isDone(): bool
+    {
+        return $this->status === self::STATUS_DONE;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->status === self::STATUS__EXPIRED;
+    }
+
+    public function isNone(): bool
+    {
+        return $this->status === self::STATUS_NULL;
     }
 }

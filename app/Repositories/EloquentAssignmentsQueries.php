@@ -47,25 +47,34 @@ class EloquentAssignmentsQueries implements AssignmentQueries
     }
 
 
-    public function getByDocumentNumber(int $documentNumber): LengthAwarePaginator
+    public function getByDocumentNumber(string $documentNumber): LengthAwarePaginator
     {
         $result = Assignment::with(['users'])
-            ->where('document_number',[$documentNumber])
+            ->where('document_number','LIKE', "%$documentNumber%")
             ->orderBy('id', 'desc')
             ->paginate(15);
 
         return $result;
     }
 
-    public function getByUsername(string $username): LengthAwarePaginator
+    public function getByAuthor(string $username)
     {
-        $userId = User::select('id')
-            ->where('full_name', 'LIKE', "%{$username}%")
-            ->value('id');
+        $user = User::where('full_name', 'LIKE', "%{$username}%")->first();
 
         $result = Assignment::with(['users'])
-            ->where('author_id',[$userId])
-            ->orWhere('addressed_id', [$userId])
+            ->where('author_id',[$user->id])
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+
+        return $result;
+    }
+
+    public function getByAddressed(string $username)
+    {
+        $user = User::where('full_name', 'LIKE', "%{$username}%")->first();
+
+        $result = Assignment::with(['users'])
+            ->where('addressed_id',[$user->id])
             ->orderBy('id', 'desc')
             ->paginate(15);
 

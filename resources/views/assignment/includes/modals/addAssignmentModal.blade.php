@@ -16,9 +16,10 @@
             <div class="newDepartment">
                 <small id="newDepartmentHelp" class="form-text text-muted">Новое подразделение</small>
                 <div class="input-group">
-                    <input type="text" class="form-control col-md-6 newDepartmentInput" name="new_department"
+                    <input type="text" class="form-control col-md-12 newDepartmentInput" name="new_department"
                            value="{{ old('new_department') }}">
-                    <img src="{{ asset('img/remove.png') }}" class="removeInput" alt="remove-input" height="18px">
+                    <img src="{{ asset('img/icon/remove.svg') }}"
+                         class="removeInput remove-department-input" alt="remove-input" height="18px">
                 </div>
             </div>
         </div>
@@ -34,11 +35,11 @@
         <div class="form-row">
             <div class="col">
                 <small id="documentNumberHelp" class="form-text text-muted">Номер документа</small>
-                <input type="number" class="form-control" name="document_number" value="{{ old('document_number') }}">
+                <input type="text" class="form-control" name="document_number" value="{{ old('document_number') }}">
             </div>
             <div class="col">
                 <small id="registerDateHelp" class="form-text text-muted">Дата регистрации</small>
-                <input type="date" class="form-control" name="register-date" value="{{ old('created_at') }}">
+                <input type="date" class="form-control" name="register_date" value="{{ old('created_at') }}">
             </div>
         </div>
         <div class="form-row">
@@ -51,7 +52,7 @@
                 <div class="newAuthor">
                     <input type="text" class="form-control newAuthorInput" name="new_author"
                            value="{{ old('new_author') }}">
-                    <img src="{{ asset('img/remove.png') }}" class="removeInput remove-author-input" alt="remove-author-input" height="18px">
+                    <img src="{{ asset('img/icon/remove.svg') }}" class="removeInput remove-author-input" alt="remove-author-input" height="18px">
                 </div>
                 <img src="{{ asset('img/plus.png') }}" alt="add" class="addAuthorInput" id="add-author-input">
             </div>
@@ -65,7 +66,7 @@
                     <input type="text" class="form-control newAddressedInput" name="new_addressed"
                            placeholder=""
                            value="{{ old('new_addressed') }}">
-                    <img src="{{ asset('img/remove.png') }}" class="removeInput remove-addressed-input"
+                    <img src="{{ asset('img/icon/remove.svg') }}" class="removeInput remove-addressed-input"
                          alt="remove-addressed-input" height="18px">
                 </div>
                 <img src="{{ asset('img/plus.png') }}" alt="add" class="addAddressedInput" id="add-addressed-input">
@@ -78,11 +79,11 @@
             </select>
             <img src="{{ asset('img/plus.png') }}" alt="add" class="addExecutorInput" id="add-executor-input">
             <div class="newExecutor">
-                <small id="newExecutorHelp" class="form-text text-muted">Новое ответственный исполнитель</small>
+{{--                <small id="newExecutorHelp" class="form-text text-muted">Новое ответственный исполнитель</small>--}}
                 <div class="input-group">
-                    <input type="text" class="form-control col-md-6 newExecutorInput" name="new_executor"
+                    <input type="text" class="form-control col-md-12 newExecutorInput" name="new_executor"
                            value="{{ old('new_executor') }}">
-                    <img src="{{ asset('img/remove.png') }}" class="removeInput remove-executor-input" alt="remove-input" height="18px">
+                    <img src="{{ asset('img/icon/remove.svg') }}" class="removeInput remove-executor-input" alt="remove-input" height="18px">
                 </div>
             </div>
         </div>

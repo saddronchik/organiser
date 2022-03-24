@@ -134,14 +134,17 @@ h1,h2,h3,h4 {
 }
 
 .top__filters-left {
+    width: 20%;
     justify-content: flex-start;
 }
 
 .top__filters-middle {
+    width: 60%;
     justify-content: center;
 }
 
 .top__filters-right {
+    width: 20%;
     justify-content: flex-end;
     padding-right: 29px;
 }
@@ -161,8 +164,8 @@ h1,h2,h3,h4 {
 
 .search-input {
     width: 100%;
-    border: none;
-    border-bottom: 1px solid rgb(207, 208, 209);
+    text-align: center;
+    border: 1px solid rgb(207, 208, 209);
     border-radius: 3px;
     font-size: 18px;
     outline: #0072ff;
@@ -258,7 +261,7 @@ h1,h2,h3,h4 {
     text-decoration: none;
 }
 
-.btn-edit {
+.card-header__actions-btn {
     text-decoration: none;
     color: rgb(159, 160, 161);
     font-weight: 700;
