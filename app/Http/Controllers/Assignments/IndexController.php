@@ -37,7 +37,6 @@ class IndexController extends BaseController
 
     public function index(Request $request, int $perPage = 15)
     {
-//        $assignments = $this->assignmentRepository->getWithPaginate($perPage);
         $departments = $this->departmentRepository->getAll();
         $statuses = Assignment::getStatuses();
 
@@ -66,7 +65,9 @@ class IndexController extends BaseController
         $assignments = $query->paginate($perPage);
 
         foreach ($assignments as $assignment) {
-            if (!empty($assignment->deadline) && $assignment->deadline < Carbon::now()->format('d.m.Y')) {
+            if (!empty($assignment->deadline) && Carbon::parse($assignment->deadline)->lt(Carbon::now()) &&
+                    !$assignment->isDone())
+            {
                 $assignment->status = Assignment::STATUS__EXPIRED;
                 $assignment->save();
             }
@@ -140,7 +141,6 @@ class IndexController extends BaseController
             }
         }
 
-
         $assignment = Assignment::create([
             'document_number' => $request['document_number'],
             'preamble' => $request['preambule'],
@@ -196,6 +196,18 @@ class IndexController extends BaseController
         $executor = null;
         $status = $request->input('status');
 
+        if ($status == Assignment::STATUS_DONE) {
+            $request['deadline'] = Carbon::now();
+            $request['fact_deadline'] = Carbon::now();
+        } elseif ($status == Assignment::STATUS__EXPIRED) {
+            $request['fact_deadline'] = Carbon::now()->subDay();
+        } elseif ($status == Assignment::STATUS_IN_PROGRESS
+            && !Carbon::parse($request['deadline'])->gt(Carbon::now()->addDay()))
+        {
+            $request['deadline'] = Carbon::now()->addDay();
+            $request['fact_deadline'] = Carbon::now()->addDay();
+        }
+
         if ($request['new_department']) {
             $department = $this->department->storeFromModal($request->new_department);
             $department = $department->id;
@@ -239,14 +251,14 @@ class IndexController extends BaseController
 
         $assignment = Assignment::findOrFail($id);
 
-        if ($request['fact_deadline']) {
-            if (Carbon::parse($request['fact_deadline'])->lt($assignment->deadline)) {
-                $status = Assignment::STATUS__EXPIRED;
-            } elseif (Carbon::parse($request['fact_deadline'])->gt($assignment->deadline) ||
-                Carbon::parse($request['fact_deadline'])->eq($assignment->deadline)) {
-                $status = Assignment::STATUS_DONE;
-            }
-        }
+//        if ($request['fact_deadline']) {
+//            if (Carbon::parse($request['fact_deadline'])->lt($assignment->deadline)) {
+//                $status = Assignment::STATUS__EXPIRED;
+//            } elseif (Carbon::parse($request['fact_deadline'])->gt($assignment->deadline) ||
+//                Carbon::parse($request['fact_deadline'])->eq($assignment->deadline)) {
+//                $status = Assignment::STATUS_DONE;
+//            }
+//        }
 
 
         $updated = $assignment->update([
@@ -270,7 +282,7 @@ class IndexController extends BaseController
 
             return redirect()
                 ->back()
-                ->with('success', 'Запись обновленаю');
+                ->with('success', 'Запись обновлена!');
         }
 
         return redirect()
