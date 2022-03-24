@@ -71,20 +71,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{--                            <input type="search" class="search-input" name="document_number" placeholder="Номер документа">--}}
-                            {{--                            <input type="search" class="search-input" name="author" placeholder="Автор резолюции">--}}
-                            {{--                            <input type="search" class="search-input" name="addressed" placeholder="Адресат">--}}
-                            {{--                            <select name="status" id="statuses" class="statusSelect" title="Выберите статус">--}}
-                            {{--                                @foreach($statuses as $status)--}}
-                            {{--                                    <option value="{{ $status }}">{{ $status }}</option>--}}
-                            {{--                                @endforeach--}}
-                            {{--                            </select>--}}
-                            {{--                            <select class="form-control departmentSelect" id="department-select" name="department"--}}
-                            {{--                                    title="Выберите подразделение"--}}
-                            {{--                                    data-size="5"--}}
-                            {{--                                    data-live-search="true">--}}
-                            {{--                            </select>--}}
-                            {{--                            <button type="submit" class="btn btn-primary search-btn">Найти</button>--}}
                         </form>
                     </div>
 
@@ -92,38 +78,6 @@
                         <div class="filters-actions">
                             <img src="{{ asset('img/icon/search.svg') }}" class="search-icon" alt="search" width="18px"
                                  title="Поиск">
-
-                            {{--                            <div class="btn-group dropdown">--}}
-                            {{--                                <button type="button" class="btn btn-outline dropdown-toggle filter-btn"--}}
-                            {{--                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                            {{--                                    <img src="{{ asset('img/icon/status-sort (2).svg') }}" alt="time-icon" width="18"--}}
-                            {{--                                         title="Сортировать по статусу">--}}
-                            {{--                                </button>--}}
-                            {{--                                <div class="dropdown-menu dropdown-menu-right" id="status-dropdown">--}}
-                            {{--                                    <a href="{{ route('assignments.index') }}" class="dropdown-item">Все</a>--}}
-                            {{--                                    @foreach($statuses as $status)--}}
-                            {{--                                        <a class="dropdown-item" href="{{ route('sort-by-status', $status), }}">{{ $status }}</a>--}}
-                            {{--                                    @endforeach--}}
-                            {{--                                    <div class="dropdown-divider"></div>--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
-
-                            {{--                            <div class="departments-filter">--}}
-                            {{--                                <div class="btn-group dropdown">--}}
-                            {{--                                    <button type="button" class="btn btn-outline dropdown-toggle filter-btn"--}}
-                            {{--                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                            {{--                                        <img src="{{ asset('img/icon/departments.svg') }}" alt="time-icon" width="18"--}}
-                            {{--                                             title="Сортировать по подразделениям">--}}
-                            {{--                                    </button>--}}
-                            {{--                                    <div class="dropdown-menu dropdown-menu-right" id="department-dropdown">--}}
-                            {{--                                        <a href="{{ route('assignments.index') }}" class="dropdown-item">Все</a>--}}
-                            {{--                                        @foreach($departments as $department)--}}
-                            {{--                                            <a class="dropdown-item" href="{{ route('sort-by-department', $department->id) }}">{{ $department->title }}</a>--}}
-                            {{--                                        @endforeach--}}
-                            {{--                                        <div class="dropdown-divider"></div>--}}
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
 
                             <img src="{{ asset('img/icon/download.svg') }}" class="exportBtn"
                                  data-toggle="modal"

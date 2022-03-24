@@ -18,7 +18,16 @@
 
 @include('assignment.includes.top-nav')
 
-@yield('content')
+<main class="app-content py-4">
+    @yield('content')
+</main>
+
+<footer>
+    <div class="container">
+        <div class="border-top pt-3">
+        </div>
+    </div>
+</footer>
 
 
 <script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>
