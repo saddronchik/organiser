@@ -63,6 +63,7 @@ $(document).ready(function () {
                                     value="${item}">${item}</option>`;
                 })
                 statusesSelect.html(statusesOption);
+                statusesSelect.selectpicker();
             }
         },
         error: (err) => {
@@ -82,25 +83,25 @@ $(document).ready(function () {
         ]
     });
 
-    let addDepartmentBtn = $('#add-department-input'),
-        removeDepartmentBtn = $('.removeInput'),
-        addAuthorBtn = $('#add-author-input'),
+    let addDepartmentBtn = $('.addDepartmentInput'),
+        removeDepartmentBtn = $('.remove-department-input'),
+        addAuthorBtn = $('.addAuthorInput'),
         removeAuthorBtn = $('.remove-author-input'),
-        addAddressedBtn = $('#add-addressed-input'),
+        addAddressedBtn = $('.addAddressedInput'),
         removeAddressedBtn = $('.remove-addressed-input'),
-        addExecutorBtn = $('#add-executor-input'),
+        addExecutorBtn = $('.addExecutorInput'),
         removeExecutorBtn = $('.remove-executor-input');
 
     addDepartmentBtn.on('click', function (event) {
-        let departmentFg = $('.newDepartment');
-        departmentFg.slideDown();
+        $('.newDepartment').slideDown();
         $(this).slideUp();
+        $('.departmentSelect').slideUp();
     })
 
     removeDepartmentBtn.on('click', function () {
-        let departmentFg = $('.newDepartment');
-        departmentFg.slideUp();
-        addDepartmentBtn.slideDown();
+        $('.newDepartment').slideUp();
+        $('.departmentSelect').show();
+        addDepartmentBtn.show();
     })
 
     addAuthorBtn.on('click', function () {
@@ -132,15 +133,15 @@ $(document).ready(function () {
     })
 
     addExecutorBtn.on('click', function (event) {
-        let executorFg = $('.newExecutor');
-        executorFg.slideDown();
-        $(this).slideUp();
+        $('.newExecutor').slideDown();
+        $(this).hide();
+        $('.executorSelect').slideUp();
     })
 
     removeExecutorBtn.on('click', function () {
-        let executorFg = $('.newExecutor');
-        executorFg.slideUp();
-        addExecutorBtn.slideDown();
+        $('.newExecutor').slideUp();
+        $('.executorSelect').slideDown();
+        addExecutorBtn.show();
     })
 
 
@@ -197,7 +198,6 @@ $(document).ready(function () {
                     editAssignmentModal.find(`#executor-select option[value=${data.assignment.executor_id}]`)
                         .attr('selected', 'selected');
 
-
                     data.subexecutors.forEach((item) => {
                         editAssignmentModal.find(`#subexecutors-select option[value=${item.id}]`)
                             .attr('selected', 'selected');
@@ -212,8 +212,8 @@ $(document).ready(function () {
                     resolution.html(data.assignment.text);
                     document_number.val(data.assignment.document_number);
 
-                    if (data.assignment.created_at) {
-                        registerData.val(data.assignment.created_at.split(".").reverse().join("-"));
+                    if (data.assignment.register_date) {
+                        registerData.val(data.assignment.register_date.split(".").reverse().join("-"));
                     }
 
                     if (data.assignment.deadline) {
@@ -239,5 +239,36 @@ $(document).ready(function () {
         })
     })
 
+    const removeAssignmentBtn = $('.removeAssignmentBtn');
+
+    removeAssignmentBtn.on('click', function () {
+        let assignmentId = $(this).data('id');
+
+        let isRemove = confirm('Удалить запись?');
+
+        if (isRemove) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/organaizer/public/assignments/delete/' + assignmentId,
+                method: 'DELETE',
+                dataType: 'json',
+
+                success: (data) => {
+                    if (data.status) {
+                        location.reload();
+                    }
+                },
+
+                error: (err) => {
+                    alert('Ошибка удаления поручения ' + assignmentId);
+                }
+            })
+        }
+    })
 
 })

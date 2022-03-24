@@ -21,30 +21,25 @@ class CreateAssignmentsTable extends Migration
             $table->integer('addressed_id')->unsigned()->nullable();
             $table->integer('executor_id')->unsigned()->nullable();
             $table->integer('department_id')->unsigned()->nullable();
+            $table->date('register_date')->nullable();
             $table->string('status',16);
             $table->string('status_color')->nullable();
 
-            $table->foreign('author_id')
-                ->references('id')
-                ->on('users');
+            $table->foreign('author_id')->references('id')->on('users')
+                ->onDelete('cascade');
 
-            $table->foreign('addressed_id')
-                ->references('id')
-                ->on('users');
+            $table->foreign('addressed_id')->references('id')->on('users')
+                ->onDelete('cascade');
 
-            $table->foreign('executor_id')
-                ->references('id')
-                ->on('users');
+            $table->foreign('executor_id')->references('id')->on('users')
+                ->onDelete('cascade');
 
-            $table->foreign('department_id')
-                ->references('id')
-                ->on('departments');
+            $table->foreign('department_id')->references('id')->on('departments')
+                ->onDelete('cascade');
 
 
             $table->dateTime('deadline')->nullable();
             $table->dateTime('real_deadline')->nullable();
-
-
             $table->timestamps();
         });
     }

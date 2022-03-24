@@ -35,23 +35,45 @@ class IndexController extends BaseController
         $this->department = new DepartmentController();
     }
 
-    public function index(int $perPage = 15)
+    public function index(Request $request, int $perPage = 15)
     {
-        $assignments = $this->assignmentRepository->getWithPaginate($perPage);
+//        $assignments = $this->assignmentRepository->getWithPaginate($perPage);
         $departments = $this->departmentRepository->getAll();
         $statuses = Assignment::getStatuses();
 
+        $query = Assignment::with(['users'])->orderBy('id', 'desc');
+
+        if (!empty($value = $request->get('document_number'))) {
+            $query->where('document_number', 'LIKE', '%' . $value . '%');
+        }
+
+        if (!empty($value = $request->get('author'))) {
+            $query->where('author_id', $value);
+        }
+
+        if (!empty($value = $request->get('addressed'))) {
+            $query->where('addressed_id', $value);
+        }
+
+        if (!empty($value = $request->get('department'))) {
+            $query->where('department_id', $value);
+        }
+
+        if (!empty($value = $request->get('status'))) {
+            $query->where('status', $value);
+        }
+
+        $assignments = $query->paginate($perPage);
+
         foreach ($assignments as $assignment) {
-            if ($assignment->deadline < Carbon::now()->format('d.m.Y')) {
+            if (!empty($assignment->deadline) && $assignment->deadline < Carbon::now()->format('d.m.Y')) {
                 $assignment->status = Assignment::STATUS__EXPIRED;
                 $assignment->save();
             }
         }
 
-        $assignments = $this->assignmentRepository->getWithPaginate($perPage);
-
         return view('assignment.index',
-            compact('assignments','departments','statuses'));
+            compact('assignments', 'departments', 'statuses'));
     }
 
     public function create()
@@ -77,54 +99,60 @@ class IndexController extends BaseController
         $status = Assignment::STATUS_IN_PROGRESS;
 
 
-        if ($request->new_department) {
+        if ($request['new_department']) {
             $department = $this->department->storeFromModal($request->new_department);
             $department = $department->id;
         }
 
         if ($request['new_author']) {
-            $author = User::create([
-                'full_name' => $request['new_author']
-            ]);
+            $author = User::where('full_name', [$request['new_author']])->first();;
 
-            $author = $author->id;
+            if (!$author) {
+                $author = User::create([
+                    'full_name' => $request['new_author']
+                ])->id;
+            } else {
+                $author = $author->id;
+            }
         }
 
         if ($request['new_addressed']) {
-            $existAddressed = User::where('full_name', [$request['new_addressed']])->first();
+            $addressed = User::where('full_name', $request['new_addressed'])->first();
 
-            if (!$existAddressed) {
+            if (!$addressed) {
                 $addressed = User::create([
                     'full_name' => $request['new_addressed']
-                ]);
-
+                ])->id;
+            } else {
                 $addressed = $addressed->id;
             }
         }
 
         if ($request['new_executor']) {
-            $existExecutor = User::where('full_name', [$request['new_executor']])->first();
+            $executor = User::where('full_name', $request['new_executor'])->first();
 
-            if (!$existExecutor) {
+            if (!$executor) {
                 $executor = User::create([
                     'full_name' => $request['new_executor']
-                ]);
-
+                ])->id;
+            } else {
                 $executor = $executor->id;
             }
         }
 
+
         $assignment = Assignment::create([
-            'document_number' => $request->document_number,
-            'preamble' => $request->preambule,
-            'text' => $request->resolution,
-            'author_id' => $author,
-            'addressed_id' => $addressed,
-            'executor_id' => $executor,
-            'department_id' => $department ?? $request->department,
-            'status' => $request->status ?? $status,
-            'deadline' => $request->deadline,
-            'real_deadline' => $request->fact_deadline
+            'document_number' => $request['document_number'],
+            'preamble' => $request['preambule'],
+            'text' => $request['resolution'],
+            'author_id' => $author ?? $request['author'],
+            'addressed_id' => $addressed ?? $request['addressed'],
+            'executor_id' => $executor ?? $request['executor'],
+            'department_id' => $department ?? $request['department'],
+            'status' => $request['status'] ?? $status,
+            'deadline' => $request['deadline'],
+            'real_deadline' => $request['fact_deadline'],
+            'register_date' => $request['register_date']
         ]);
 
         if ($assignment) {
@@ -162,21 +190,84 @@ class IndexController extends BaseController
 
     public function update($id, Request $request)
     {
-        $assignment = Assignment::where('id', [$id])
-            ->update([
-                'document_number' => $request->document_number,
-                'preamble' => $request->preambule,
-                'text' => $request->resolution,
-                'author_id' => $request->author,
-                'addressed_id' => $request->addressed,
-                'executor_id' => $request->executor,
-                'department_id' => $request->department,
-                'status' => $request->status,
-                'deadline' => $request->deadline,
-                'real_deadline' => $request->fact_deadline
-            ]);
+        $department = null;
+        $author = null;
+        $addressed = null;
+        $executor = null;
+        $status = $request->input('status');
 
-        if ($assignment) {
+        if ($request['new_department']) {
+            $department = $this->department->storeFromModal($request->new_department);
+            $department = $department->id;
+        }
+
+        if ($request['new_author']) {
+            $author = User::where('full_name', [$request['new_author']])->first();;
+
+            if (!$author) {
+                $author = User::create([
+                    'full_name' => $request['new_author']
+                ])->id;
+            } else {
+                $author = $author->id;
+            }
+        }
+
+        if ($request['new_addressed']) {
+            $addressed = User::where('full_name', [$request['new_addressed']])->first();
+
+            if (!$addressed) {
+                $addressed = User::create([
+                    'full_name' => $request['new_addressed']
+                ])->id;
+            } else {
+                $addressed = $addressed->id;
+            }
+        }
+
+        if ($request['new_executor']) {
+            $executor = User::where('full_name', [$request['new_executor']])->first();
+
+            if (!$executor) {
+                $executor = User::create([
+                    'full_name' => $request['new_executor']
+                ])->id;
+            } else {
+                $executor = $executor->id;
+            }
+        }
+
+        $assignment = Assignment::findOrFail($id);
+
+        if ($request['fact_deadline']) {
+            if (Carbon::parse($request['fact_deadline'])->lt($assignment->deadline)) {
+                $status = Assignment::STATUS__EXPIRED;
+            } elseif (Carbon::parse($request['fact_deadline'])->gt($assignment->deadline) ||
+                Carbon::parse($request['fact_deadline'])->eq($assignment->deadline)) {
+                $status = Assignment::STATUS_DONE;
+            }
+        }
+
+
+        $updated = $assignment->update([
+            'document_number' => $request['document_number'],
+            'preamble' => $request['preambule'],
+            'text' => $request['resolution'],
+            'author_id' => $author ?? $request['author'],
+            'addressed_id' => $addressed ?? $request['addressed'],
+            'executor_id' => $executor ?? $request['executor'],
+            'department_id' => $department ?? $request['department'],
+            'status' => $status,
+            'register_date' => $request['register_date'],
+            'deadline' => $request['deadline'],
+            'real_deadline' => $request['fact_deadline']
+        ]);
+
+        if ($updated) {
+            $users = User::find($request->subexecutors);
+
+            $assignment->users()->sync($users);
+
             return redirect()
                 ->back()
                 ->with('success', 'Запись обновленаю');
@@ -188,19 +279,6 @@ class IndexController extends BaseController
             ->with('error');
     }
 
-    public function search(SearchRequest $request)
-    {
-        $search = $request->search;
-
-        $assignments = is_numeric($search) ? $this->assignmentRepository->getByDocumentNumber($search)
-            : $this->assignmentRepository->getByUsername($search);
-
-        $statuses = Assignment::getStatuses();
-        $departments = $this->departmentRepository->getAll();
-
-        return view('assignment.index',
-            compact('assignments', 'statuses', 'departments'));
-    }
 
     public function sortByStatus($id)
     {
@@ -225,7 +303,25 @@ class IndexController extends BaseController
     public function export(Request $request): BinaryFileResponse
     {
         $departmentId = $request->input('department');
-        return Excel::download(new AssignmentExport($this->assignmentRepository, $departmentId), 'assignments.xlsx');
+        return Excel::download(
+            new AssignmentExport($this->assignmentRepository, $departmentId),
+            'assignments.xlsx');
+    }
+
+    public function destroy(int $id)
+    {
+        $result = Assignment::destroy($id);
+
+        if (!$result) {
+            return response()->json([
+                'status' => false
+            ]);
+        }
+
+        return response()->json([
+            'status' => true
+        ]);
+
     }
 
 
