@@ -13,6 +13,7 @@ use App\Repositories\Interfaces\UsersQueries;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -250,16 +251,6 @@ class IndexController extends BaseController
         }
 
         $assignment = Assignment::findOrFail($id);
-
-//        if ($request['fact_deadline']) {
-//            if (Carbon::parse($request['fact_deadline'])->lt($assignment->deadline)) {
-//                $status = Assignment::STATUS__EXPIRED;
-//            } elseif (Carbon::parse($request['fact_deadline'])->gt($assignment->deadline) ||
-//                Carbon::parse($request['fact_deadline'])->eq($assignment->deadline)) {
-//                $status = Assignment::STATUS_DONE;
-//            }
-//        }
-
 
         $updated = $assignment->update([
             'document_number' => $request['document_number'],
