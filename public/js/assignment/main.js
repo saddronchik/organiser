@@ -175,7 +175,6 @@ $(document).ready(function () {
 
             success: (data) => {
                 if (data.status) {
-                    console.log(data.assignment)
 
                     let preamble = editAssignmentModal.find('#preambule'),
                         resolution = editAssignmentModal.find('#resolution'),
@@ -184,32 +183,95 @@ $(document).ready(function () {
                         deadlineData = editAssignmentModal.find('#deadline'),
                         factDeadlineData = editAssignmentModal.find('#fact-deadline');
 
+                    if (data.assignment.status === 'Просрочено') {
+                        // departmentSelect.attr('disabled',true);
+                        // authorSelect.attr('disabled',true);
+                        // addressedSelect.attr('disabled',true);
+                        // executorSelect.attr('disabled',true);
+                        // subExecutorsSelect.attr('disabled',true);
+
+                        addDepartmentBtn.hide();
+                        addAuthorBtn.hide();
+                        addAddressedBtn.hide();
+                        addExecutorBtn.hide();
+
+                        preamble.attr('readonly',true);
+                        resolution.next().find(".note-editable").attr("contenteditable", false);
+                        document_number.attr('readonly',true);
+                        registerData.attr('readonly',true);
+                    } else {
+                        // departmentSelect.attr('disabled',false);
+                        // authorSelect.attr('disabled',false);
+                        // addressedSelect.attr('disabled',false);
+                        // executorSelect.attr('disabled',false);
+                        // subExecutorsSelect.attr('disabled',false);
+                        addDepartmentBtn.show();
+                        addAuthorBtn.show();
+                        addAddressedBtn.show();
+                        addExecutorBtn.show();
+                        preamble.attr('readonly',false);
+                        resolution.next().find(".note-editable").attr("contenteditable", true);
+                        document_number.attr('readonly',false);
+                        registerData.attr('readonly',false);
+                    }
+
                     editAssignmentModal.find(`#department-select option[value=${data.assignment.department_id}]`)
                         .attr('selected', 'selected');
-                    editAssignmentModal.find('#department-select').attr('title', data.assignment.department.title);
-                    departmentSelect.selectpicker();
+
+                    let selectedDepartment = '';
+                    if (data.assignment.department !== null) {
+                        selectedDepartment = data.assignment.department.title;
+                        departmentSelect.attr('title',selectedDepartment);
+                    }
+
+                    departmentSelect.selectpicker('refresh');
 
                     editAssignmentModal.find(`#author-select option[value=${data.assignment.author_id}]`)
                         .attr('selected', 'selected');
+                    let selectedAuthor = '';
+                    if (data.assignment.author !== null){
+                        selectedAuthor = data.assignment.author.full_name;
+                        authorSelect.attr('title', selectedAuthor);
+                    }
+                    authorSelect.selectpicker('refresh');
+
 
                     editAssignmentModal.find(`#addressed-select option[value=${data.assignment.addressed_id}]`)
                         .attr('selected', 'selected');
+                    let selectedAddressed = '';
+
+                    if (data.assignment.addressed !== null) {
+                        selectedAddressed = data.assignment.addressed.full_name;
+                        addressedSelect.attr('title',selectedAddressed);
+                    }
+
+                    addressedSelect.selectpicker('refresh');
 
                     editAssignmentModal.find(`#executor-select option[value=${data.assignment.executor_id}]`)
                         .attr('selected', 'selected');
 
+                    let selectedExecutor = '';
+                    if (data.assignment.executor !== null) {
+                        selectedExecutor = data.assignment.executor.full_name;
+                        executorSelect.attr('title',selectedExecutor);
+                    }
+
+                    executorSelect.selectpicker('refresh');
+
                     data.subexecutors.forEach((item) => {
                         editAssignmentModal.find(`#subexecutors-select option[value=${item.id}]`)
                             .attr('selected', 'selected');
+                        subExecutorsSelect.attr('title', item.full_name)
                     });
+                    subExecutorsSelect.selectpicker('refresh');
 
 
                     editAssignmentModal.find(`#status-select option[value='${data.assignment.status}']`)
                         .attr('selected', 'selected');
-
+                    statusesSelect.attr('title',data.assignment.status);
+                    statusesSelect.selectpicker('refresh')
 
                     preamble.val(data.assignment.preamble);
-                    resolution.html(data.assignment.text);
                     document_number.val(data.assignment.document_number);
 
                     if (data.assignment.register_date) {
@@ -224,8 +286,7 @@ $(document).ready(function () {
                         factDeadlineData.val(data.assignment.real_deadline.split(".").reverse().join("-"));
                     }
 
-
-                    resolution.summernote();
+                    resolution.summernote('code',data.assignment.text);
 
                     spinner.addClass('b-hide');
                     editAssignmentModal.css('opacity', '1');

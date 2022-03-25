@@ -41,7 +41,7 @@
         <div class="form-row">
             <div class="col">
                 <small id="documentNumberHelp" class="form-text text-muted">Номер документа</small>
-                <input type="text" class="form-control" id="document_number" name="document_number">
+                <input type="text" class="form-control" id="document_number" name="document_number" >
             </div>
             <div class="col">
                 <small id="registerDateHelp" class="form-text text-muted">Дата регистрации</small>

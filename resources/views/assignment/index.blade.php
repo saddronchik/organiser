@@ -144,7 +144,6 @@
                                                         <h5>Подробная информация</h5>
                                                     </div>
                                                     <div class="card-header__actions">
-                                                        @if ($assignment->isDone() || $assignment->isProgress() || $assignment->isNone())
                                                             <a href="#"
                                                                class="card-header__actions-btn editAssignmentBtn"
                                                                data-toggle="modal" id="edit-assignment-btn"
@@ -154,7 +153,6 @@
                                                                      alt="edit-btn"
                                                                      width="15px">
                                                                 Изменить</a>
-                                                        @endif
                                                         <a href="#" class="card-header__actions-btn removeAssignmentBtn"
                                                            id="remove-assignment-btn"
                                                            data-id="{{ $assignment->id }}"

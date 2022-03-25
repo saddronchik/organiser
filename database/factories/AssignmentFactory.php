@@ -21,7 +21,7 @@ class AssignmentFactory extends Factory
             'author_id' => random_int(1,5),
             'addressed_id' => random_int(5,10),
             'executor_id' => random_int(1,10),
-            'department_id' => random_int(1,20),
+            'department_id' => random_int(1,10),
             'status' => Assignment::STATUS_IN_PROGRESS,
             'deadline' => $this->faker->dateTime(),
             'real_deadline' => $this->faker->dateTimeBetween('-1 years', 'now'),
