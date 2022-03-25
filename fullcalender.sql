@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 24 2022 г., 01:16
--- Версия сервера: 10.4.18-MariaDB
--- Версия PHP: 8.0.3
+-- Время создания: Мар 25 2022 г., 16:11
+-- Версия сервера: 10.4.20-MariaDB
+-- Версия PHP: 8.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -78,12 +78,13 @@ CREATE TABLE `departments` (
 
 CREATE TABLE `events` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `typeEvent` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `textColor` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `assigned` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `readed` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -252,7 +253,7 @@ ALTER TABLE `websockets_statistics_entries`
 -- AUTO_INCREMENT для таблицы `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `assignment_user`
@@ -264,19 +265,19 @@ ALTER TABLE `assignment_user`
 -- AUTO_INCREMENT для таблицы `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `migrations`
@@ -294,7 +295,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `websockets_statistics_entries`
