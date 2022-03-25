@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Assignments;
 
 use App\Exports\AssignmentExport;
-use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Models\Assignment;
 use App\Models\User;
@@ -11,9 +10,7 @@ use App\Repositories\Interfaces\AssignmentQueries;
 use App\Repositories\Interfaces\DepartmentsQueries;
 use App\Repositories\Interfaces\UsersQueries;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
