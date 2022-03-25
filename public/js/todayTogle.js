@@ -41,26 +41,25 @@ function todayEvent() {
          $('#chkEvent').css("display", "none");
          $('body').css("overflow", "visible");
          $('body').css("background", "black");
-            $('#today__evet').css("display", "none")
-            $('#start').css("display", "none");
-            $('#end').css("display", "none");
+            $('#today__togle').css("display", "none")
+            $('#startDiv').css("display", "none");
+            $('#endDiv').css("display", "none");
             $('#repeatedEventDiv').css("display", "none");
+            $('#statusTask').css("display", "none");
+            $('#assignedEvent').css("display", "none");
             $('#title').val(title);
             $('#start2').val(clickDate.substring(0,clickDate.length-8));
             $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
             $('#description').val(description);
             $('#color').val(color);
             $('#color').append(color);
-            $('#status').val(status);
-            $('#status').append(status);
-            $('#eventId').val(id);
-            $('#assigned').val(assigned);
+            $('#deliteEvent').html('Удалить событие');
             $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + id);
-            $('.title-text').html('Обновить задачу');
+            $('.title-text').html('Обновить событие');
             $('#update').html('Обновить');
             $('#dialog').dialog({
                 width: 500,
-                height: 800,
+                height: 550,
                 modal: true,
             })
         })

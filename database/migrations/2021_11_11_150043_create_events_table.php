@@ -24,6 +24,7 @@ class CreateEventsTable extends Migration
             $table->string('description')->nullable();
             $table->string('assigned')->nullable();
             $table->string('readed')->nullable();
+            $table->string('typeEvent')->nullable();
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 function countEvents() {
     let todatEvent = document.querySelector('.fc-clear');
-    fetch("/organaizer/public/messageWatch", {
+    fetch("/organaizer/public/togleWatch", {
         headers: {
             'Content-type': 'application/json',
         }
@@ -9,7 +9,7 @@ function countEvents() {
             return response.json()
         })
         .then(data => {
-            document.querySelector('.fc-todayEvent-button').innerHTML = `<div class = ""> Задач - ${data.eventInWokrs} шт.</div>`;
+            document.querySelector('.fc-todayTogle-button').innerHTML = `<div class = ""> Событий - ${data.togleInWokrs} шт.</div>`;
             // todatEvent.innerHTML =
             //     `<div class = "fc-corner-right">${data.eventInWokrs}</div>`;
         })

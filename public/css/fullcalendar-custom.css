@@ -15,6 +15,9 @@ body{
     background-color: #00344cde !important;
 
 }
+.hidden-div {
+    display: none;
+  }
 
 .container{
     margin-left:8% !important;
@@ -55,6 +58,18 @@ body{
 	opacity: 1;	
     overflow-y:auto;
 }
+#today__togle {
+	position: relative;
+	top: 20%;
+	left: 20%;
+	padding: 20px;
+	margin-left: -100px;	
+	background: #fff;
+	border-radius: 4px; 
+	z-index: 99999;
+	opacity: 1;	
+    overflow-y:auto;
+}
 
 
 .title{
@@ -81,11 +96,11 @@ display: none;
     color: white;
 }
 #calendar .fc-view {
-    background-color: #2e88fda4 !important;
+    background-color: #a7a7a7 !important;
     border: none !important;
 }
 #calendar  {
-    --fc-page-bg-color: #2e88fda4  !important;
+    --fc-page-bg-color: #dddddd  !important;
 }
 .fc th {
     color: black !important;

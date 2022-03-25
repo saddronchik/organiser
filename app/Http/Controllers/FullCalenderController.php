@@ -29,7 +29,11 @@ class FullCalenderController extends Controller
             ->groupBy('title')
             ->having('status', 'В работе')
             ->get();
-        return view('welcome', ['events' => $events, 'eventsStatus' => $eventsStatus]);
+        $eventsTogles = DB::table('events')
+            ->groupBy('title')
+            ->having('typeEvent', 'togle')
+            ->get();
+        return view('welcome', ['events' => $events, 'eventsStatus' => $eventsStatus, 'eventsTogles'=>$eventsTogles]);
     }
 
 
@@ -55,6 +59,7 @@ class FullCalenderController extends Controller
                             $repeatedEventEnd = Carbon::parse($request->end)->addYear($i)->toDateTimeString();
 
                             Event::create([
+                                'typeEvent' => $request->typeEvent,
                                 'start' => $repeatedEvent,
                                 'title' => $request->title,
                                 'end' => $repeatedEventEnd,
@@ -65,13 +70,13 @@ class FullCalenderController extends Controller
                             ]);
                         }
 
-                        Alert::success('Ура', 'Событие успешно добавлено');
+                        Alert::success('Ура', 'Успешно добавлено');
                         return redirect()->back();
                     } else {
 
                         Event::create($request->all());
 
-                        Alert::success('Ура', 'Событие успешно добавлено');
+                        Alert::success('Ура', 'Успешно добавлено');
                         return redirect()->back();
                     }
                 } else {
@@ -85,7 +90,7 @@ class FullCalenderController extends Controller
                         'description' => $request->description,
                         'assigned' => $request->assigned,
                     ]);
-                    Alert::success('Ура', 'Событие обновленно');
+                    Alert::success('Ура!', ' Запись обновлена');
                     return redirect()->back();
                 }
             }
@@ -120,6 +125,18 @@ class FullCalenderController extends Controller
         return response()->json([
             "eventInWokrs" => $eventInWokrs,
             "eventNotChecked" => $eventNotChecked,
+        ]);
+    }
+    public function countTogle()
+    {
+        $togleInWokrs = Event::where('typeEvent', 'togle')
+            ->count();
+        $togleNotChecked = Event::where('typeEvent', 'togle')
+            ->whereNull('readed')
+            ->count();
+        return response()->json([
+            "togleInWokrs" => $togleInWokrs,
+            "togleNotChecked" => $togleNotChecked,
         ]);
     }
 

@@ -30,10 +30,22 @@ $(document).ready(function () {
 
         customButtons: {
             todayEvent: {
-                text: 'Текущие',
+                text: 'Задачи - 0 шт.',
                 click: function (e) {
                     e.preventDefault();
                     $('#today__evet').dialog({
+                        width: 650,
+                        height: 800,
+                        modal: true,
+                    })
+                }
+            },
+            todayTogle: {
+                id: 'todayTogle',
+                text: 'События - 0 шт.',
+                click: function (e) {
+                    e.preventDefault();
+                    $('#today__togle').dialog({
                         width: 650,
                         height: 800,
                         modal: true,
@@ -52,7 +64,7 @@ $(document).ready(function () {
         header: {
             right: 'today, prev,next,KIP ',
             center: 'title',
-            left: 'month,agendaWeek,agendaDay,todayEvent'
+            left: 'month,agendaWeek,agendaDay,todayEvent,todayTogle'
         },
         views: {
             dayGridMonth: {
@@ -91,7 +103,7 @@ $(document).ready(function () {
             $('#end2').css("display", "none");
             $('#dialog').dialog({
                 width: 500,
-                height: 800,
+                height: 850,
                 modal: true,
             })
         },
@@ -101,30 +113,61 @@ $(document).ready(function () {
             
             var clickDate = new Date(event.start._d).toISOString();
             var clickDateEnd = new Date(event.end).toISOString();
-
-            $('#start').css("display", "none");
-            $('#end').css("display", "none");
-            $('#repeatedEvent').css("display", "none");
-            $('body').css("overflow", "visible");
-            $('body').css("background", "black");
-            $('#status').val(event.status);
-            $('#status').append(event.status);
-            $('#color').val(event.color);
-            $('#color').append(event.color);
-            $('#title').val(event.title);
-            $('#start2').val(clickDate.substring(0,clickDate.length-8));
-            $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
-            $('#description').val(event.description);
-            $('#eventId').val(event.id);
-            $('#assigned').val(event.assigned);
-            $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
-            $('.title-text').html('Обновить событие');
-            $('#update').html('Обновить');
-            $('#dialog').dialog({
-                width: 500,
-                height: 800,
-                modal: true,
-            })
+            if (event.typeEvent == 'togle') {
+                
+                $('#chkEvent').css("display", "none");
+                $('#titleEvent').html('Событие');
+                $('#startDiv').css("display", "none");
+                $('#endDiv').css("display", "none");
+                $('#repeatedEventDiv').css("display", "none");
+                $('body').css("overflow", "visible");
+                $('body').css("background", "black");
+                $('#statusTask').css("display", "none");
+                $('#assignedEvent').css("display", "none");
+                $('#color').val(event.color);
+                $('#color').append(event.color);
+                $('#title').val(event.title);
+                $('#start2').val(clickDate.substring(0,clickDate.length-8));
+                $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
+                $('#description').val(event.description);
+                $('#eventId').val(event.id);
+                $('#deliteEvent').html('Удалить событие');
+                $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
+                $('.title-text').html('Обновить событие');
+                $('#update').html('Обновить');
+                $('#dialog').dialog({
+                    width: 500,
+                    height: 550,
+                    modal: true,
+                })
+            }else{
+                $('#chkEvent').css("display", "none");
+                $('#start').css("display", "none");
+                $('#end').css("display", "none");
+                $('#repeatedEventDiv').css("display", "none");
+                $('body').css("overflow", "visible");
+                $('body').css("background", "black");
+                $('#status').val(event.status);
+                $('#status').append(event.status);
+                $('#color').val(event.color);
+                $('#color').append(event.color);
+                $('#title').val(event.title);
+                $('#start2').val(clickDate.substring(0,clickDate.length-8));
+                $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
+                $('#description').val(event.description);
+                $('#eventId').val(event.id);
+                $('#assigned').val(event.assigned);
+                $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
+                $('.title-text').html('Обновить задачу');
+                $('#update').html('Обновить');
+                $('#dialog').dialog({
+                    width: 500,
+                    height: 800,
+                    modal: true,
+                })
+            }
+            
+            
         },
 
         eventMouseover: function (calEvent, jsEvent) {
@@ -226,6 +269,31 @@ $(document).ready(function () {
         }
     });
 });
+
+document.getElementById('chk').addEventListener('change', toggleInput);
+
+function toggleInput(evt) {
+    $('#dialog').dialog({
+        width: 500,
+        height: 550,
+        modal: true,
+    })
+    document.querySelector('#startDiv').classList.toggle('hidden-div');
+    document.querySelector('#endDiv').classList.toggle('hidden-div');
+    document.querySelector('#statusTask').classList.toggle('hidden-div');
+    document.querySelector('#assignedEvent').classList.toggle('hidden-div');
+
+    document.querySelector('.title-text').innerHTML= 'Добавить событие';
+    document.querySelector('#titleEvent').innerHTML= 'Событие';
+    
+    document.querySelector('#repeatedEvent').innerHTML= 'Повторять событие';
+    document.querySelector('#update').innerHTML= 'Добавить событие';
+
+    document.querySelector('#typeEvent').value = 'togle';
+
+    
+}
+
 
 
 function srcollDown() {

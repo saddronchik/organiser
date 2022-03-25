@@ -34,6 +34,9 @@ Route::post('/store', [App\Http\Controllers\FullCalenderController::class, 'stor
 Route::get('/messageWatch', [App\Http\Controllers\FullCalenderController::class,'countEvents'])
     ->name('messageWatch');
 
+Route::get('/togleWatch', [App\Http\Controllers\FullCalenderController::class,'countTogle'])
+    ->name('togleWatch');
+
 
 Route::get('/deleteEvent/{id}', [App\Http\Controllers\FullCalenderController::class, 'delete']);
 

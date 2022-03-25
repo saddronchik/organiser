@@ -11,7 +11,7 @@ class Event extends Model
 	use HasFactory;
 
 	protected $fillable = [
-		'title','status','color', 'textColor', 'start', 'end','description','assigned','readed'
+		'typeEvent','title','status','color', 'textColor', 'start', 'end','description','assigned','readed'
 	];
 }
 

@@ -54,7 +54,7 @@
                     @csrf
                     <div class="form-group">
                         <div class="title">
-                            <div class="title-event"><label class="title-text">Добавить событие</label></div>
+                            <div class="title-event"><label class="title-text">Добавить задачу</label></div>
                             <div style="color: white;"></div>
                             <div class="button-close"><a href="" type="button" aria-label="Close" class="btn-close">&times;</a>
                             </div>
@@ -62,17 +62,28 @@
                         <div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Событие</label>
-                        <input type="text" id="title" class="form-control" name="title" placeholder="Название события" required>
+
+                    <div class="form-check pl-0" id="chkEvent" >
+                        <input type="radio" class="form-controlt" id="chk" name="chk">
+                        <label class="form-check-label" for="chk"><h4>Событие</h4></label>
                     </div>
+
                     <div class="form-group">
-                        <label>Начало события</label>
+                        <input type="hidden" id="typeEvent" class="form-control" name="typeEvent"   value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label id="titleEvent">Задача</label>
+                        <input type="text" id="title" class="form-control" name="title" placeholder="Напишите название" required>
+                    </div>
+
+                    <div class="form-group" id="startDiv">
+                        <label>Начало задачи</label>
                         <input type="datetime-local" id="start" class="form-control" name="start" placeholder="Дата и время начала">
                         <input type="datetime-local" id="start2" class="form-control" name="start2 " placeholder="Дата и время начала">
                     </div>
-                    <div class="form-group">
-                        <label>Конец события</label>
+                    <div class="form-group" id="endDiv">
+                        <label>Конец задачи</label>
                         <input type="datetime-local" id="end" class="form-control" name="end" placeholder="Дата и время конца">
                         <input type="datetime-local" id="end2" class="form-control" name="end2" placeholder="Дата и время конца">
                     </div>
@@ -87,7 +98,7 @@
                             <option value="#f0783c" style="background-color:#f0783c; color:white">Оранжевый</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="statusTask">
                         <label>Статус задачи</label>
                         <select class="custom-select" id="status" name="status" required>
                             <option value=" " style="background-color:grey; color:white"></option>
@@ -99,20 +110,54 @@
                         <label>Доп. информация</label>
                         <textarea id="description" class="form-control" name="description"> </textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="assignedEvent">
                         <label>Кому назначена</label>
                         <input id="assigned" class="form-control" name="assigned"> </input>
                     </div>
-                    <div class="form-check pl-0" id="repeatedEvent">
+                    <div class="form-check pl-0" id="repeatedEventDiv">
                         <input type="checkbox" class="form-controlt" id="repeated" name="repeated" value="1">
-                        <label class="form-check-label">Повторять событие</label>
+                        <label class="form-check-label"  id="repeatedEvent">Повторять задачу</label>
                     </div>
                     <input type="hidden" id="eventId" name="event_id">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success" id="update">Добавить событие</button>
-                        <a href="" type="submit" class="btn btn-danger" id="deliteEvent">Удалить событие</a>
+
+                        <button type="submit" class="btn btn-success" id="update">Добавить задачу</button>
+                        <a href="" type="submit" class="btn btn-danger" id="deliteEvent">Удалить задачу</a>
+
                     </div>
                 </form>
+            </div>
+        </div>
+        <div class="today__evet" id="today__togle" style="display: none;">
+            <div class="button-close_events"><a href="" type="button" aria-label="Close" class="btn-close">&times;</a></div>
+            <div class="list-group">
+                <div class="body__today_event">
+                    @foreach ( $eventsTogles as $eventsTogle )
+                    <div class="today-event__item" style="background:{{$eventsTogle->color}}">
+                        <div class="today-event__color" style="display:none">{{$eventsTogle->color}}</div>
+                        <div class="today-event__status" style="display:none">{{$eventsTogle->status}}</div>
+                        <div class="event__header">
+                            <h3 class="event-item__title">{{$eventsTogle->title}}</h3>
+                            <div class="event-id" style="display:none">{{$eventsTogle->id}}</div>
+                        </div>
+                        <div class="event-item__text">{{$eventsTogle->description}}</div>
+                        <div class="event-assigned" style="margin-bottom:-17px;">{{$eventsTogle->assigned}}</div>
+                        <hr class="event_hr">
+                        <div class="item-event__time">
+                            <img src="img\icon\time2.png" alt="Environmental Consulting">
+                            <div class="event-item__start_time">{{$eventsTogle->start}}</div><b>&nbsp - &nbsp</b>
+                            <div class="event-item__end_time">{{$eventsTogle->end}}</div>
+                            <div class="event_Cheked">
+                                @if ($eventsTogle->readed == null)
+                                <span>Не просмотренно<span>
+                                    @else
+                                <span>Просмотренно<span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -151,5 +196,6 @@
                 </div>
             </div>
         </div>
-
-        @endsection
+    </div>
+</div>
+@endsection
