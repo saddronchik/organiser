@@ -9,7 +9,9 @@ function todayEvent() {
         let assigned = elemitem.querySelector('.event-assigned').textContent;
         let color = elemitem.querySelector('.today-event__color').textContent;
         let status = elemitem.querySelector('.today-event__status').textContent;
-        
+        let typeEvent = elemitem.querySelector('.today-event__typeEvent').textContent;
+        let created_at = elemitem.querySelector('.event-created_at').textContent;
+        console.log(created_at);
         elemitem.addEventListener('click', function(e) {
 
             fetch('/organaizer/public/api/checkEvent' + '/' + id, {
@@ -36,33 +38,65 @@ function todayEvent() {
          let newEndDate = DateEnd.setHours(DateEnd.getHours()+3);
          var clickDateEnd = new Date(newEndDate).toISOString();
 
-        
-        
+        if (status == 'В работе') {
+            $('#chkEvent').css("display", "none");
+            $('#chk').css("display", "none");
+            $('body').css("overflow", "visible");
+            $('body').css("background", "black");
+            $('#today__togle').css("display", "none")
+            $('#today__evet').css("display", "none")
+               $('#start').css("display", "none");
+               $('#end').css("display", "none");
+               $('#repeatedEventDiv').css("display", "none");
+               $('#title').val(title);
+               $('#start2').val(clickDate.substring(0,clickDate.length-8));
+               $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
+               $('#description').val(description);
+               $('#color').val(color);
+               $('#color').append(color);
+               $('#status').val(status);
+               $('#status').append(status);
+               $('#eventId').val(id);
+               $('#assigned').val(assigned);
+               $('#deliteEvent').attr('href', '/organaizer/public/deleteWatch' + '/' + created_at);
+               $('.title-text').html('Обновить задачу');
+               $('#update').html('Обновить');
+               $('#dialog').dialog({
+                   width: 500,
+                   height: 800,
+                   modal: true,
+               })
+        }else{
          $('#chkEvent').css("display", "none");
+         $('#chk').css("display", "none");
          $('body').css("overflow", "visible");
          $('body').css("background", "black");
-            $('#today__evet').css("display", "none")
-            $('#start').css("display", "none");
-            $('#end').css("display", "none");
+         $('#today__togle').css("display", "none")
+         $('#today__evet').css("display", "none")
+         $('#startDiv').css("display", "none");
+         $('#endDiv').css("display", "none");
             $('#repeatedEventDiv').css("display", "none");
+            $('#statusTask').css("display", "none");
+            $('#assignedEvent').css("display", "none");
             $('#title').val(title);
             $('#start2').val(clickDate.substring(0,clickDate.length-8));
             $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
             $('#description').val(description);
             $('#color').val(color);
             $('#color').append(color);
-            $('#status').val(status);
-            $('#status').append(status);
             $('#eventId').val(id);
-            $('#assigned').val(assigned);
-            $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + id);
-            $('.title-text').html('Обновить задачу');
+            $('#deliteEvent').html('Удалить событие');
+            $('#deliteEvent').attr('href', '/organaizer/public/deleteWatch' + '/' + created_at);
+            $('.title-text').html('Обновить событие');
             $('#update').html('Обновить');
             $('#dialog').dialog({
                 width: 500,
-                height: 800,
+                height: 550,
                 modal: true,
             })
+        }
+        
+    
         })
     })
 }

@@ -8,7 +8,6 @@
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('js/todayEvent.js') }}"></script>
-    <script src="{{ asset('js/todayTogle.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
     <script src="{{ asset('js/ru.js')}}"></script>
 

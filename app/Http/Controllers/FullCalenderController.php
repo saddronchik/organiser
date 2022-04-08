@@ -24,36 +24,40 @@ class FullCalenderController extends Controller
 
     public function indexall()
     {
+      
         $events = Event::all();
         $eventsStatus = DB::table('events')
             ->groupBy('title')
             ->having('status', 'В работе')
             ->get();
         $eventsTogles = DB::table('events')
-            ->groupBy('title')
-            ->having('typeEvent', 'togle')
+            ->where('typeEvent', 'togle')
+            ->where('start', Carbon::today())
             ->get();
-        return view('welcome', ['events' => $events, 'eventsStatus' => $eventsStatus, 'eventsTogles'=>$eventsTogles]);
+        $allTodayEvent = DB::table('events')
+            ->where('start', Carbon::today())
+            ->get();
+        
+        return view('welcome', ['events' => $events, 'eventsStatus' => $eventsStatus, 'eventsTogles'=>$eventsTogles,'allTodayEvent'=>$allTodayEvent]);
     }
 
 
     public function store(Request $request)
     {
-        // dd(Carbon::parse($request->end)->addHour(23)->addMinutes(59)->toDateTimeString());
         try {
 
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'color' => 'required'
+                
             ]);
             if ($validator->fails()) {
                 Alert::error('Ошибка!', $validator->messages()->first());
-                return redirect()->back();
+                return redirect('/');
             } else {
 
                 if (empty($request->event_id)) {
                     if ($request->repeated == 1) {
-                        for ($i = 0; $i < 5; $i++) {
+                        for ($i = 0; $i < 20; $i++) {
 
                             $repeatedEvent = Carbon::parse($request->start)->addYear($i)->toDateTimeString();
                             $repeatedEventEnd = Carbon::parse($request->end)->addYear($i)->toDateTimeString();
@@ -69,18 +73,20 @@ class FullCalenderController extends Controller
                                 'assigned' => $request->assigned,
                             ]);
                         }
+                        
 
                         Alert::success('Ура', 'Успешно добавлено');
-                        return redirect()->back();
+                        return redirect('/');
                     } else {
-
                         Event::create($request->all());
-
                         Alert::success('Ура', 'Успешно добавлено');
-                        return redirect()->back();
+                        return redirect('/');
                     }
                 } else {
-
+                //    $requestUpdate = $request->created_at;
+                   
+                //     $dateCreateUpdate = Carbon::create($requestUpdate)->addHour(3)->toDateTimeString();
+                   
                     Event::where('id', $request->event_id)->update([
                         'title' => $request->title,
                         'start' => $request->start2_,
@@ -91,12 +97,12 @@ class FullCalenderController extends Controller
                         'assigned' => $request->assigned,
                     ]);
                     Alert::success('Ура!', ' Запись обновлена');
-                    return redirect()->back();
+                    return redirect('/');
                 }
             }
         } catch (Exception $e) {
             Alert::error("Ошибка", "Заполните поля корректно!");
-            return redirect()->back();
+            return redirect('/');
         }
     }
 
@@ -129,7 +135,9 @@ class FullCalenderController extends Controller
     }
     public function countTogle()
     {
+        
         $togleInWokrs = Event::where('typeEvent', 'togle')
+            ->where('start', Carbon::today())
             ->count();
         $togleNotChecked = Event::where('typeEvent', 'togle')
             ->whereNull('readed')
@@ -140,9 +148,28 @@ class FullCalenderController extends Controller
         ]);
     }
 
-    public function delete($id)
+    public function delete($created_at)
     {
-        Event::destroy($id);
-        return redirect()->back();
+        $dateCreate = Carbon::create($created_at)->addHour(3)->toDateTimeString();
+            $event = Event::where('created_at',$dateCreate);
+            $event->delete();
+        Alert::success('Ура!', ' Запись удалена');
+        return redirect('/');
+    // }else{
+    //     Alert::error('Ошибка при удалении!');
+    //     return redirect('/');
+        
+    // }
+       
+    }
+    public function deleteWatch($created_at)
+    {
+
+        // $dateCreate = Carbon::create($created_at)->addHour(3)->toDateTimeString();
+            $event = Event::where('created_at',$created_at);
+            $event->delete();
+        Alert::success('Ура!', ' Запись удалена');
+        return redirect('/');
+       
     }
 }
