@@ -148,10 +148,16 @@ class FullCalenderController extends Controller
         ]);
     }
 
-    public function delete($created_at)
+    public function delete($id)
     {
-        $dateCreate = Carbon::create($created_at)->addHour(3)->toDateTimeString();
-            $event = Event::where('created_at',$dateCreate);
+        $event = DB::table('events')
+        ->where('id',$id)
+        ->get('created_at');
+        foreach ($event as $itemEvent) {
+            $created_at = $itemEvent->created_at;
+        }
+        // $dateCreate = Carbon::create($created_at)->addHour(3)->toDateTimeString();
+            $event = Event::where('created_at',$created_at);
             $event->delete();
         Alert::success('Ура!', ' Запись удалена');
         return redirect('/');

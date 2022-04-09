@@ -144,7 +144,7 @@ $(document).ready(function () {
                 $('#description').val(event.description);
                 $('#eventId').val(event.id);
                 $('#deliteEvent').html('Удалить событие');
-                $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.created_at);
+                $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
                 $('.title-text').html('Обновить событие');
                 $('#labelStart').html('Начало события');
                 $('#labelEnd').html('Конец события');
@@ -173,7 +173,7 @@ $(document).ready(function () {
                 $('#description').val(event.description);
                 $('#eventId').val(event.id);
                 $('#assigned').val(event.assigned);
-                $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.created_at);
+                $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
                 $('.title-text').html('Обновить задачу');
                 $('#update').html('Обновить');
                 $('#dialog').dialog({
