@@ -58,7 +58,7 @@ function todayEvent() {
                $('#status').append(status);
                $('#eventId').val(id);
                $('#assigned').val(assigned);
-               $('#deliteEvent').attr('href', '/organaizer/public/deleteWatch' + '/' + created_at);
+               $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + id);
                $('.title-text').html('Обновить задачу');
                $('#update').html('Обновить');
                $('#dialog').dialog({
@@ -86,7 +86,7 @@ function todayEvent() {
             $('#color').append(color);
             $('#eventId').val(id);
             $('#deliteEvent').html('Удалить событие');
-            $('#deliteEvent').attr('href', '/organaizer/public/deleteWatch' + '/' + created_at);
+            $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + id);
             $('.title-text').html('Обновить событие');
             $('#update').html('Обновить');
             $('#dialog').dialog({
