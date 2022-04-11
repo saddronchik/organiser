@@ -142,6 +142,7 @@
                     @foreach ( $eventsTogles as $eventsTogle )
                     <div class="today-event__item" style="background:{{$eventsTogle->color}}">
                         <div class="today-event__typeEvent" style="display:none">{{$eventsTogle->typeEvent}}</div>
+                        <div class="today-event__created_at" style="display:none">{{$eventsTogle->created_at}}</div>
                         <div class="today-event__color" style="display:none">{{$eventsTogle->color}}</div>
                         <div class="today-event__status" style="display:none">{{$eventsTogle->status}}</div>
                         <div class="event__header">
@@ -178,6 +179,8 @@
                     <div class="today-event__item" style="background:{{$eventStatus->color}}">
                         <div class="today-event__typeEvent" style="display:none">{{$eventStatus->typeEvent}}</div>
                         <div class="today-event__color" style="display:none">{{$eventStatus->color}}</div>
+                        <div class="today-event__created_at" style="display:none">{{$eventStatus->created_at}}</div>
+
                         <div class="today-event__status" style="display:none">{{$eventStatus->status}}</div>
                         <div class="event__header">
                             <h3 class="event-item__title">{{$eventStatus->title}}</h3>

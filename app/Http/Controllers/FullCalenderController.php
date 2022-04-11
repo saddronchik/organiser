@@ -83,9 +83,13 @@ class FullCalenderController extends Controller
                         return redirect('/');
                     }
                 } else {
-                    //    $requestUpdate = $request->created_at;
 
-                    //     $dateCreateUpdate = Carbon::create($requestUpdate)->addHour(3)->toDateTimeString();
+                    $requestUpdate = $request->created_at;
+
+                    $dateCreateUpdate = Carbon::create($requestUpdate)->addHour(3)->toDateTimeString();
+                    Event::where('created_at', $dateCreateUpdate)->update([
+                        'status' => $request->status,
+                    ]);
 
                     Event::where('id', $request->event_id)->update([
                         'title' => $request->title,
@@ -159,5 +163,4 @@ class FullCalenderController extends Controller
         Alert::success('Ура!', ' Запись удалена');
         return redirect('/');
     }
-
 }
