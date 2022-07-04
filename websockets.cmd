@@ -1,0 +1,4 @@
+php artisan websockets:serve
+
+
+

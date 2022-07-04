@@ -11,6 +11,7 @@ function todayEvent() {
         let status = elemitem.querySelector('.today-event__status').textContent;
         let typeEvent = elemitem.querySelector('.today-event__typeEvent').textContent;
         let created_at = elemitem.querySelector('.today-event__created_at').textContent;
+        let textColor = elemitem.querySelector('.today-event__textColor').textContent;
         // console.log(created_at);
         elemitem.addEventListener('click', function (e) {
 
@@ -55,6 +56,7 @@ function todayEvent() {
                 $('#end2').val(clickDateEnd.substring(0, clickDateEnd.length - 8));
                 $('#description').val(description);
                 $('#color').val(color);
+                $('#textColor').val(textColor);
                 $('#color').append(color);
                 $('#status').val(status);
                 $('#status').append(status);

@@ -125,6 +125,7 @@
                     </div>
                     <input type="hidden" id="eventId" name="event_id">
                     <input type="hidden" id="created_at" name="created_at">
+                    <input type="hidden" id="textColor" name="textColor">
                     <div class="form-group">
 
                         <button type="submit" class="btn btn-success" id="update">Добавить задачу</button>
@@ -142,6 +143,7 @@
                     @foreach ( $eventsTogles as $eventsTogle )
                     <div class="today-event__item" style="background:{{$eventsTogle->color}}">
                         <div class="today-event__typeEvent" style="display:none">{{$eventsTogle->typeEvent}}</div>
+                        <div class="today-event__textColor" style="display:none">{{$eventsTogle->textColor}}</div>
                         <div class="today-event__created_at" style="display:none">{{$eventsTogle->created_at}}</div>
                         <div class="today-event__color" style="display:none">{{$eventsTogle->color}}</div>
                         <div class="today-event__status" style="display:none">{{$eventsTogle->status}}</div>
@@ -179,6 +181,7 @@
                     <div class="today-event__item" style="background:{{$eventStatus->color}}">
                         <div class="today-event__typeEvent" style="display:none">{{$eventStatus->typeEvent}}</div>
                         <div class="today-event__color" style="display:none">{{$eventStatus->color}}</div>
+                        <div class="today-event__textColor" style="display:none">{{$eventStatus->textColor}}</div>
                         <div class="today-event__created_at" style="display:none">{{$eventStatus->created_at}}</div>
 
                         <div class="today-event__status" style="display:none">{{$eventStatus->status}}</div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Alert;
+use Illuminate\Support\Str;
 
 use App\Models\Event;
 use Carbon\Carbon;
@@ -24,8 +25,13 @@ class FullCalenderController extends Controller
 
     public function indexall()
     {
+        // $var = Str::random(32);
+        // $eventsOld = Event::where('textColor',null)->update([
+        //     'textColor' => $var,
+        // ]);
 
         $events = Event::all();
+
         $eventsStatus = DB::table('events')
             ->groupBy('title')
             ->having('status', 'В работе')
@@ -54,15 +60,16 @@ class FullCalenderController extends Controller
                 Alert::error('Ошибка!', $validator->messages()->first());
                 return redirect('/');
             } else {
-
+                $var = Str::random(32);
                 if (empty($request->event_id)) {
                     if ($request->repeated == 1) {
-                        for ($i = 0; $i < 20; $i++) {
+                        for ($i = 0; $i < 15; $i++) {
 
                             $repeatedEvent = Carbon::parse($request->start)->addYear($i)->toDateTimeString();
                             $repeatedEventEnd = Carbon::parse($request->end)->addYear($i)->toDateTimeString();
 
-                            Event::create([
+                            $create =  Event::create([
+                                'textColor' => $var,
                                 'typeEvent' => $request->typeEvent,
                                 'start' => $repeatedEvent,
                                 'title' => $request->title,
@@ -78,30 +85,72 @@ class FullCalenderController extends Controller
                         Alert::success('Ура', 'Успешно добавлено');
                         return redirect('/');
                     } else {
-                        Event::create($request->all());
+                        $create =  Event::create([
+                            'textColor' => $var,
+                            'typeEvent' => $request->typeEvent,
+                            'start' => $request->start,
+                            'title' => $request->title,
+                            'end' => $request->end,
+                            'color' => $request->color,
+                            'status' => $request->status,
+                            'description' => $request->description,
+                            'assigned' => $request->assigned,
+                        ]);
+
                         Alert::success('Ура', 'Успешно добавлено');
                         return redirect('/');
                     }
                 } else {
 
-                    $requestUpdate = $request->created_at;
+                    $requestUpdate = $request->textColor;
 
-                    $dateCreateUpdate = Carbon::create($requestUpdate)->addHour(3)->toDateTimeString();
-                    Event::where('created_at', $dateCreateUpdate)->update([
-                        'status' => $request->status,
-                    ]);
+                    if ($requestUpdate == null) {
 
-                    Event::where('id', $request->event_id)->update([
-                        'title' => $request->title,
-                        'start' => $request->start2_,
-                        'end' => $request->end2,
-                        'color' => $request->color,
-                        'status' => $request->status,
-                        'description' => $request->description,
-                        'assigned' => $request->assigned,
-                    ]);
-                    Alert::success('Ура!', ' Запись обновлена');
-                    return redirect('/');
+                        $dateCreateUpdate = Carbon::create($request->created_at)->addHour(3)->toDateTimeString();
+                        $dateCreateUpdate1sec = Carbon::create($request->created_at)->addHour(3)->addSecond()->toDateTimeString();
+
+                        Event::where('created_at', $dateCreateUpdate)
+                            ->update([
+                                'textColor' => $var,
+                            ]);
+                        Event::where('created_at', $dateCreateUpdate1sec)
+                            ->update([
+                                'textColor' => $var,
+                            ]);
+                        Event::where('textColor', $var)->update([
+                            'status' => $request->status,
+                        ]);
+
+                        Event::where('id', $request->event_id)->update([
+                            'title' => $request->title,
+                            'start' => $request->start2_,
+                            'end' => $request->end2,
+                            'color' => $request->color,
+                            'status' => $request->status,
+                            'description' => $request->description,
+                            'assigned' => $request->assigned,
+                        ]);
+                        Alert::success('Ура!', ' Запись обновлена');
+                        return redirect('/');
+                    } else {
+                        $requestUpdateNew = $request->textColor;
+
+                        Event::where('textColor', $requestUpdateNew)->update([
+                            'status' => $request->status,
+                        ]);
+
+                        Event::where('id', $request->event_id)->update([
+                            'title' => $request->title,
+                            'start' => $request->start2_,
+                            'end' => $request->end2,
+                            'color' => $request->color,
+                            'status' => $request->status,
+                            'description' => $request->description,
+                            'assigned' => $request->assigned,
+                        ]);
+                        Alert::success('Ура!', ' Запись обновлена');
+                        return redirect('/');
+                    }
                 }
             }
         } catch (Exception $e) {
@@ -154,11 +203,22 @@ class FullCalenderController extends Controller
 
     public function delete($id)
     {
+        $var = Str::random(32);
+        $updateKey = Event::where('id', $id)
+            ->first();
+        $updateCreated_at = Carbon::create($updateKey->created_at)->addSecond();
+        if ($updateKey->textColor == null) {
+            Event::where('created_at', $updateKey->created_at)
+                ->update(['textColor' => $var,]);
+            Event::where('created_at', $updateCreated_at)
+                ->update(['textColor' => $var,]);
+        }
+
+
         $eventid = Event::where('id', $id)
             ->first();
-        $dateCreate = Carbon::create($eventid->created_at)
-            ->toDateTimeString();
-        $event = Event::where('created_at', $dateCreate);
+
+        $event = Event::where('textColor', $eventid->textColor);
         $event->delete();
         Alert::success('Ура!', ' Запись удалена');
         return redirect('/');

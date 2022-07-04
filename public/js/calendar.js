@@ -119,7 +119,7 @@ $(document).ready(function () {
 
 
         eventClick: function (event) {
-            
+            console.log(event);
             var clickDate = new Date(event.start._d).toISOString();
             var clickDateEnd = new Date(event.end).toISOString();
             if (event.typeEvent == 'togle') {
@@ -128,6 +128,7 @@ $(document).ready(function () {
                 $('#chk').css("display", "none");
                 $('#start').css("display", "none");
                 $('#end').css("display", "none");
+                $('#created_at').val(event.created_at); 
                 $('#titleEvent').html('Событие');
                 $('#repeatedEventDiv').css("display", "none");
                 $('body').css("overflow", "visible");
@@ -135,6 +136,7 @@ $(document).ready(function () {
                 $('#statusTask').css("display", "none");
                 $('#assignedEvent').css("display", "none");
                 $('#color').val(event.color);
+                $('#textColor').val(event.textColor);
                 $('#color').append(event.color);
                 $('#title').val(event.title);
                 $('#start2').val(clickDate.substring(0,clickDate.length-8));
@@ -163,6 +165,7 @@ $(document).ready(function () {
                 $('#repeatedEventDiv').css("display", "none");
                 $('body').css("overflow", "visible");
                 $('body').css("background", "black");
+                $('#textColor').val(event.textColor);
                 $('#status').val(event.status);
                 $('#status').append(event.status);
                 $('#color').val(event.color);
