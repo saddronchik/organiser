@@ -52,6 +52,7 @@
             <div id="dialog-body">
                 <form id="dayClick" method="POST" action="{{route('eventStore')}}">
                     @csrf
+                    @method("post")
                     <div class="form-group">
                         <div class="title">
                             <div class="title-event"><label class="title-text">Добавить задачу</label></div>
@@ -63,10 +64,14 @@
                         </div>
                     </div>
 
-                    <div class="form-check pl-0" id="chkEvent" >
-                        <input type="radio" class="form-controlt" id="chk" name="chk">
-                        <label class="form-check-label" for="chk"><h4>Событие</h4></label>
-                    </div>
+                    <div class="form-check form-check-inline" id="chkEvent" name="chkEvent">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                        <label class="form-check-label" for="chkEvent">Задача</label>
+                      </div>
+                      <div class="form-check form-check-inline" id="chk" name="chk">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                        <label class="form-check-label" for="chk">Событие</label>
+                      </div>
 
                     <div class="form-group">
                         <input type="hidden" id="typeEvent" class="form-control" name="typeEvent"   value="">
@@ -78,12 +83,12 @@
                     </div>
 
                     <div class="form-group" id="startDiv">
-                        <label>Начало задачи</label>
-                        <input type="datetime-local" id="start" class="form-control" name="start" placeholder="Дата и время начала">
+                        <label  id="labelStart">Начало задачи</label>
+                        <input type="datetime-local" id="start" class="form-control" name="start" placeholder="Дата и время начала" >
                         <input type="datetime-local" id="start2" class="form-control" name="start2 " placeholder="Дата и время начала">
                     </div>
                     <div class="form-group" id="endDiv">
-                        <label>Конец задачи</label>
+                        <label id="labelEnd">Конец задачи</label>
                         <input type="datetime-local" id="end" class="form-control" name="end" placeholder="Дата и время конца">
                         <input type="datetime-local" id="end2" class="form-control" name="end2" placeholder="Дата и время конца">
                     </div>
@@ -112,13 +117,15 @@
                     </div>
                     <div class="form-group" id="assignedEvent">
                         <label>Кому назначена</label>
-                        <input id="assigned" class="form-control" name="assigned"> </input>
+                        <input id="assigned" class="form-control" name="assigned">
                     </div>
                     <div class="form-check pl-0" id="repeatedEventDiv">
                         <input type="checkbox" class="form-controlt" id="repeated" name="repeated" value="1">
-                        <label class="form-check-label"  id="repeatedEvent">Повторять задачу</label>
+                        <label class="form-check-label"  id="repeatedEvent">Повторять задачу каждый год</label>
                     </div>
                     <input type="hidden" id="eventId" name="event_id">
+                    <input type="hidden" id="created_at" name="created_at">
+                    <input type="hidden" id="textColor" name="textColor">
                     <div class="form-group">
 
                         <button type="submit" class="btn btn-success" id="update">Добавить задачу</button>
@@ -128,17 +135,22 @@
                 </form>
             </div>
         </div>
+
         <div class="today__evet" id="today__togle" style="display: none;">
             <div class="button-close_events"><a href="" type="button" aria-label="Close" class="btn-close">&times;</a></div>
             <div class="list-group">
                 <div class="body__today_event">
                     @foreach ( $eventsTogles as $eventsTogle )
                     <div class="today-event__item" style="background:{{$eventsTogle->color}}">
+                        <div class="today-event__typeEvent" style="display:none">{{$eventsTogle->typeEvent}}</div>
+                        <div class="today-event__textColor" style="display:none">{{$eventsTogle->textColor}}</div>
+                        <div class="today-event__created_at" style="display:none">{{$eventsTogle->created_at}}</div>
                         <div class="today-event__color" style="display:none">{{$eventsTogle->color}}</div>
                         <div class="today-event__status" style="display:none">{{$eventsTogle->status}}</div>
                         <div class="event__header">
                             <h3 class="event-item__title">{{$eventsTogle->title}}</h3>
                             <div class="event-id" style="display:none">{{$eventsTogle->id}}</div>
+                            <div class="event-created_at" style="display:none">{{$eventsTogle->created_at}}</div>
                         </div>
                         <div class="event-item__text">{{$eventsTogle->description}}</div>
                         <div class="event-assigned" style="margin-bottom:-17px;">{{$eventsTogle->assigned}}</div>
@@ -147,13 +159,13 @@
                             <img src="img\icon\time2.png" alt="Environmental Consulting">
                             <div class="event-item__start_time">{{$eventsTogle->start}}</div><b>&nbsp - &nbsp</b>
                             <div class="event-item__end_time">{{$eventsTogle->end}}</div>
-                            <div class="event_Cheked">
+                            <!-- <div class="event_Cheked">
                                 @if ($eventsTogle->readed == null)
                                 <span>Не просмотренно<span>
                                     @else
                                 <span>Просмотренно<span>
                                 @endif
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     @endforeach
@@ -167,11 +179,16 @@
                 <div class="body__today_event">
                     @foreach ( $eventsStatus as $eventStatus )
                     <div class="today-event__item" style="background:{{$eventStatus->color}}">
+                        <div class="today-event__typeEvent" style="display:none">{{$eventStatus->typeEvent}}</div>
                         <div class="today-event__color" style="display:none">{{$eventStatus->color}}</div>
+                        <div class="today-event__textColor" style="display:none">{{$eventStatus->textColor}}</div>
+                        <div class="today-event__created_at" style="display:none">{{$eventStatus->created_at}}</div>
+
                         <div class="today-event__status" style="display:none">{{$eventStatus->status}}</div>
                         <div class="event__header">
                             <h3 class="event-item__title">{{$eventStatus->title}}</h3>
                             <div class="event-id" style="display:none">{{$eventStatus->id}}</div>
+                            <div class="event-created_at" style="display:none">{{$eventStatus->created_at}}</div>
                         </div>
                         <div class="event-item__text">{{$eventStatus->description}}</div>
                         <div class="event-assigned" style="margin-bottom:-17px;">{{$eventStatus->assigned}}</div>
@@ -183,13 +200,10 @@
                             <div class="event_Cheked">
                                 @if ($eventStatus->readed == null)
                                 <span>Не просмотренно<span>
-                                        @else
-                                        <span>Просмотренно<span>
-                                                @endif
+                                    @else
+                                <span>Просмотренно<span>
+                                        @endif
                             </div>
-                        </div>
-                        <div>
-
                         </div>
                     </div>
                     @endforeach

@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['organaizer.pyw'],
+a = Analysis(['organaizer.py'],
              pathex=[],
              binaries=[],
              datas=[],
@@ -33,7 +33,7 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False,
+          console=True,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,

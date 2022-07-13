@@ -39,6 +39,7 @@ Route::get('/togleWatch', [App\Http\Controllers\FullCalenderController::class,'c
 
 
 Route::get('/deleteEvent/{id}', [App\Http\Controllers\FullCalenderController::class, 'delete']);
+// Route::get('/deleteWatch/{created_at}', [App\Http\Controllers\FullCalenderController::class, 'deleteWatch']);
 
 Route::get('/indexStatus', [App\Http\Controllers\FullCalenderController::class, 'indexStatus'])
     ->name('statusEvent');

@@ -118,10 +118,31 @@ display: none;
     font-weight:600 !important;
     font-size: 20px;
 }
+.fc-view.fc-agendaDay-view.fc-agenda-view{ 
+    width: 200% !important;
+}
 .fc-view-container{
+    max-width: 650% !important;
     background-color: #ffffff;
     border-radius: 20px!important;
+    overflow-x:scroll !important ;
 }
+.fc-time-grid-event.fc-v-event.fc-event.fc-start.fc-end{
+    max-width: 250px !important;
+    /* inset: 1px 0% -1217.78px 4% !important; */
+}
+.fc-time-grid-event {
+    max-width: 250px !important;
+}
+
+/* .fc-time-grid-event.fc-v-event.fc-event.fc-start.fc-end{
+    min-width:250px !important;
+    max-width: 250px !important;
+}
+.fc-time-grid-event {
+    width: 250px !important;
+} */
+
 .fc table{
     border-collapse: collapse !important;
     border: 2px solid #f5f5f5  !important;
@@ -156,9 +177,7 @@ border: none;
 .fc-time-grid-event .fc-time {
     /* display: none !important; */
 }
-.fc-time-grid-event {
-    width: 15% !important;
-}
+
 .fc-event .fc-bg {
    opacity: 0.6;
 }
@@ -210,7 +229,7 @@ border: none;
     border-radius:20px ;
     border: 2px solid;
     background-color: #5064f7;
-    padding: 2px 6px;
+    padding: 2px 10px;
 }
 .fc-more{
     background-color: #eeeeee;

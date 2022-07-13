@@ -9,7 +9,7 @@ function countEvents() {
             return response.json()
         })
         .then(data => {
-            document.querySelector('.fc-todayEvent-button').innerHTML = `<div class = ""> Задач - ${data.eventInWokrs} шт.</div>`;
+            document.querySelector('.fc-todayEvent-button').innerHTML = `<div class = ""> Задач в работе - ${data.eventInWokrs} шт.</div>`;
             // todatEvent.innerHTML =
             //     `<div class = "fc-corner-right">${data.eventInWokrs}</div>`;
         })

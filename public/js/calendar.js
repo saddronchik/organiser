@@ -27,10 +27,13 @@ $(document).ready(function () {
         slotLabelFormat: 'H:mm',
         defaultDate: $.fullCalendar.moment().startOf('day'),
         firstDay: 1,
+        customRender: true,
+        slotEventOverlap:false,
+        
 
         customButtons: {
             todayEvent: {
-                text: 'Задачи - 0 шт.',
+                text: 'Задач в работе - 0 шт.',
                 click: function (e) {
                     e.preventDefault();
                     $('#today__evet').dialog({
@@ -42,7 +45,7 @@ $(document).ready(function () {
             },
             todayTogle: {
                 id: 'todayTogle',
-                text: 'События - 0 шт.',
+                text: 'Событий сегодня - 0 шт.',
                 click: function (e) {
                     e.preventDefault();
                     $('#today__togle').dialog({
@@ -64,7 +67,7 @@ $(document).ready(function () {
         header: {
             right: 'today, prev,next,KIP ',
             center: 'title',
-            left: 'month,agendaWeek,agendaDay,todayEvent,todayTogle'
+            left: 'month,agendaDay,todayEvent,todayTogle'
         },
         views: {
             dayGridMonth: {
@@ -86,7 +89,13 @@ $(document).ready(function () {
         events: "/organaizer/public/index",
 
         eventRender: function (event, element) {
-        //для вывода доп. информации к задаче
+            if (event.typeEvent == null) {
+                event.typeEvent = 
+                element.find('.fc-title').before("Задача - ");
+            }else{
+                element.find('.fc-title').before("Cобытие - ");
+            }
+            
         },
         dayClick: function (date, event, view) {
             
@@ -110,43 +119,53 @@ $(document).ready(function () {
 
 
         eventClick: function (event) {
-            
+            console.log(event);
             var clickDate = new Date(event.start._d).toISOString();
             var clickDateEnd = new Date(event.end).toISOString();
             if (event.typeEvent == 'togle') {
                 
                 $('#chkEvent').css("display", "none");
+                $('#chk').css("display", "none");
+                $('#start').css("display", "none");
+                $('#end').css("display", "none");
+                $('#created_at').val(event.created_at); 
                 $('#titleEvent').html('Событие');
-                $('#startDiv').css("display", "none");
-                $('#endDiv').css("display", "none");
                 $('#repeatedEventDiv').css("display", "none");
                 $('body').css("overflow", "visible");
                 $('body').css("background", "black");
                 $('#statusTask').css("display", "none");
                 $('#assignedEvent').css("display", "none");
                 $('#color').val(event.color);
+                $('#textColor').val(event.textColor);
                 $('#color').append(event.color);
                 $('#title').val(event.title);
                 $('#start2').val(clickDate.substring(0,clickDate.length-8));
+                $('#start2').attr('readonly','readonly');
                 $('#end2').val(clickDateEnd.substring(0,clickDateEnd.length-8));
+                $('#end2').attr('readonly','readonly');
                 $('#description').val(event.description);
                 $('#eventId').val(event.id);
                 $('#deliteEvent').html('Удалить событие');
                 $('#deliteEvent').attr('href', '/organaizer/public/deleteEvent' + '/' + event.id);
                 $('.title-text').html('Обновить событие');
+                $('#labelStart').html('Начало события');
+                $('#labelEnd').html('Конец события');
                 $('#update').html('Обновить');
                 $('#dialog').dialog({
                     width: 500,
-                    height: 550,
+                    height: 650,
                     modal: true,
                 })
             }else{
                 $('#chkEvent').css("display", "none");
+                $('#chk').css("display", "none");
                 $('#start').css("display", "none");
                 $('#end').css("display", "none");
+                $('#created_at').val(event.created_at); 
                 $('#repeatedEventDiv').css("display", "none");
                 $('body').css("overflow", "visible");
                 $('body').css("background", "black");
+                $('#textColor').val(event.textColor);
                 $('#status').val(event.status);
                 $('#status').append(event.status);
                 $('#color').val(event.color);
@@ -174,7 +193,12 @@ $(document).ready(function () {
             if (calEvent.description == null) {
                 calEvent.description = "Нет доп. информации!"
             }
-            var tooltip = '<div class="tooltipevent">' + '<p class="ptitle">' + calEvent.title + '</p>' + '<p class="pdescript">' + calEvent.description + '</p>' + '</div>';
+            if (calEvent.typeEvent == null) {
+                calEvent.typeEvent = "Задача"
+            } else{
+                calEvent.typeEvent = "Событие"
+            }
+            var tooltip = '<div class="tooltipevent">' + '<p class="ptitle">'+ calEvent.typeEvent + ' - ' + calEvent.title + '</p>' + '<p class="pdescript">' + calEvent.description + '</p>' + '</div>';
             $("body").append(tooltip);
             $(this).mouseover(function (e) {
                 $(this).css('z-index', 10000);
@@ -270,28 +294,53 @@ $(document).ready(function () {
     });
 });
 
+document.getElementById('chkEvent').addEventListener('change', toggleInputEvent);
+
+function toggleInputEvent(evt) {
+    $('#dialog').dialog({
+        width: 500,
+        height: 850,
+        modal: true,
+    })
+    // document.querySelector('#startDiv').classList.toggle('hidden-div');
+    // document.querySelector('#endDiv').classList.toggle('hidden-div');
+    document.querySelector('#start').readOnly = false;
+    document.querySelector('#end').readOnly = false;
+    document.querySelector('#statusTask').classList.toggle('hidden-div');
+    document.querySelector('#assignedEvent').classList.toggle('hidden-div');
+    document.querySelector('#labelStart').innerHTML= 'Начало задачи';
+    document.querySelector('#labelEnd').innerHTML= 'Конец задачи';
+    document.querySelector('.title-text').innerHTML= 'Добавить задачу';
+    document.querySelector('#titleEvent').innerHTML= 'Задача';
+    
+    document.querySelector('#repeatedEvent').innerHTML= 'Повторять задачу каждый год';
+    document.querySelector('#update').innerHTML= 'Добавить задачу';
+
+    document.querySelector('#typeEvent').value = '';
+}
+
 document.getElementById('chk').addEventListener('change', toggleInput);
 
 function toggleInput(evt) {
     $('#dialog').dialog({
         width: 500,
-        height: 550,
+        height: 680,
         modal: true,
     })
-    document.querySelector('#startDiv').classList.toggle('hidden-div');
-    document.querySelector('#endDiv').classList.toggle('hidden-div');
+    document.querySelector('#start').readOnly = true;
+    document.querySelector('#end').readOnly = true;
+    document.querySelector('#labelStart').innerHTML= 'Начало события';
+    document.querySelector('#labelEnd').innerHTML= 'Конец события';
     document.querySelector('#statusTask').classList.toggle('hidden-div');
     document.querySelector('#assignedEvent').classList.toggle('hidden-div');
 
     document.querySelector('.title-text').innerHTML= 'Добавить событие';
     document.querySelector('#titleEvent').innerHTML= 'Событие';
     
-    document.querySelector('#repeatedEvent').innerHTML= 'Повторять событие';
+    document.querySelector('#repeatedEvent').innerHTML= 'Повторять событие каждый год';
     document.querySelector('#update').innerHTML= 'Добавить событие';
 
     document.querySelector('#typeEvent').value = 'togle';
-
-    
 }
 
 
@@ -305,4 +354,5 @@ if (ip === "") {
     alert("IP сервера не задан! Повторите выполнение файла Python!")
 }
 
-todayEvent()
+todayEvent();
+
