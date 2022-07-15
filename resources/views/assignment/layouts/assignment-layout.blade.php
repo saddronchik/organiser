@@ -15,7 +15,6 @@
 <body>
 
 @include('assignment.includes.header')
-
 @include('assignment.includes.top-nav')
 
 <main class="app-content py-4">

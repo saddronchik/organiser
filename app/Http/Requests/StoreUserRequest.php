@@ -31,7 +31,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => 'required'
+            'full_name' => 'required|string'
         ];
     }
 }

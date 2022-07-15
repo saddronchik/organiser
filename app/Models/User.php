@@ -15,6 +15,12 @@ class User extends Authenticatable
     public $timestamps = false;
     protected $fillable = ['full_name'];
 
+    public static function new($fullName)
+    {
+        return static::create([
+            'full_name' => $fullName
+        ]);
+    }
 
     public function assignments(): BelongsToMany
     {

@@ -32,7 +32,7 @@ class EloquentAssignmentsQueries implements AssignmentQueries
         return $result;
     }
 
-    public function getById(int $id)
+    public function find($id)
     {
         $result = Assignment::with([
             'users',

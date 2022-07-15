@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * Class Assignment
  * @package App\Models
+ * @property int $id;
  * @property string $document_number;
  * @property string $preamble;
  * @property string $text;
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $status;
  * @property $deadline;
  * @property $real_deadline;
+ *
+ * @method
  */
 
 class Assignment extends Model
@@ -28,7 +31,7 @@ class Assignment extends Model
     use HasFactory;
 
     public const STATUS_IN_PROGRESS = 'В работе';
-    public const STATUS__EXPIRED = 'Просрочено';
+    public const STATUS_EXPIRED = 'Просрочено';
     public const STATUS_DONE = 'Выполнено';
     public const STATUS_NULL = 'Без статуса';
 
@@ -46,6 +49,74 @@ class Assignment extends Model
         'deadline',
         'real_deadline'
     ];
+
+    public function done(): void
+    {
+        $this->update([
+            'real_deadline' => Carbon::now(),
+            'status' => self::STATUS_DONE
+        ]);
+    }
+
+    public function expire(): void
+    {
+        if ($this->isExpired()) {
+            throw new \DomainException('Поручение уже помеченно как "Просроченно"');
+        }
+        $this->update([
+            'status' => self::STATUS_EXPIRED
+        ]);
+    }
+
+    public function getRegisterDateAttribute($value): ?string
+    {
+        if (is_null($value)) return null;
+        return Carbon::parse($value)->format('d.m.Y');
+    }
+
+    public function getDeadlineAttribute($value): ?string
+    {
+        if (is_null($value)) return null;
+
+        return Carbon::parse($value)->format('d.m.Y');
+    }
+
+    public function getRealDeadlineAttribute($value): ?string
+    {
+        if (is_null($value)) return null;
+
+        return Carbon::parse($value )->format('d.m.Y');
+    }
+
+    public static function getStatuses(): array
+    {
+        return [
+            self::STATUS_EXPIRED,
+            self::STATUS_DONE,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_NULL
+        ];
+    }
+
+    public function isProgress(): bool
+    {
+        return $this->status === self::STATUS_IN_PROGRESS;
+    }
+
+    public function isDone(): bool
+    {
+        return $this->status === self::STATUS_DONE;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->status === self::STATUS_EXPIRED;
+    }
+
+    public function isNone(): bool
+    {
+        return $this->status === self::STATUS_NULL;
+    }
 
     public function users(): BelongsToMany
     {
@@ -72,54 +143,8 @@ class Assignment extends Model
         return $this->belongsTo(Department::class);
     }
 
-
-    public function getRegisterDateAttribute($value): mixed
+    private function checkExpiredDate(): bool
     {
-        if (is_null($value)) return null;
-        return Carbon::parse($value)->format('d.m.Y');
-    }
-
-    public function getDeadlineAttribute($value): mixed
-    {
-        if (is_null($value)) return null;
-
-        return Carbon::parse($value)->format('d.m.Y');
-    }
-
-    public function getRealDeadlineAttribute($value): mixed
-    {
-        if (is_null($value)) return null;
-
-        return Carbon::parse($value )->format('d.m.Y');
-    }
-
-    public static function getStatuses(): array
-    {
-        return [
-            self::STATUS__EXPIRED,
-            self::STATUS_DONE,
-            self::STATUS_IN_PROGRESS,
-            self::STATUS_NULL
-        ];
-    }
-
-    public function isProgress(): bool
-    {
-        return $this->status === self::STATUS_IN_PROGRESS;
-    }
-
-    public function isDone(): bool
-    {
-        return $this->status === self::STATUS_DONE;
-    }
-
-    public function isExpired(): bool
-    {
-        return $this->status === self::STATUS__EXPIRED;
-    }
-
-    public function isNone(): bool
-    {
-        return $this->status === self::STATUS_NULL;
+        return Carbon::parse($this->deadline)->lt(Carbon::now());
     }
 }

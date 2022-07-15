@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Assignments;
 
 use App\Exports\AssignmentExport;
 use App\Http\Requests\StoreAssignmentRequest;
+use App\Http\Services\assignment\AssignmentService;
+use App\Http\Services\assignment\DepartmentService;
 use App\Models\Assignment;
 use App\Models\User;
 use App\Repositories\Interfaces\AssignmentQueries;
@@ -17,20 +19,26 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class IndexController extends BaseController
 {
 
+    private $assignmentService;
+    private $departmentService;
     private $assignmentRepository;
     private $userRepository;
     private $departmentRepository;
 
     private $department;
 
-    public function __construct(AssignmentQueries $assignmentRepository,
+    public function __construct(AssignmentService $assignmentService,
+                                DepartmentService $departmentService,
+                                AssignmentQueries $assignmentRepository,
                                 UsersQueries $userRepository,
                                 DepartmentsQueries $departmentRepository)
     {
+        $this->assignmentService = $assignmentService;
+        $this->departmentService = $departmentService;
         $this->assignmentRepository = $assignmentRepository;
         $this->userRepository = $userRepository;
         $this->departmentRepository = $departmentRepository;
-        $this->department = new DepartmentController();
+        $this->department = new DepartmentController(new DepartmentService());
     }
 
     public function index(Request $request, int $perPage = 15)
@@ -62,11 +70,12 @@ class IndexController extends BaseController
 
         $assignments = $query->paginate($perPage);
 
+
         foreach ($assignments as $assignment) {
             if (!empty($assignment->deadline) && Carbon::parse($assignment->deadline)->lt(Carbon::now()) &&
                     !$assignment->isDone())
             {
-                $assignment->status = Assignment::STATUS__EXPIRED;
+                $assignment->status = Assignment::STATUS_EXPIRED;
                 $assignment->save();
             }
         }
@@ -96,7 +105,6 @@ class IndexController extends BaseController
         $addressed = null;
         $executor = null;
         $status = Assignment::STATUS_IN_PROGRESS;
-
 
         if ($request['new_department']) {
             $department = $this->department->storeFromModal($request->new_department);
@@ -168,16 +176,15 @@ class IndexController extends BaseController
             ->with('error');
     }
 
-    public function edit(int $id)
+    public function edit(Assignment $assignment)
     {
-        $assignment = $this->assignmentRepository->getById($id);
         $statuses = Assignment::getStatuses();
         $users = $this->userRepository->getAll();
         $departments = $this->departmentRepository->getAll();
 
         return response()->json([
             "status" => true,
-            "assignment" => $assignment,
+            "assignment" => $this->assignmentRepository->find($assignment->id),
             "statuses" => $statuses,
             "subexecutors" => $assignment->users,
             "users" => $users,
@@ -197,7 +204,7 @@ class IndexController extends BaseController
         if ($status == Assignment::STATUS_DONE) {
             $request['deadline'] = Carbon::now();
             $request['fact_deadline'] = Carbon::now();
-        } elseif ($status == Assignment::STATUS__EXPIRED) {
+        } elseif ($status == Assignment::STATUS_EXPIRED) {
             $request['fact_deadline'] = Carbon::now()->subDay();
         } elseif ($status == Assignment::STATUS_IN_PROGRESS
             && !Carbon::parse($request['deadline'])->gt(Carbon::now()->addDay()))
@@ -279,6 +286,27 @@ class IndexController extends BaseController
             ->with('error');
     }
 
+    public function done(Assignment $assignment)
+    {
+        try {
+            $this->assignmentService->markAsDone($assignment->id);
+        } catch (\DomainException $exception) {
+            return back()->with('error', $exception->getMessage());
+        }
+
+        return redirect()->route('assignments.index');
+    }
+
+    public function expired(Assignment $assignment)
+    {
+        try {
+            $this->assignmentService->markAsExpired($assignment->id);
+        } catch (\DomainException $exception) {
+            return back()->with('error', $exception->getMessage());
+        }
+
+        return redirect()->route('assignments.index');
+    }
 
     public function sortByStatus($id)
     {
@@ -308,20 +336,17 @@ class IndexController extends BaseController
             'assignments.xlsx');
     }
 
-    public function destroy(int $id)
+    public function destroy(Assignment $assignment)
     {
-        $result = Assignment::destroy($id);
-
-        if (!$result) {
-            return response()->json([
-                'status' => false
-            ]);
+        try {
+            $this->assignmentService->remove($assignment->id);
+        } catch (\DomainException $exception) {
+            return back()->with('error', $exception->getMessage());
         }
 
         return response()->json([
             'status' => true
         ]);
-
     }
 
 

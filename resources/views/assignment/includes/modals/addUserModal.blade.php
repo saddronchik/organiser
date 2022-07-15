@@ -4,7 +4,7 @@
         <img src="{{ asset('img/icon/close.svg') }}" alt="close">
     </button>
 </div>
-<form method="post" action="{{ route('add-user') }}">
+<form method="post" action="{{ route('assignments.user.add') }}">
     @csrf
     <div class="modal-body">
         <div class="form-group">

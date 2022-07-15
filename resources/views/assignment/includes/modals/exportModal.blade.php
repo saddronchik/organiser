@@ -4,7 +4,7 @@
         <img src="{{ asset('img/icon/close.svg') }}" alt="close">
     </button>
 </div>
-<form method="get" action="{{ route('export-assignment') }}">
+<form method="get" action="{{ route('assignments.export') }}">
     @csrf
     <div class="modal-body">
         <div class="form-group">

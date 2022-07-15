@@ -4,31 +4,40 @@ namespace App\Http\Controllers\Assignments;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDepartmentRequest;
+use App\Http\Services\assignment\DepartmentService;
 use App\Models\Department;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function store(StoreDepartmentRequest $request)
+    private $departmentService;
+
+    public function __construct(DepartmentService $departmentService)
     {
-        $department = Department::create($request->all());
-
-        if ($department) {
-            return redirect()
-                ->back()
-                ->with('success', 'Подразделение добавлено успешно.');
-        }
-
-        return redirect()
-            ->back()
-            ->with('error');
+        $this->departmentService = $departmentService;
     }
 
-    public function storeFromModal(string $title): Department
+    public function store(StoreDepartmentRequest $request)
     {
-        $department = Department::create([
-            'title' => $title
-        ]);
+        try {
+            $this->departmentService->create($request['title']);
+        } catch (\DomainException $exception) {
+            return redirect()
+                ->back()
+                ->with('error', $exception->getMessage());
+        }
+
+        return redirect()->back()
+            ->with('success', 'Подразделение добавлено успешно.');
+    }
+
+    public function storeFromModal(string $title): ?Department
+    {
+        try {
+            $department = $this->departmentService->create($title);
+        } catch (\DomainException $exception) {
+            return null;
+        }
 
         return $department;
     }

@@ -1,12 +1,11 @@
 $(document).ready(function () {
 
-
     $('.dropdown-toggle').dropdown()
 
-    let addAssignmentBtn = $('#add-assignment-btn');
+    // let addAssignmentBtn = $('#add-assignment-btn');
     let searchBtn = $('.search-icon');
     let searchForm = document.querySelector('.form-search');
-    const exportBtn = $('.exportBtn');
+    // const exportBtn = $('.exportBtn');
     let departmentSelect = $('.departmentSelect'),
         addressedSelect = $('.addressedSelect'),
         authorSelect = $('.authorSelect'),
@@ -175,6 +174,7 @@ $(document).ready(function () {
 
             success: (data) => {
                 if (data.status) {
+                    console.log(data);
 
                     let preamble = editAssignmentModal.find('#preambule'),
                         resolution = editAssignmentModal.find('#resolution'),

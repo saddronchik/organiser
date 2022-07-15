@@ -22,8 +22,7 @@
 
                 <div class="top-nav_actions">
                     <button class="btn showd-sm rounded  btn-grad" id="add-assignment-btn" data-toggle="modal"
-                            data-target="#add-assignment-modal" style="background-color: #2f66ff; color: white;">Создать
-                        поручение</button>
+                            data-target="#add-assignment-modal" style="background-color: #2f66ff; color: white;">Создать поручение</button>
                 </div>
             </div>
 

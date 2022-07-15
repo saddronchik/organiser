@@ -143,17 +143,37 @@
                                                     <div class="card-header__title">
                                                         <h5>Подробная информация</h5>
                                                     </div>
-                                                    <div class="card-header__actions">
-                                                            <a href="#"
-                                                               class="card-header__actions-btn editAssignmentBtn"
-                                                               data-toggle="modal" id="edit-assignment-btn"
-                                                               data-id="{{ $assignment->id }}"
-                                                               data-target="#edit-assignment-modal">
-                                                                <img src="{{ asset('img/icon/edit.svg') }}"
-                                                                     alt="edit-btn"
-                                                                     width="15px">
-                                                                Изменить</a>
-                                                        <a href="#" class="card-header__actions-btn removeAssignmentBtn"
+                                                    <div class="card-header__actions d-flex">
+                                                        @if (!$assignment->isDone())
+                                                            <form action="{{ route('assignments.done', $assignment) }}"
+                                                                  class="mr-1" method="post">
+                                                                @csrf
+                                                                <button type="submit" class="btn-sm btn-success border-0">
+                                                                    Пометить
+                                                                    как <b>"Выполненно"</b></button>
+                                                            </form>
+                                                        @endif
+                                                        @if (!$assignment->isExpired())
+                                                            <form
+                                                                action="{{ route('assignments.expire', $assignment) }}"
+                                                                class="mr-1" method="post">
+                                                                @csrf
+                                                                <button type="submit" class="btn-sm btn-danger border-0">Пометить
+                                                                    как
+                                                                    <b>"Просрочено"</b></button>
+                                                            </form>
+                                                        @endif
+
+                                                        <a href="#"
+                                                           class="btn-sm btn-primary editAssignmentBtn mr-1"
+                                                           data-toggle="modal" id="edit-assignment-btn"
+                                                           data-id="{{ $assignment->id }}"
+                                                           data-target="#edit-assignment-modal">
+                                                            <img src="{{ asset('img/icon/edit.svg') }}"
+                                                                 alt="edit-btn"
+                                                                 width="15px">
+                                                            Изменить</a>
+                                                        <a href="#" class="btn-sm btn-warning removeAssignmentBtn"
                                                            id="remove-assignment-btn"
                                                            data-id="{{ $assignment->id }}"
                                                         >

@@ -4,14 +4,13 @@
         <img src="{{ asset('img/icon/close.svg') }}" alt="close">
     </button>
 </div>
-<form method="post" action="{{ route('add-department') }}">
+<form method="post" action="{{ route('assignments.department.add') }}">
     @csrf
     <div class="modal-body">
         <div class="form-group">
             <input type="text" class="form-control" id="department_title" name="title"
                    aria-describedby="departmentHelp" value="{{ old('title') }}">
-            <small id="departmentHelp" class="form-text text-muted">Введите название
-                подразделения</small>
+            <small id="departmentHelp" class="form-text text-muted">Введите название подразделения</small>
         </div>
 
     </div>
