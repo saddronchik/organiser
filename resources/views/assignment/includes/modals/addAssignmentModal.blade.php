@@ -39,7 +39,7 @@
             </div>
             <div class="col">
                 <small id="registerDateHelp" class="form-text text-muted">Дата регистрации</small>
-                <input type="date" class="form-control" name="register_date" value="{{ old('created_at') }}">
+                <input type="date" class="form-control" id="add-register-date" name="register_date" value="{{ old('created_at') }}">
             </div>
         </div>
         <div class="form-row">

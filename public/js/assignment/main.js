@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $('.dropdown-toggle').dropdown()
+    $('.dropdown-toggle').dropdown();
 
     // let addAssignmentBtn = $('#add-assignment-btn');
     let searchBtn = $('.search-icon');
@@ -34,7 +34,6 @@ $(document).ready(function () {
                 usersOptions = '<option value=""></option>',
                 statusesOption = '<option value=""></option>';
 
-
             if (data.status) {
                 data.departments.forEach(function (item) {
                     departmentsOption += `<option value="${item.id}">${item.title}</option>`;
@@ -45,6 +44,9 @@ $(document).ready(function () {
                 data.users.forEach(function (item) {
                     usersOptions += `<option value="${item.id}">${item.full_name}</option>`;
                 })
+
+                let today = new Date().toISOString().split('T')[0];
+                $('#add-register-date').val(today);
 
                 authorSelect.html(usersOptions);
                 authorSelect.selectpicker();
@@ -98,6 +100,7 @@ $(document).ready(function () {
     })
 
     removeDepartmentBtn.on('click', function () {
+        $('.newDepartmentInput').val('');
         $('.newDepartment').slideUp();
         $('.departmentSelect').show();
         addDepartmentBtn.show();
@@ -110,7 +113,8 @@ $(document).ready(function () {
         $('.newAuthor').toggleClass('d-flex');
     })
 
-    removeAuthorBtn.on('click', function (){
+    removeAuthorBtn.on('click', function () {
+        $('.newAuthorInput').val('');
         $(this).hide();
         $('.author-select').toggleClass('d-none');
         $('.newAuthor').toggleClass('d-flex');
@@ -125,6 +129,7 @@ $(document).ready(function () {
     })
 
     removeAddressedBtn.on('click', function (){
+        $('.newAddressedInput').val('');
         $(this).hide();
         $('#addressed-select').toggleClass('d-none');
         $('.newAddressed').toggleClass('d-flex');
@@ -138,14 +143,11 @@ $(document).ready(function () {
     })
 
     removeExecutorBtn.on('click', function () {
+        $('.newExecutorInput').val('');
         $('.newExecutor').slideUp();
         $('.executorSelect').slideDown();
         addExecutorBtn.show();
     })
-
-
-
-
 
     let editAssignmentBtn = $('.editAssignmentBtn');
 
@@ -184,12 +186,6 @@ $(document).ready(function () {
                         factDeadlineData = editAssignmentModal.find('#fact-deadline');
 
                     if (data.assignment.status === 'Просрочено') {
-                        // departmentSelect.attr('disabled',true);
-                        // authorSelect.attr('disabled',true);
-                        // addressedSelect.attr('disabled',true);
-                        // executorSelect.attr('disabled',true);
-                        // subExecutorsSelect.attr('disabled',true);
-
                         addDepartmentBtn.hide();
                         addAuthorBtn.hide();
                         addAddressedBtn.hide();
@@ -200,11 +196,6 @@ $(document).ready(function () {
                         document_number.attr('readonly',true);
                         registerData.attr('readonly',true);
                     } else {
-                        // departmentSelect.attr('disabled',false);
-                        // authorSelect.attr('disabled',false);
-                        // addressedSelect.attr('disabled',false);
-                        // executorSelect.attr('disabled',false);
-                        // subExecutorsSelect.attr('disabled',false);
                         addDepartmentBtn.show();
                         addAuthorBtn.show();
                         addAddressedBtn.show();
@@ -330,6 +321,51 @@ $(document).ready(function () {
                 }
             })
         }
+    })
+
+    let extendAssignmentBtn = $('.extendAssignmentBtn');
+
+    extendAssignmentBtn.on('click', function () {
+        const assignmentId = $(this).data('id');
+        localStorage.removeItem('assignment-id');
+        localStorage.setItem('assignment-id', assignmentId);
+    })
+
+    const extendAssignmentForm = $('#extend-assignment-from');
+
+    extendAssignmentForm.on('submit', function (event) {
+        event.preventDefault();
+
+        const assignmentId = localStorage.getItem('assignment-id');
+        const date = $('#deadline').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '/organaizer/public/assignments/extend/' + assignmentId,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+              date: date
+            },
+
+            success: (data) => {
+                if (data.status) {
+                    location.reload();
+                }
+            },
+
+            error: (err) => {
+                console.log(err);
+            }
+        })
+
+
+
     })
 
 })

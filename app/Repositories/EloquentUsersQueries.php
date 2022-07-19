@@ -12,9 +12,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentUsersQueries implements UsersQueries
 {
-    public function getById(int $id)
+    public function getById($id)
     {
-        // TODO: Implement getById() method.
+        return User::find($id);
     }
 
     public function getAll()
@@ -23,5 +23,10 @@ class EloquentUsersQueries implements UsersQueries
             ->get();
 
         return $result;
+    }
+
+    public function getByName(string $name)
+    {
+        return User::where('full_name', $name)->first();
     }
 }

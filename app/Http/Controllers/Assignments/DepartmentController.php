@@ -22,23 +22,10 @@ class DepartmentController extends Controller
         try {
             $this->departmentService->create($request['title']);
         } catch (\DomainException $exception) {
-            return redirect()
-                ->back()
-                ->with('error', $exception->getMessage());
+            return redirect()->back()->with('error', $exception->getMessage());
         }
 
-        return redirect()->back()
+        return redirect()->route('assignments.index')
             ->with('success', 'Подразделение добавлено успешно.');
-    }
-
-    public function storeFromModal(string $title): ?Department
-    {
-        try {
-            $department = $this->departmentService->create($title);
-        } catch (\DomainException $exception) {
-            return null;
-        }
-
-        return $department;
     }
 }

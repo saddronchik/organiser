@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Assignment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreAssignmentRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class StoreAssignmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'department' => 'required_if:new_department,null',
+            'department' => 'required_if:new_department,null|unique:departments,title',
         ];
     }
 

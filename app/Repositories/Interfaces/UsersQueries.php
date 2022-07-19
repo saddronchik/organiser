@@ -7,5 +7,6 @@ namespace App\Repositories\Interfaces;
 interface UsersQueries
 {
     public function getAll();
-    public function getById(int $id);
+    public function getById($id);
+    public function getByName(string $name);
 }

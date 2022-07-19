@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Assignments\DepartmentController;
+use App\Http\Controllers\Assignments\ExportController;
 use App\Http\Controllers\Assignments\IndexController;
 use App\Http\Controllers\Assignments\UserController;
 use Illuminate\Support\Facades\Route;
@@ -57,17 +58,12 @@ Route::group(['prefix' => 'assignments', 'as' => 'assignments.'], function () {
     Route::delete('/delete/{assignment}', [IndexController::class, 'destroy']);
     Route::post('/done/{assignment}', [IndexController::class, 'done'])->name('done');
     Route::post('/expire/{assignment}', [IndexController::class, 'expired'])->name('expire');
+    Route::post('/extend/{assignemnt}', [IndexController::class, 'extend'])->name('extend');
 
     Route::post('/user/create', [UserController::class, 'store'])->name('user.add');
     Route::post('/department/create', [DepartmentController::class, 'store'])->name('department.add');
 
-//    Route::get('/index/sort/status/{status}', [IndexController::class,'sortByStatus'])
-//        ->name('sort-by-status');
-//    Route::get('/index/sort/department/{id}', [IndexController::class,'sortByDepartment'])
-//        ->name('sort-by-department');
-
-
-    Route::get('/export', [IndexController::class, 'export'])
+    Route::get('/export', [ExportController::class, 'exportToXls'])
         ->name('export');
 });
 

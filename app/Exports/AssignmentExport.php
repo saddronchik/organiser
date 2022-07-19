@@ -28,8 +28,7 @@ class AssignmentExport implements FromCollection, WithHeadings, WithMapping, Wit
     */
     public function collection(): Collection
     {
-        $result = $this->assignmentRepository->getByDepartment($this->departmentId);
-        return $result;
+       return $this->assignmentRepository->getByDepartment($this->departmentId);
     }
 
     public function headings(): array

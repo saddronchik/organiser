@@ -148,7 +148,8 @@
                                                             <form action="{{ route('assignments.done', $assignment) }}"
                                                                   class="mr-1" method="post">
                                                                 @csrf
-                                                                <button type="submit" class="btn-sm btn-success border-0">
+                                                                <button type="submit"
+                                                                        class="btn-sm btn-success border-0">
                                                                     Пометить
                                                                     как <b>"Выполненно"</b></button>
                                                             </form>
@@ -158,15 +159,24 @@
                                                                 action="{{ route('assignments.expire', $assignment) }}"
                                                                 class="mr-1" method="post">
                                                                 @csrf
-                                                                <button type="submit" class="btn-sm btn-danger border-0">Пометить
+                                                                <button type="submit"
+                                                                        class="btn-sm btn-danger border-0">Пометить
                                                                     как
                                                                     <b>"Просрочено"</b></button>
                                                             </form>
                                                         @endif
+                                                        @if ($assignment->isProgress())
+                                                            <a href="#"
+                                                               class="btn-sm btn-info extendAssignmentBtn"
+                                                               data-toggle="modal"
+                                                               data-id="{{ $assignment->id }}"
+                                                               data-target="#extend-assignment-modal">Продлить</a>
+                                                        @endif
 
                                                         <a href="#"
-                                                           class="btn-sm btn-primary editAssignmentBtn mr-1"
-                                                           data-toggle="modal" id="edit-assignment-btn"
+                                                           class="btn-sm btn-primary editAssignmentBtn mr-1 ml-1"
+                                                           id="edit-assignment-btn"
+                                                           data-toggle="modal"
                                                            data-id="{{ $assignment->id }}"
                                                            data-target="#edit-assignment-modal">
                                                             <img src="{{ asset('img/icon/edit.svg') }}"
@@ -223,6 +233,7 @@
     <x-modal id="executorModal"/>
     <x-modal id="departmentModal"/>
     <x-modal id="add-assignment-modal" size="modal-lg"/>
+    <x-modal id="extend-assignment-modal" />
     <x-modal id="edit-assignment-modal" size="modal-lg"></x-modal>
     <x-modal id="export-assignment-modal"></x-modal>
 

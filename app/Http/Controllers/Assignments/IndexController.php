@@ -2,48 +2,34 @@
 
 namespace App\Http\Controllers\Assignments;
 
-use App\Exports\AssignmentExport;
-use App\Http\Requests\StoreAssignmentRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Assignment\EditRequest;
+use App\Http\Requests\Assignment\StoreRequest;
 use App\Http\Services\assignment\AssignmentService;
 use App\Http\Services\assignment\DepartmentService;
+use App\Http\Services\assignment\UserService;
 use App\Models\Assignment;
-use App\Models\User;
-use App\Repositories\Interfaces\AssignmentQueries;
-use App\Repositories\Interfaces\DepartmentsQueries;
-use App\Repositories\Interfaces\UsersQueries;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class IndexController extends BaseController
+
+class IndexController extends Controller
 {
-
     private $assignmentService;
     private $departmentService;
-    private $assignmentRepository;
-    private $userRepository;
-    private $departmentRepository;
+    private $userService;
 
-    private $department;
-
-    public function __construct(AssignmentService $assignmentService,
-                                DepartmentService $departmentService,
-                                AssignmentQueries $assignmentRepository,
-                                UsersQueries $userRepository,
-                                DepartmentsQueries $departmentRepository)
+    public function __construct(AssignmentService $assignmentService, DepartmentService $departmentService,
+                                UserService $userService)
     {
         $this->assignmentService = $assignmentService;
         $this->departmentService = $departmentService;
-        $this->assignmentRepository = $assignmentRepository;
-        $this->userRepository = $userRepository;
-        $this->departmentRepository = $departmentRepository;
-        $this->department = new DepartmentController(new DepartmentService());
+        $this->userService = $userService;
     }
 
     public function index(Request $request, int $perPage = 15)
     {
-        $departments = $this->departmentRepository->getAll();
+        $departments = $this->departmentService->getAll();
         $statuses = Assignment::getStatuses();
 
         $query = Assignment::with(['users'])->orderBy('id', 'desc');
@@ -70,15 +56,7 @@ class IndexController extends BaseController
 
         $assignments = $query->paginate($perPage);
 
-
-        foreach ($assignments as $assignment) {
-            if (!empty($assignment->deadline) && Carbon::parse($assignment->deadline)->lt(Carbon::now()) &&
-                    !$assignment->isDone())
-            {
-                $assignment->status = Assignment::STATUS_EXPIRED;
-                $assignment->save();
-            }
-        }
+        $this->setStatuses($assignments);
 
         return view('assignment.index',
             compact('assignments', 'departments', 'statuses'));
@@ -87,8 +65,8 @@ class IndexController extends BaseController
     public function create()
     {
         $statuses = Assignment::getStatuses();
-        $users = $this->userRepository->getAll();
-        $departments = $this->departmentRepository->getAll();
+        $users = $this->userService->getAll();
+        $departments = $this->departmentService->getAll();
 
         return response()->json([
             "status" => true,
@@ -98,93 +76,49 @@ class IndexController extends BaseController
         ])->setStatusCode(200);
     }
 
-    public function store(StoreAssignmentRequest $request)
+    public function store(StoreRequest $request)
     {
         $department = null;
         $author = null;
         $addressed = null;
         $executor = null;
-        $status = Assignment::STATUS_IN_PROGRESS;
 
-        if ($request['new_department']) {
-            $department = $this->department->storeFromModal($request->new_department);
-            $department = $department->id;
+        if (!empty($value = $request->get('new_department'))) {
+            $department = $this->departmentService->create($value);
         }
 
-        if ($request['new_author']) {
-            $author = User::where('full_name', [$request['new_author']])->first();;
-
-            if (!$author) {
-                $author = User::create([
-                    'full_name' => $request['new_author']
-                ])->id;
-            } else {
-                $author = $author->id;
-            }
+        if (!empty($value = $request->get('new_author'))) {
+            $author = $this->userService->getOrCreate($value);
         }
 
-        if ($request['new_addressed']) {
-            $addressed = User::where('full_name', $request['new_addressed'])->first();
-
-            if (!$addressed) {
-                $addressed = User::create([
-                    'full_name' => $request['new_addressed']
-                ])->id;
-            } else {
-                $addressed = $addressed->id;
-            }
+        if (!empty($value = $request->get('new_addressed'))) {
+            $addressed = $this->userService->getOrCreate($value);
         }
 
-        if ($request['new_executor']) {
-            $executor = User::where('full_name', $request['new_executor'])->first();
-
-            if (!$executor) {
-                $executor = User::create([
-                    'full_name' => $request['new_executor']
-                ])->id;
-            } else {
-                $executor = $executor->id;
-            }
+        if (!empty($value = $request->get('new_executor'))) {
+            $executor = $this->userService->getOrCreate($value);
         }
 
-        $assignment = Assignment::create([
-            'document_number' => $request['document_number'],
-            'preamble' => $request['preambule'],
-            'text' => $request['resolution'],
-            'author_id' => $author ?? $request['author'],
-            'addressed_id' => $addressed ?? $request['addressed'],
-            'executor_id' => $executor ?? $request['executor'],
-            'department_id' => $department ?? $request['department'],
-            'status' => $request['status'] ?? $status,
-            'deadline' => $request['deadline'],
-            'real_deadline' => $request['fact_deadline'],
-            'register_date' => $request['register_date']
-        ]);
-
-        if ($assignment) {
-            $users = User::find($request->subexecutors);
-            $assignment->users()->attach($users);
-
-            return redirect()
-                ->back()
-                ->with('success', 'Поручение успешно создано.');
+        try {
+            $this->assignmentService->create($request, $author, $addressed, $executor, $department);
+        } catch (\DomainException $exception) {
+            return back()->withInput($request->input())->with('error', $exception->getMessage());
         }
 
-        return redirect()
-            ->back()
-            ->withInput($request->input())
-            ->with('error');
+        return redirect()->route('assignments.index')->with('success', 'Поручение успешно создано.');
     }
+
 
     public function edit(Assignment $assignment)
     {
         $statuses = Assignment::getStatuses();
-        $users = $this->userRepository->getAll();
-        $departments = $this->departmentRepository->getAll();
+        $users = $this->userService->getAll();
+        $departments = $this->departmentService->getAll();
+        $assignment = $this->assignmentService->find($assignment->id);
 
         return response()->json([
             "status" => true,
-            "assignment" => $this->assignmentRepository->find($assignment->id),
+            "assignment" => $assignment,
             "statuses" => $statuses,
             "subexecutors" => $assignment->users,
             "users" => $users,
@@ -193,100 +127,39 @@ class IndexController extends BaseController
 
     }
 
-    public function update($id, Request $request)
+    public function update($id, EditRequest $request)
     {
         $department = null;
         $author = null;
         $addressed = null;
         $executor = null;
-        $status = $request->input('status');
 
-        if ($status == Assignment::STATUS_DONE) {
-            $request['deadline'] = Carbon::now();
-            $request['fact_deadline'] = Carbon::now();
-        } elseif ($status == Assignment::STATUS_EXPIRED) {
-            $request['fact_deadline'] = Carbon::now()->subDay();
-        } elseif ($status == Assignment::STATUS_IN_PROGRESS
-            && !Carbon::parse($request['deadline'])->gt(Carbon::now()->addDay()))
-        {
-            $request['deadline'] = Carbon::now()->addDay();
-            $request['fact_deadline'] = Carbon::now()->addDay();
+        if (!empty($value = $request->get('new_department'))) {
+            $department = $this->departmentService->create($value);
         }
 
-        if ($request['new_department']) {
-            $department = $this->department->storeFromModal($request->new_department);
-            $department = $department->id;
+        if (!empty($value = $request->get('new_author'))) {
+            $author = $this->userService->getOrCreate($value);
         }
 
-        if ($request['new_author']) {
-            $author = User::where('full_name', [$request['new_author']])->first();;
-
-            if (!$author) {
-                $author = User::create([
-                    'full_name' => $request['new_author']
-                ])->id;
-            } else {
-                $author = $author->id;
-            }
+        if (!empty($value = $request->get('new_addressed'))) {
+            $addressed = $this->userService->getOrCreate($value);
         }
 
-        if ($request['new_addressed']) {
-            $addressed = User::where('full_name', [$request['new_addressed']])->first();
-
-            if (!$addressed) {
-                $addressed = User::create([
-                    'full_name' => $request['new_addressed']
-                ])->id;
-            } else {
-                $addressed = $addressed->id;
-            }
+        if (!empty($value = $request->get('new_executor'))) {
+            $executor = $this->userService->getOrCreate($value);
         }
 
-        if ($request['new_executor']) {
-            $executor = User::where('full_name', [$request['new_executor']])->first();
-
-            if (!$executor) {
-                $executor = User::create([
-                    'full_name' => $request['new_executor']
-                ])->id;
-            } else {
-                $executor = $executor->id;
-            }
+        try {
+            $this->assignmentService->edit($id, $department, $author, $addressed, $executor, $request);
+        } catch (\DomainException $exception) {
+            return back()->withInput($request->input())->with('error', $exception->getMessage());
         }
 
-        $assignment = Assignment::findOrFail($id);
-
-        $updated = $assignment->update([
-            'document_number' => $request['document_number'],
-            'preamble' => $request['preambule'],
-            'text' => $request['resolution'],
-            'author_id' => $author ?? $request['author'],
-            'addressed_id' => $addressed ?? $request['addressed'],
-            'executor_id' => $executor ?? $request['executor'],
-            'department_id' => $department ?? $request['department'],
-            'status' => $status,
-            'register_date' => $request['register_date'],
-            'deadline' => $request['deadline'],
-            'real_deadline' => $request['fact_deadline']
-        ]);
-
-        if ($updated) {
-            $users = User::find($request->subexecutors);
-
-            $assignment->users()->sync($users);
-
-            return redirect()
-                ->back()
-                ->with('success', 'Запись обновлена!');
-        }
-
-        return redirect()
-            ->back()
-            ->withInput($request->input())
-            ->with('error');
+        return redirect()->route('assignments.index')->with('success', 'Поручение успешно обновлено!');
     }
 
-    public function done(Assignment $assignment)
+    public function done(Assignment $assignment): \Illuminate\Http\RedirectResponse
     {
         try {
             $this->assignmentService->markAsDone($assignment->id);
@@ -297,7 +170,7 @@ class IndexController extends BaseController
         return redirect()->route('assignments.index');
     }
 
-    public function expired(Assignment $assignment)
+    public function expired(Assignment $assignment): \Illuminate\Http\RedirectResponse
     {
         try {
             $this->assignmentService->markAsExpired($assignment->id);
@@ -308,32 +181,17 @@ class IndexController extends BaseController
         return redirect()->route('assignments.index');
     }
 
-    public function sortByStatus($id)
+    public function extend($id, Request $request)
     {
-        $assignments = $this->assignmentRepository->getByStatus($id);
-        $statuses = Assignment::getStatuses();
-        $departments = $this->departmentRepository->getAll();
+        try {
+            $this->assignmentService->extend($id, $request->get('date'));
+        } catch (\DomainException $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
+        }
 
-        return view('assignment.index',
-            compact('assignments', 'statuses', 'departments'));
-    }
-
-    public function sortByDepartment($id)
-    {
-        $assignments = $this->assignmentRepository->getByDepartmentWithPaginate($id);
-        $statuses = Assignment::getStatuses();
-        $departments = $this->departmentRepository->getAll();
-
-        return view('assignment.index',
-            compact('assignments', 'statuses', 'departments'));
-    }
-
-    public function export(Request $request): BinaryFileResponse
-    {
-        $departmentId = $request->input('department');
-        return Excel::download(
-            new AssignmentExport($this->assignmentRepository, $departmentId),
-            'assignments.xlsx');
+        return response()->json([
+            'status' => true
+        ]);
     }
 
     public function destroy(Assignment $assignment)
@@ -347,6 +205,17 @@ class IndexController extends BaseController
         return response()->json([
             'status' => true
         ]);
+    }
+
+    private function setStatuses($assignments)
+    {
+        foreach ($assignments as $assignment) {
+            if (!empty($assignment->deadline) && Carbon::parse($assignment->deadline)->lt(Carbon::now()) &&
+                !$assignment->isDone()) {
+                $assignment->status = Assignment::STATUS_EXPIRED;
+                $assignment->save();
+            }
+        }
     }
 
 

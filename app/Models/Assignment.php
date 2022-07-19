@@ -20,12 +20,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $executor_id;
  * @property int $department_id;
  * @property string $status;
- * @property $deadline;
- * @property $real_deadline;
+ * @property Carbon|null $deadline;
+ * @property Carbon|null $real_deadline;
  *
  * @method
  */
-
 class Assignment extends Model
 {
     use HasFactory;
@@ -52,6 +51,10 @@ class Assignment extends Model
 
     public function done(): void
     {
+        if ($this->isDone()) {
+            throw new \DomainException('Поручение уже помеченно как "Выполненно"!');
+        }
+
         $this->update([
             'real_deadline' => Carbon::now(),
             'status' => self::STATUS_DONE
@@ -63,8 +66,23 @@ class Assignment extends Model
         if ($this->isExpired()) {
             throw new \DomainException('Поручение уже помеченно как "Просроченно"');
         }
+
         $this->update([
-            'status' => self::STATUS_EXPIRED
+            'real_deadline' => Carbon::now()->subDay(),
+            'status' => self::STATUS_EXPIRED,
+        ]);
+    }
+
+    public function extend($date = null): void
+    {
+        if (!is_null($date) && Carbon::now()->gt($date)) {
+            throw new \DomainException('Некорректная дата');
+        }
+
+        $this->update([
+            'status' => self::STATUS_IN_PROGRESS,
+            'deadline' => $date ? Carbon::parse($date) : Carbon::now()->addDay(),
+//            'real_deadline' => Carbon::now()->addDay()
         ]);
     }
 
@@ -85,7 +103,7 @@ class Assignment extends Model
     {
         if (is_null($value)) return null;
 
-        return Carbon::parse($value )->format('d.m.Y');
+        return Carbon::parse($value)->format('d.m.Y');
     }
 
     public static function getStatuses(): array
@@ -125,17 +143,17 @@ class Assignment extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class,'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function addressed(): BelongsTo
     {
-        return $this->belongsTo(User::class,'addressed_id');
+        return $this->belongsTo(User::class, 'addressed_id');
     }
 
     public function executor(): BelongsTo
     {
-        return $this->belongsTo(User::class,'executor_id');
+        return $this->belongsTo(User::class, 'executor_id');
     }
 
     public function department(): BelongsTo

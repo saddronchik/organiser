@@ -19,7 +19,8 @@ class StoreDepartmentRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Заполните название подразделения'
+            'title.required' => 'Заполните название подразделения',
+            'title.unique' => 'Такое подразделение уже существует',
         ];
     }
 
@@ -31,7 +32,7 @@ class StoreDepartmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string'
+            'title' => 'required|string|unique:departments,title',
         ];
     }
 }
